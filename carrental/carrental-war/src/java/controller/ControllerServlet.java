@@ -9,15 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns
         = {
-            "/servlet"
+            "/CarRental/servlet"
         })
 public class ControllerServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String currentStep = request.getParameter("step");
         
+        
+        String currentStep = request.getParameter("step");
+
         switch (currentStep) {
             case "index":
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -26,25 +27,28 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
                 break;
             case "login":
-                /*
-                Vergleiche den User und Password mit Werten in der DB
-                */
-                request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
+                String mail = request.getParameter("login");
+                String password = request.getParameter("password");
+                if (true) {
+                    request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("/login.jsp").forward(request, response);
+                }
                 break;
             case "registerPage":
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
             case "register":
                 /*
-                Nimm alle Parameter der Seite register.jsp und lege einen neuen
-                User in der DB an.
-                */
+                 Nimm alle Parameter der Seite register.jsp und lege einen neuen
+                 User in der DB an.
+                 */
                 break;
             case "search":
                 /*
-                Nimm den Parameter "search" rufe die Methode ??? auf, leite auf
-                die Ergebnisseite um und zeige die Resultate an.
-                */
+                 Nimm den Parameter "search" rufe die Methode ??? auf, leite auf
+                 die Ergebnisseite um und zeige die Resultate an.
+                 */
                 break;
         }
 
