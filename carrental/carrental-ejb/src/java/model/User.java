@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package model;
 
 import java.io.Serializable;
@@ -94,8 +88,7 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
-        this.iduser = iduser;
+    public User(String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
         this.mail = mail;
         this.birthdate = birthdate;
         this.loginname = loginname;
