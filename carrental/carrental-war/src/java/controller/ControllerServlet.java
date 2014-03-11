@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.User;
 
 @WebServlet(urlPatterns
         = {
@@ -16,9 +17,9 @@ public class ControllerServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+
         String currentStep = request.getParameter("step");
+        UserSessionBeanLocal userBean = BeanFactory.getUserSessionBean();
 
         switch (currentStep) {
             case "index":
@@ -28,9 +29,8 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
                 break;
             case "login":
-                String mail = request.getParameter("login");
-                String password = request.getParameter("password");
-                if (true) {
+                User user = userBean.login(request.getParameter("login"), request.getParameter("password"));
+                if (user != null) {
                     request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
                 } else {
                     request.getRequestDispatcher("/login.jsp").forward(request, response);

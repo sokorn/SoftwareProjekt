@@ -1,36 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controller;
 
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
-/**
- *
- * @author Marco
- */
 @Stateless
-@LocalBean
 public class BeanFactory {
-    
- public static UserSessionBeanLocal getSessionBean()
-    {
-        UserSessionBeanLocal bean = null;
-        try
-        {
-            InitialContext ctx = new InitialContext();
-            bean = (UserSessionBeanLocal) ctx.lookup("java:global/EnterpriseApplication/EnterpriseApplication-ejb/SessionBean!controller.SessionBeanLocal");
-        }
-        catch (Exception ex)
-        {
+
+    public static UserSessionBeanLocal getUserSessionBean() {
+        UserSessionBeanLocal userBean = null;
+        try {
+            InitialContext initialContext = new InitialContext();
+            userBean = (UserSessionBeanLocal) initialContext.lookup("java:global/carrental/carrental-ejb/UserSessionBean!controller.UserSessionBeanLocal");
+        } catch (NamingException ex) {
             ex.printStackTrace();
         }
-        return bean;
+        return userBean;
+    }
+    
+    public static CarSessionBeanLocal getCarSessionBean() {
+        CarSessionBeanLocal carBean = null;
+        try {
+            InitialContext initialContext = new InitialContext();
+            carBean = (CarSessionBeanLocal) initialContext.lookup("java:global/carrental/carrental-ejb/CarSessionBean!controller.CarSessionBeanLocal");
+        } catch (NamingException ex) {
+            ex.printStackTrace();
+        }
+        return carBean;
+    }
+    
+    public static RentSessionBeanLocal getRentSessionBean() {
+        RentSessionBeanLocal rentBean = null;
+        try {
+            InitialContext initialContext = new InitialContext();
+            rentBean = (RentSessionBeanLocal) initialContext.lookup("java:global/carrental/carrental-ejb/RentSessionBean!controller.RentSessionBeanLocal");
+        } catch (NamingException ex) {
+            ex.printStackTrace();
+        }
+        return rentBean;
     }
 }
-
