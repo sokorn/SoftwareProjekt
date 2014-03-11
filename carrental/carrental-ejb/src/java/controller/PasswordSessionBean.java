@@ -1,20 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controller;
 
 import javax.ejb.Stateless;
 
-/**
- *
- * @author Marco
- */
-@Stateless
+@Stateless(name = "PasswordSessionBean")
 public class PasswordSessionBean implements PasswordSessionBeanLocal {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 }
