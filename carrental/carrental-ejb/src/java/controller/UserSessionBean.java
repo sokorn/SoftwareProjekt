@@ -18,10 +18,10 @@ public class UserSessionBean implements UserSessionBeanLocal {
 
     //TODO ADRESS
     @Override
-    public User createUser(String mail, Date birthdate, String loginname, String title, String firstname, String lastname, Adress adress) {
+    public User createUser(int userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname, Adress adress) {
         entityManager.setFlushMode(FlushModeType.AUTO);
 
-        User user = new User(mail, birthdate, loginname, title, firstname, lastname);
+        User user = new User(userId, mail, birthdate, loginname, title, firstname, lastname);
         entityManager.persist(user);
         user = entityManager.merge(user);
         entityManager.flush();

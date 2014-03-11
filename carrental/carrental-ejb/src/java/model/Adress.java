@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Adress.findAll", query = "SELECT a FROM Adress a"),
-    @NamedQuery(name = "Adress.findByAdressID", query = "SELECT a FROM Adress a WHERE a.adressID = :adressID"),
+    @NamedQuery(name = "Adress.findByAdressId", query = "SELECT a FROM Adress a WHERE a.adressId = :adressId"),
     @NamedQuery(name = "Adress.findByStreet", query = "SELECT a FROM Adress a WHERE a.street = :street"),
     @NamedQuery(name = "Adress.findByHousenumber", query = "SELECT a FROM Adress a WHERE a.housenumber = :housenumber"),
     @NamedQuery(name = "Adress.findByCity", query = "SELECT a FROM Adress a WHERE a.city = :city"),
@@ -43,8 +43,8 @@ public class Adress implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "adressID")
-    private Integer adressID;
+    @Column(name = "adressId")
+    private Integer adressId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -80,19 +80,19 @@ public class Adress implements Serializable {
     @NotNull
     @Column(name = "isInvoiceAddress")
     private boolean isInvoiceAddress;
-    @JoinColumn(name = "user_iduser", referencedColumnName = "iduser")
+    @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
-    private User userIduser;
+    private User useruserId;
 
     public Adress() {
     }
 
-    public Adress(Integer adressID) {
-        this.adressID = adressID;
+    public Adress(Integer adressId) {
+        this.adressId = adressId;
     }
 
-    public Adress(Integer adressID, String street, String housenumber, String city, String country, int postalCode, boolean isShippingAdress, boolean isInvoiceAddress) {
-        this.adressID = adressID;
+    public Adress(Integer adressId, String street, String housenumber, String city, String country, int postalCode, boolean isShippingAdress, boolean isInvoiceAddress) {
+        this.adressId = adressId;
         this.street = street;
         this.housenumber = housenumber;
         this.city = city;
@@ -102,12 +102,12 @@ public class Adress implements Serializable {
         this.isInvoiceAddress = isInvoiceAddress;
     }
 
-    public Integer getAdressID() {
-        return adressID;
+    public Integer getAdressId() {
+        return adressId;
     }
 
-    public void setAdressID(Integer adressID) {
-        this.adressID = adressID;
+    public void setAdressId(Integer adressId) {
+        this.adressId = adressId;
     }
 
     public String getStreet() {
@@ -174,18 +174,18 @@ public class Adress implements Serializable {
         this.isInvoiceAddress = isInvoiceAddress;
     }
 
-    public User getUserIduser() {
-        return userIduser;
+    public User getUseruserId() {
+        return useruserId;
     }
 
-    public void setUserIduser(User userIduser) {
-        this.userIduser = userIduser;
+    public void setUseruserId(User useruserId) {
+        this.useruserId = useruserId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (adressID != null ? adressID.hashCode() : 0);
+        hash += (adressId != null ? adressId.hashCode() : 0);
         return hash;
     }
 
@@ -196,7 +196,7 @@ public class Adress implements Serializable {
             return false;
         }
         Adress other = (Adress) object;
-        if ((this.adressID == null && other.adressID != null) || (this.adressID != null && !this.adressID.equals(other.adressID))) {
+        if ((this.adressId == null && other.adressId != null) || (this.adressId != null && !this.adressId.equals(other.adressId))) {
             return false;
         }
         return true;
@@ -204,7 +204,7 @@ public class Adress implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Adress[ adressID=" + adressID + " ]";
+        return "model.Adress[ adressId=" + adressId + " ]";
     }
     
 }

@@ -27,22 +27,23 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Marco
  */
 @Entity
-@Table(name = "rents")
+@Table(name = "rent")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Rents.findAll", query = "SELECT r FROM Rents r"),
-    @NamedQuery(name = "Rents.findByRentID", query = "SELECT r FROM Rents r WHERE r.rentID = :rentID"),
-    @NamedQuery(name = "Rents.findByTotalPrice", query = "SELECT r FROM Rents r WHERE r.totalPrice = :totalPrice"),
-    @NamedQuery(name = "Rents.findByLength", query = "SELECT r FROM Rents r WHERE r.length = :length"),
-    @NamedQuery(name = "Rents.findByStartdate", query = "SELECT r FROM Rents r WHERE r.startdate = :startdate"),
-    @NamedQuery(name = "Rents.findByEnddate", query = "SELECT r FROM Rents r WHERE r.enddate = :enddate")})
-public class Rents implements Serializable {
+    @NamedQuery(name = "Rent.findAll", query = "SELECT r FROM Rent r"),
+    @NamedQuery(name = "Rent.findByRentId", query = "SELECT r FROM Rent r WHERE r.rentId = :rentId"),
+    @NamedQuery(name = "Rent.findByTotalPrice", query = "SELECT r FROM Rent r WHERE r.totalPrice = :totalPrice"),
+    @NamedQuery(name = "Rent.findByLength", query = "SELECT r FROM Rent r WHERE r.length = :length"),
+    @NamedQuery(name = "Rent.findByStartdate", query = "SELECT r FROM Rent r WHERE r.startdate = :startdate"),
+    @NamedQuery(name = "Rent.findByEnddate", query = "SELECT r FROM Rent r WHERE r.enddate = :enddate"),
+    @NamedQuery(name = "Rent.findByCarcarId", query = "SELECT r FROM Rent r WHERE r.carcarId = :carcarId")})
+public class Rent implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "rentID")
-    private Integer rentID;
+    @Column(name = "rentId")
+    private Integer rentId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalPrice")
@@ -61,34 +62,39 @@ public class Rents implements Serializable {
     @Column(name = "enddate")
     @Temporal(TemporalType.DATE)
     private Date enddate;
-    @JoinColumn(name = "car_carId", referencedColumnName = "carId")
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "car_carId")
+    private int carcarId;
+    @JoinColumn(name = "car_modelId", referencedColumnName = "carId")
     @ManyToOne(optional = false)
-    private Car carcarId;
-    @JoinColumn(name = "user_iduser", referencedColumnName = "iduser")
+    private Car carmodelId;
+    @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
-    private User userIduser;
+    private User useruserId;
 
-    public Rents() {
+    public Rent() {
     }
 
-    public Rents(Integer rentID) {
-        this.rentID = rentID;
+    public Rent(Integer rentId) {
+        this.rentId = rentId;
     }
 
-    public Rents(Integer rentID, double totalPrice, int length, Date startdate, Date enddate) {
-        this.rentID = rentID;
+    public Rent(Integer rentId, double totalPrice, int length, Date startdate, Date enddate, int carcarId) {
+        this.rentId = rentId;
         this.totalPrice = totalPrice;
         this.length = length;
         this.startdate = startdate;
         this.enddate = enddate;
+        this.carcarId = carcarId;
     }
 
-    public Integer getRentID() {
-        return rentID;
+    public Integer getRentId() {
+        return rentId;
     }
 
-    public void setRentID(Integer rentID) {
-        this.rentID = rentID;
+    public void setRentId(Integer rentId) {
+        this.rentId = rentId;
     }
 
     public double getTotalPrice() {
@@ -123,37 +129,45 @@ public class Rents implements Serializable {
         this.enddate = enddate;
     }
 
-    public Car getCarcarId() {
+    public int getCarcarId() {
         return carcarId;
     }
 
-    public void setCarcarId(Car carcarId) {
+    public void setCarcarId(int carcarId) {
         this.carcarId = carcarId;
     }
 
-    public User getUserIduser() {
-        return userIduser;
+    public Car getCarmodelId() {
+        return carmodelId;
     }
 
-    public void setUserIduser(User userIduser) {
-        this.userIduser = userIduser;
+    public void setCarmodelId(Car carmodelId) {
+        this.carmodelId = carmodelId;
+    }
+
+    public User getUseruserId() {
+        return useruserId;
+    }
+
+    public void setUseruserId(User useruserId) {
+        this.useruserId = useruserId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (rentID != null ? rentID.hashCode() : 0);
+        hash += (rentId != null ? rentId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Rents)) {
+        if (!(object instanceof Rent)) {
             return false;
         }
-        Rents other = (Rents) object;
-        if ((this.rentID == null && other.rentID != null) || (this.rentID != null && !this.rentID.equals(other.rentID))) {
+        Rent other = (Rent) object;
+        if ((this.rentId == null && other.rentId != null) || (this.rentId != null && !this.rentId.equals(other.rentId))) {
             return false;
         }
         return true;
@@ -161,7 +175,7 @@ public class Rents implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Rents[ rentID=" + rentID + " ]";
+        return "model.Rent[ rentId=" + rentId + " ]";
     }
     
 }

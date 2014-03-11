@@ -13,6 +13,6 @@ import javax.ejb.Local;
  * @author Marco
  */
 @Local
-public interface ModelSessionBeanLocal {
+public interface RentSessionBeanLocal {
     
 }

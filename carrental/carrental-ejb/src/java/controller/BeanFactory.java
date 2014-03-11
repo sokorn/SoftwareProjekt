@@ -29,11 +29,11 @@ public class BeanFactory {
         return carBean;
     }
 
-    public static RentsSessionBeanLocal getRentSessionBean() {
-        RentsSessionBeanLocal rentBean = null;
+    public static RentSessionBeanLocal getRentSessionBean() {
+        RentSessionBeanLocal rentBean = null;
         try {
             InitialContext initialContext = new InitialContext();
-            rentBean = (RentsSessionBeanLocal) initialContext.lookup("java:global/carrental/carrental-ejb/RentsSessionBean!controller.RentsSessionBeanLocal");
+            rentBean = (RentSessionBeanLocal) initialContext.lookup("java:global/carrental/carrental-ejb/RentsSessionBean!controller.RentsSessionBeanLocal");
         } catch (NamingException ex) {
             ex.printStackTrace();
         }

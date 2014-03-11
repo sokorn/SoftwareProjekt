@@ -1,3 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package model;
 
 import java.io.Serializable;
@@ -30,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findByIduser", query = "SELECT u FROM User u WHERE u.iduser = :iduser"),
+    @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
     @NamedQuery(name = "User.findByMail", query = "SELECT u FROM User u WHERE u.mail = :mail"),
     @NamedQuery(name = "User.findByBirthdate", query = "SELECT u FROM User u WHERE u.birthdate = :birthdate"),
     @NamedQuery(name = "User.findByLoginname", query = "SELECT u FROM User u WHERE u.loginname = :loginname"),
@@ -42,8 +48,8 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "iduser")
-    private Integer iduser;
+    @Column(name = "userId")
+    private Integer userId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -74,21 +80,22 @@ public class User implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "lastname")
     private String lastname;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private Collection<Adress> adressCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
+    private Collection<Rent> rentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private Collection<Password> passwordCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
-    private Collection<Rents> rentsCollection;
 
     public User() {
     }
 
-    public User(Integer iduser) {
-        this.iduser = iduser;
+    public User(Integer userId) {
+        this.userId = userId;
     }
 
-    public User(String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
+    public User(Integer userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
+        this.userId = userId;
         this.mail = mail;
         this.birthdate = birthdate;
         this.loginname = loginname;
@@ -97,12 +104,12 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    public Integer getIduser() {
-        return iduser;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setIduser(Integer iduser) {
-        this.iduser = iduser;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getMail() {
@@ -163,6 +170,15 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Rent> getRentCollection() {
+        return rentCollection;
+    }
+
+    public void setRentCollection(Collection<Rent> rentCollection) {
+        this.rentCollection = rentCollection;
+    }
+
+    @XmlTransient
     public Collection<Password> getPasswordCollection() {
         return passwordCollection;
     }
@@ -171,19 +187,10 @@ public class User implements Serializable {
         this.passwordCollection = passwordCollection;
     }
 
-    @XmlTransient
-    public Collection<Rents> getRentsCollection() {
-        return rentsCollection;
-    }
-
-    public void setRentsCollection(Collection<Rents> rentsCollection) {
-        this.rentsCollection = rentsCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iduser != null ? iduser.hashCode() : 0);
+        hash += (userId != null ? userId.hashCode() : 0);
         return hash;
     }
 
@@ -194,7 +201,7 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.iduser == null && other.iduser != null) || (this.iduser != null && !this.iduser.equals(other.iduser))) {
+        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
             return false;
         }
         return true;
@@ -202,7 +209,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "model.User[ iduser=" + iduser + " ]";
+        return "model.User[ userId=" + userId + " ]";
     }
     
 }

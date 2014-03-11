@@ -8,7 +8,7 @@ import model.User;
 @Local
 public interface UserSessionBeanLocal
 {
-    public User createUser(String mail, Date birthdate, String loginname, String title, String firstname, String lastname, Adress adress);
+    public User createUser(int userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname, Adress adress);
     
     public User login(String loginname, String passwort);
     

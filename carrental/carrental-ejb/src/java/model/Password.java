@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Password.findAll", query = "SELECT p FROM Password p"),
     @NamedQuery(name = "Password.findByPasswordhash", query = "SELECT p FROM Password p WHERE p.passwordhash = :passwordhash"),
-    @NamedQuery(name = "Password.findByPasswordID", query = "SELECT p FROM Password p WHERE p.passwordID = :passwordID")})
+    @NamedQuery(name = "Password.findByPasswordId", query = "SELECT p FROM Password p WHERE p.passwordId = :passwordId")})
 public class Password implements Serializable {
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
@@ -42,21 +42,21 @@ public class Password implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "passwordID")
-    private String passwordID;
-    @JoinColumn(name = "user_iduser", referencedColumnName = "iduser")
+    @Column(name = "passwordId")
+    private String passwordId;
+    @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
-    private User userIduser;
+    private User useruserId;
 
     public Password() {
     }
 
-    public Password(String passwordID) {
-        this.passwordID = passwordID;
+    public Password(String passwordId) {
+        this.passwordId = passwordId;
     }
 
-    public Password(String passwordID, String passwordhash) {
-        this.passwordID = passwordID;
+    public Password(String passwordId, String passwordhash) {
+        this.passwordId = passwordId;
         this.passwordhash = passwordhash;
     }
 
@@ -68,26 +68,26 @@ public class Password implements Serializable {
         this.passwordhash = passwordhash;
     }
 
-    public String getPasswordID() {
-        return passwordID;
+    public String getPasswordId() {
+        return passwordId;
     }
 
-    public void setPasswordID(String passwordID) {
-        this.passwordID = passwordID;
+    public void setPasswordId(String passwordId) {
+        this.passwordId = passwordId;
     }
 
-    public User getUserIduser() {
-        return userIduser;
+    public User getUseruserId() {
+        return useruserId;
     }
 
-    public void setUserIduser(User userIduser) {
-        this.userIduser = userIduser;
+    public void setUseruserId(User useruserId) {
+        this.useruserId = useruserId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (passwordID != null ? passwordID.hashCode() : 0);
+        hash += (passwordId != null ? passwordId.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +98,7 @@ public class Password implements Serializable {
             return false;
         }
         Password other = (Password) object;
-        if ((this.passwordID == null && other.passwordID != null) || (this.passwordID != null && !this.passwordID.equals(other.passwordID))) {
+        if ((this.passwordId == null && other.passwordId != null) || (this.passwordId != null && !this.passwordId.equals(other.passwordId))) {
             return false;
         }
         return true;
@@ -106,7 +106,7 @@ public class Password implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Password[ passwordID=" + passwordID + " ]";
+        return "model.Password[ passwordId=" + passwordId + " ]";
     }
     
 }
