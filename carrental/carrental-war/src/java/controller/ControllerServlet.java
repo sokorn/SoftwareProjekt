@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns
         = {
-            "/CarRental/servlet"
+            "/servlet"
         })
+
 public class ControllerServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
