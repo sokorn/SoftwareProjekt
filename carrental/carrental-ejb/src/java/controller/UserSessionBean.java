@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import model.Adress;
 import model.User;
 
 @Stateless(name = "UserSessionBean")
@@ -18,10 +17,10 @@ public class UserSessionBean implements UserSessionBeanLocal {
 
     //TODO ADRESS
     @Override
-    public User createUser(int userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
+    public User createUser(String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
         entityManager.setFlushMode(FlushModeType.AUTO);
 
-        User user = new User(userId, mail, birthdate, loginname, title, firstname, lastname);
+        User user = new User(mail, birthdate, loginname, title, firstname, lastname);
         entityManager.persist(user);
         user = entityManager.merge(user);
         entityManager.flush();

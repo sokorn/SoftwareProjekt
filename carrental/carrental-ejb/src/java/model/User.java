@@ -94,8 +94,7 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    public User(Integer userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
-        this.userId = userId;
+    public User(String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
         this.mail = mail;
         this.birthdate = birthdate;
         this.loginname = loginname;

@@ -39,4 +39,15 @@ public class BeanFactory {
         }
         return rentBean;
     }
+    
+    public static AdressSessionBeanLocal getAdressSessionBean(){
+        AdressSessionBeanLocal adressBean = null;
+        try {
+            InitialContext initialContext = new InitialContext();
+            adressBean = (AdressSessionBeanLocal) initialContext.lookup("java:global/carrental/carrental-ejb/AdressSessionBean!controller.AdressSessionBeanLocal");
+        } catch (NamingException ex) {
+            ex.printStackTrace();
+        }
+        return adressBean;
+    }
 }

@@ -20,6 +20,7 @@ public class ControllerServlet extends HttpServlet {
 
         String currentStep = request.getParameter("step");
         UserSessionBeanLocal userBean = BeanFactory.getUserSessionBean();
+        AdressSessionBeanLocal adressBean = BeanFactory.getAdressSessionBean();
 
         switch (currentStep) {
             case "index":
@@ -40,6 +41,7 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
             case "register":
+                //userBean.createUser(request.getParameter("mail1"), request.getParameter("birthdate"), request.getParameter(""), request.getParameter("title"), request.getParameter("firstname"), request.getParameter("lastname"));
                 /*
                  Nimm alle Parameter der Seite register.jsp und lege einen neuen
                  User in der DB an.

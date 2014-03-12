@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controller;
 
 import java.text.SimpleDateFormat;
@@ -18,10 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Marco
- */
 public class UserSessionBeanTest {
     
     public UserSessionBeanTest() {
@@ -60,8 +50,8 @@ public class UserSessionBeanTest {
         Adress adress = new Adress(0, "Kaiser-Friedrich Straße", "82", "Pforzheim", "germany", 75172, true, true);
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         UserSessionBeanLocal instance = (UserSessionBeanLocal)container.getContext().lookup("java:global/classes/UserSessionBean");
-        User expResult = new User(1,"marco.rentschler@arcor.de",birthdate,"qler","Mr.","marco","rentschler");
-        User result = instance.createUser(userId, mail, birthdate, loginname, title, firstname, lastname);
+        User expResult = new User("marco.rentschler@arcor.de",birthdate,"qler","Mr.","marco","rentschler");
+        User result = instance.createUser(mail, birthdate, loginname, title, firstname, lastname);
         assertEquals(expResult, result);
         container.close();
 
