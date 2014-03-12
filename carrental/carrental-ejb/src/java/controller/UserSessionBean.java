@@ -18,7 +18,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
 
     //TODO ADRESS
     @Override
-    public User createUser(int userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname, Adress adress) {
+    public User createUser(int userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
         entityManager.setFlushMode(FlushModeType.AUTO);
 
         User user = new User(userId, mail, birthdate, loginname, title, firstname, lastname);
@@ -27,16 +27,31 @@ public class UserSessionBean implements UserSessionBeanLocal {
         entityManager.flush();
         return user;
     }
-//TODO Passwortprüfung
 
     @Override
     public User login(String login, String passwort) {
+        //TODO Passwortprüfung
+        if(login.contains("@")){
+            return loginForEmail(login);
+        }
+        else{
+            return loginForLoginname(login);
+        }
+    }
+    public User loginForEmail(String login){
         Query query = entityManager.createNamedQuery("User.findByMail");
         query.setParameter("mail", login);
         List queryResult = query.getResultList();
         return (User) queryResult.get(0);
     }
-
+    
+    public User loginForLoginname(String login){
+         Query query = entityManager.createNamedQuery("User.findByMail");
+         query.setParameter("mail", login);
+         List queryResult = query.getResultList();
+         return (User) queryResult.get(0);
+    }
+    
     @Override
     public void changeFirstname(User user, String newFirstname) {
         user.setFirstname(newFirstname);

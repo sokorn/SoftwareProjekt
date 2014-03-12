@@ -2,13 +2,12 @@ package controller;
 
 import java.util.Date;
 import javax.ejb.Local;
-import model.Adress;
 import model.User;
 
 @Local
 public interface UserSessionBeanLocal
 {
-    public User createUser(int userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname, Adress adress);
+    public User createUser(int userId, String mail, Date birthdate, String loginname, String title, String firstname, String lastname);
     
     public User login(String loginname, String passwort);
     
