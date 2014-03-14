@@ -8,18 +8,17 @@ package model;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,15 +49,14 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Car implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "carId")
     private Integer carId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "build")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date build;
+    private int build;
     @Basic(optional = false)
     @NotNull
     @Column(name = "tourque")
@@ -66,7 +64,7 @@ public class Car implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ccm")
-    private int ccm;
+    private double ccm;
     @Basic(optional = false)
     @NotNull
     @Column(name = "acceleration")
@@ -108,29 +106,6 @@ public class Car implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "carmodelId")
     private Collection<Rent> rentCollection;
 
-    public Car() {
-    }
-
-    public Car(Integer carId) {
-        this.carId = carId;
-    }
-
-    public Car(Integer carId, Date build, int tourque, int ccm, double acceleration, int power, int maxSpeed, int weight, double price, int travellers, int minAge, String modelname, String brandname) {
-        this.carId = carId;
-        this.build = build;
-        this.tourque = tourque;
-        this.ccm = ccm;
-        this.acceleration = acceleration;
-        this.power = power;
-        this.maxSpeed = maxSpeed;
-        this.weight = weight;
-        this.price = price;
-        this.travellers = travellers;
-        this.minAge = minAge;
-        this.modelname = modelname;
-        this.brandname = brandname;
-    }
-
     public Integer getCarId() {
         return carId;
     }
@@ -139,11 +114,11 @@ public class Car implements Serializable {
         this.carId = carId;
     }
 
-    public Date getBuild() {
+    public int getBuild() {
         return build;
     }
 
-    public void setBuild(Date build) {
+    public void setBuild(int build) {
         this.build = build;
     }
 
@@ -155,11 +130,11 @@ public class Car implements Serializable {
         this.tourque = tourque;
     }
 
-    public int getCcm() {
+    public double getCcm() {
         return ccm;
     }
 
-    public void setCcm(int ccm) {
+    public void setCcm(double ccm) {
         this.ccm = ccm;
     }
 

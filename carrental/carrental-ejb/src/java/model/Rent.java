@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -40,8 +42,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Rent implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "rentId")
     private Integer rentId;
     @Basic(optional = false)
@@ -72,16 +74,8 @@ public class Rent implements Serializable {
     @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
     private User useruserId;
-
-    public Rent() {
-    }
-
-    public Rent(Integer rentId) {
-        this.rentId = rentId;
-    }
-
-    public Rent(Integer rentId, double totalPrice, int length, Date startdate, Date enddate, int carcarId) {
-        this.rentId = rentId;
+    
+    public Rent(double totalPrice, int length, Date startdate, Date enddate, int carcarId) {
         this.totalPrice = totalPrice;
         this.length = length;
         this.startdate = startdate;

@@ -10,6 +10,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -41,8 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Adress implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "adressId")
     private Integer adressId;
     @Basic(optional = false)
@@ -70,8 +72,9 @@ public class Adress implements Serializable {
     private String region;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "postalCode")
-    private int postalCode;
+    private String postalCode;
     @Basic(optional = false)
     @NotNull
     @Column(name = "isShippingAdress")
@@ -91,8 +94,7 @@ public class Adress implements Serializable {
         this.adressId = adressId;
     }
 
-    public Adress(Integer adressId, String street, String housenumber, String city, String country, int postalCode, boolean isShippingAdress, boolean isInvoiceAddress) {
-        this.adressId = adressId;
+    public Adress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress) {
         this.street = street;
         this.housenumber = housenumber;
         this.city = city;
@@ -150,11 +152,11 @@ public class Adress implements Serializable {
         this.region = region;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 

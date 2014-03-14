@@ -39,19 +39,19 @@ public class UserSessionBeanTest {
     @Test
     public void testCreateUser() throws Exception {
         System.out.println("createUser");
-        int userId = 1;
         String mail = "marco.rentschler@arcor.de";
-        SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd"); 
+        SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yyyy"); 
         Date birthdate = dt.parse("29-12-1986");
         String loginname = "qler";
         String title = "Mr.";
         String firstname = "marco";
         String lastname = "rentschler";
-        Adress adress = new Adress(0, "Kaiser-Friedrich Straße", "82", "Pforzheim", "germany", 75172, true, true);
+        String passwordhash = "12345";
+        Adress adress = new Adress("Kaiser-Friedrich Straße", "82", "Pforzheim", "germany", "75172", true, true);
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         UserSessionBeanLocal instance = (UserSessionBeanLocal)container.getContext().lookup("java:global/classes/UserSessionBean");
-        User expResult = new User("marco.rentschler@arcor.de",birthdate,"qler","Mr.","marco","rentschler");
-        User result = instance.createUser(mail, birthdate, loginname, title, firstname, lastname);
+        User expResult = new User("marco.rentschler@arcor.de",birthdate,"qler","Mr.","marco","rentschler", passwordhash, adress);
+        User result = instance.createUser(mail, birthdate, loginname, title, firstname, lastname, passwordhash, adress);
         assertEquals(expResult, result);
         container.close();
 

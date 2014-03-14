@@ -1,11 +1,13 @@
 package controller;
 
+import utils.DateParser;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Adress;
 import model.User;
 
 @WebServlet(urlPatterns
@@ -21,6 +23,7 @@ public class ControllerServlet extends HttpServlet {
         String currentStep = request.getParameter("step");
         UserSessionBeanLocal userBean = BeanFactory.getUserSessionBean();
         AdressSessionBeanLocal adressBean = BeanFactory.getAdressSessionBean();
+        User user = null;
 
         switch (currentStep) {
             case "index":
@@ -30,7 +33,7 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
                 break;
             case "login":
-                User user = userBean.login(request.getParameter("login"), request.getParameter("password"));
+                user = userBean.login(request.getParameter("login"), request.getParameter("password"));
                 if (user != null) {
                     request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
                 } else {
@@ -41,7 +44,8 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
             case "register":
-                //userBean.createUser(request.getParameter("mail1"), request.getParameter("birthdate"), request.getParameter(""), request.getParameter("title"), request.getParameter("firstname"), request.getParameter("lastname"));
+                Adress adress = adressBean.createAdress(request.getParameter("street"), request.getParameter("housenumber"), request.getParameter("city"), request.getParameter("country"), request.getParameter("postalCode"), true, true);
+                user = userBean.createUser(request.getParameter("mail1"), DateParser.parseToDate(request.getParameter("birthdate")), request.getParameter("loginname"), request.getParameter("title"), request.getParameter("firstname"), request.getParameter("lastname"),request.getParameter("password1"), adress);
                 /*
                  Nimm alle Parameter der Seite register.jsp und lege einen neuen
                  User in der DB an.

@@ -17,12 +17,12 @@
             </div>
             <div id="message"></div>
             <div id="main">
-                <form method="post" action="/CarRental/servlet?step=search">
+                <form method="post" action="/carrental-war/servlet?step=search">
                     <p><input type="text" name="search" /></p>
                     <p><input type="submit" value="Suchen" /></p>
                 </form>
-                <p><a href="/CarRental/servlet?step=registerPage">Registrieren</a></p>
-                <p><a href="/CarRental/servlet?step=loginPage">Anmelden</a></p>
+                <p><a href="/carrental-war/servlet?step=registerPage">Registrieren</a></p>
+                <p><a href="/carrental-war/servlet?step=loginPage">Anmelden</a></p>
             </div>
         </div>
         <div id="footer">

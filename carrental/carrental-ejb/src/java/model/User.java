@@ -42,7 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByLoginname", query = "SELECT u FROM User u WHERE u.loginname = :loginname"),
     @NamedQuery(name = "User.findByTitle", query = "SELECT u FROM User u WHERE u.title = :title"),
     @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
-    @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname")})
+    @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
+    @NamedQuery(name = "User.findByPasswordhash", query = "SELECT u FROM User u WHERE u.passwordhash = :passwordhash")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -80,27 +81,25 @@ public class User implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "lastname")
     private String lastname;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "passwordhash")
+    private String passwordhash;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private Collection<Adress> adressCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private Collection<Rent> rentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
-    private Collection<Password> passwordCollection;
 
-    public User() {
-    }
-
-    public User(Integer userId) {
-        this.userId = userId;
-    }
-
-    public User(String mail, Date birthdate, String loginname, String title, String firstname, String lastname) {
+    public User(String mail, Date birthdate, String loginname, String title, String firstname, String lastname, String passwordhash, Adress adress) {
         this.mail = mail;
         this.birthdate = birthdate;
         this.loginname = loginname;
         this.title = title;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.passwordhash = passwordhash;
+        adressCollection.add(adress);
     }
 
     public Integer getUserId() {
@@ -159,6 +158,14 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
+    public String getPasswordhash() {
+        return passwordhash;
+    }
+
+    public void setPasswordhash(String passwordhash) {
+        this.passwordhash = passwordhash;
+    }
+
     @XmlTransient
     public Collection<Adress> getAdressCollection() {
         return adressCollection;
@@ -175,15 +182,6 @@ public class User implements Serializable {
 
     public void setRentCollection(Collection<Rent> rentCollection) {
         this.rentCollection = rentCollection;
-    }
-
-    @XmlTransient
-    public Collection<Password> getPasswordCollection() {
-        return passwordCollection;
-    }
-
-    public void setPasswordCollection(Collection<Password> passwordCollection) {
-        this.passwordCollection = passwordCollection;
     }
 
     @Override

@@ -8,7 +8,7 @@
     <body>
         <div class="body">
             <div id="topbar">
-                <a href="/CarRental/servlet?step=index">zur Startseite</a>
+                <a href="/carrental-war/servlet?step=index">zur Startseite</a>
                 <div class="content">
                     <span class="logo"></span>
                     <nav>

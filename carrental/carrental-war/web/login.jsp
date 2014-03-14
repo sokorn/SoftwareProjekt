@@ -8,7 +8,7 @@
     <body>
         <div class="body">
             <div id="topbar">
-                <a href="/CarRental/servlet?step=index">zur Startseite</a>
+                <a href="/carrental-war/servlet?step=index">zur Startseite</a>
                 <div class="content">
                     <span class="logo"></span>
                     <nav>
@@ -18,7 +18,7 @@
             </div>
             <div id="message"></div>
             <div id="main">
-                <form method="post" action="/CarRental/servlet?step=login">
+                <form method="post" action="/carrental-war/servlet?step=login">
                     <p>Login: <input type="text" name="login" /></p>
                     <p>Passwort: <input type="password" name="password" /></p>
                     <p><input type="submit" value="Anmelden" /></p>
