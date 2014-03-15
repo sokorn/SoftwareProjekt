@@ -9,49 +9,49 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import model.Adress;
 import model.User;
+import utils.DateParser;
+import utils.Password;
 
 @Stateless(name = "UserSessionBean")
 public class UserSessionBean implements UserSessionBeanLocal {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    //TODO ADRESS
+    
     @Override
-    public User createUser(String mail, Date birthdate, String loginname, String title, String firstname, String lastname,String passwordhash, Adress adress) {
-        entityManager.setFlushMode(FlushModeType.AUTO);
-
-        User user = new User(mail, birthdate, loginname, title, firstname, lastname, passwordhash, adress);
-        entityManager.persist(user);
-        user = entityManager.merge(user);
-        entityManager.flush();
-        return user;
-    }
-
-    @Override
-    public User login(String login, String passwort) {
-        //TODO Passwortprüfung
-        if(login.contains("@")){
-            return loginForEmail(login);
-        }
-        else{
-            return loginForLoginname(login);
+    public User createUser(String title, String firstname, String lastname, String birthday, String mail1, String mail2, String password1, String password2, Adress adress) {
+        if(mail1.equals(mail2) && password1.equals(password2)){
+            String passwordHash = Password.hashPassword(password1);
+            Date birthdate = DateParser.parseToDate(birthday);
+            User user = new User(title, firstname, lastname, birthdate, mail1, passwordHash, adress);
+            /*
+            User in die Datenbank schreiben und danach das Objekt user zurückgeben
+            */
+            return user;
+        } else {
+            return null;
         }
     }
-    public User loginForEmail(String login){
-        Query query = entityManager.createNamedQuery("User.findByMail");
-        query.setParameter("mail", login);
+    
+
+    @Override
+    public User login(String login, String password) {
+        Query query = entityManager.createNamedQuery("User.login");
+        query.setParameter("login", login);
         List queryResult = query.getResultList();
-        return (User) queryResult.get(0);
+        if (queryResult.size() == 1) {
+            User user = (User) queryResult.get(0);
+            String hashedPassword = Password.hashPassword(password);
+            if (user.getPasswordhash().equals(hashedPassword)) {
+                return user;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
-    
-    public User loginForLoginname(String login){
-         Query query = entityManager.createNamedQuery("User.findByMail");
-         query.setParameter("mail", login);
-         List queryResult = query.getResultList();
-         return (User) queryResult.get(0);
-    }
-    
+
     @Override
     public void changeFirstname(User user, String newFirstname) {
         user.setFirstname(newFirstname);
@@ -79,4 +79,6 @@ public class UserSessionBean implements UserSessionBeanLocal {
         entityManager.merge(this);
         entityManager.flush();
     }
+
+    
 }

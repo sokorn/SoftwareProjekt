@@ -1,6 +1,5 @@
 package controller;
 
-import com.sun.messaging.jmq.util.MQResourceBundle;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,10 +9,10 @@ import model.Car;
 
 @Stateless(name = "CarSessionBean")
 public class CarSessionBean implements CarSessionBeanLocal {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-  
+
     @Override
     public List<Car> getListOfCars() {
         Query query = entityManager.createNamedQuery("Car.findAll");
@@ -28,7 +27,7 @@ public class CarSessionBean implements CarSessionBeanLocal {
         List modelQueryResult = modelQuery.getResultList();
         return modelQueryResult;
     }
-    
+
     @Override
     public List<Car> getListOfCarsOfSelectedBrand(String brandname) {
         Query brandQuery = entityManager.createNamedQuery("Car.findByBrandname");
@@ -36,5 +35,5 @@ public class CarSessionBean implements CarSessionBeanLocal {
         List modelQueryResult = brandQuery.getResultList();
         return modelQueryResult;
     }
-    
+
 }

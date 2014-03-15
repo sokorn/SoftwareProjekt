@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package model;
 
 import java.io.Serializable;
@@ -27,24 +21,19 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author Marco
- */
 @Entity
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
-    @NamedQuery(name = "User.findByMail", query = "SELECT u FROM User u WHERE u.mail = :mail"),
     @NamedQuery(name = "User.findByBirthdate", query = "SELECT u FROM User u WHERE u.birthdate = :birthdate"),
     @NamedQuery(name = "User.findByLoginname", query = "SELECT u FROM User u WHERE u.loginname = :loginname"),
-    @NamedQuery(name = "User.findByTitle", query = "SELECT u FROM User u WHERE u.title = :title"),
     @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
     @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
-    @NamedQuery(name = "User.findByPasswordhash", query = "SELECT u FROM User u WHERE u.passwordhash = :passwordhash")})
+    @NamedQuery(name = "User.login", query = "SELECT u from User u WHERE u.mail = :login")})
 public class User implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,23 +80,21 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private Collection<Rent> rentCollection;
 
-    public User(String mail, Date birthdate, String loginname, String title, String firstname, String lastname, String passwordhash, Adress adress) {
-        this.mail = mail;
-        this.birthdate = birthdate;
-        this.loginname = loginname;
+    public User() {
+    }
+
+    public User(String title, String firstname, String lastname, Date birthdate, String mail, String passwordHash, Adress adress) {
         this.title = title;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.passwordhash = passwordhash;
+        this.birthdate = birthdate;
+        this.mail = mail;
+        this.passwordhash = passwordHash;
         adressCollection.add(adress);
     }
 
     public Integer getUserId() {
         return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public String getMail() {
@@ -208,5 +195,5 @@ public class User implements Serializable {
     public String toString() {
         return "model.User[ userId=" + userId + " ]";
     }
-    
+
 }

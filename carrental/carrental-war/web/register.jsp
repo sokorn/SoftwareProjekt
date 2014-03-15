@@ -19,7 +19,12 @@
             <div id="message"></div>
             <div id="main">
                 <form method="post" action="/carrental-war/servlet?step=register">
-                    <p>Anrede: <input type="text" name="title"/></p>
+                    <p>Anrede: 
+                        <select name="title">
+                            <option value="Herr">Herr</option>
+                            <option value="Frau">Frau</option>
+                        </select>
+                    </p>
                     <p>Vorname: <input type="text" name="firstname" /></p>
                     <p>Nachname: <input type="text" name="lastname" /></p>
                     <p>Geburtstag: <input type="date" name="birthday" /></p>

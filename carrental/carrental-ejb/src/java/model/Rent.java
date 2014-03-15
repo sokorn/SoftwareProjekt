@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package model;
 
 import java.io.Serializable;
@@ -24,10 +18,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author Marco
- */
 @Entity
 @Table(name = "rent")
 @XmlRootElement
@@ -40,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Rent.findByEnddate", query = "SELECT r FROM Rent r WHERE r.enddate = :enddate"),
     @NamedQuery(name = "Rent.findByCarcarId", query = "SELECT r FROM Rent r WHERE r.carcarId = :carcarId")})
 public class Rent implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,7 +65,10 @@ public class Rent implements Serializable {
     @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
     private User useruserId;
-    
+
+    public Rent() {
+    }
+
     public Rent(double totalPrice, int length, Date startdate, Date enddate, int carcarId) {
         this.totalPrice = totalPrice;
         this.length = length;
@@ -171,5 +165,5 @@ public class Rent implements Serializable {
     public String toString() {
         return "model.Rent[ rentId=" + rentId + " ]";
     }
-    
+
 }
