@@ -5,6 +5,9 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>carrental-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
+            <included-library dirs="200">file.reference.commons-validator-1.4.0-javadoc.jar</included-library>
+            <included-library dirs="200">file.reference.commons-validator-1.4.0-sources.jar</included-library>
+            <included-library dirs="200">file.reference.commons-validator-1.4.0.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

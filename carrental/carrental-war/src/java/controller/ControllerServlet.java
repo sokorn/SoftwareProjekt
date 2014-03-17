@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Adress;
 import model.User;
+import utils.Validator;
 
 @WebServlet(urlPatterns
         = {
@@ -52,26 +53,25 @@ public class ControllerServlet extends HttpServlet {
             case "registerPage":
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
-            case "register":   
-                if(userBean.mailAlreadyUsed(request.getParameter("mail1"))){
+            case "register":
+                if (userBean.mailAlreadyUsed(request.getParameter("mail1"))) {
                     request.setAttribute("MailInUseError", "Email bereits benutzt!");
-                }
-                else if(request.getParameter("mail1").equals(request.getParameter("mail2"))){
+                } else if (!Validator.validateMail(request.getParameter("mail1"))) {
+                    request.setAttribute("IllegalMailError", "Keine gültige Mailadresse");
+                } else if (request.getParameter("mail1").equals(request.getParameter("mail2"))) {
                     request.setAttribute("MailsNotEqualError", "Emails stimmen nicht überein!");
-                }
-                else if(request.getParameter("password1").equals(request.getParameter("password2"))){
+                } else if (request.getParameter("password1").equals(request.getParameter("password2"))) {
                     request.setAttribute("PasswordNotEqualError", "Passwörter stimmen nicht überein!");
-                }
-                else{
+                } else {
                     user = userBean.createUser(request.getParameter("title"),
-                        request.getParameter("firstname"), request.getParameter("lastname"),
-                        request.getParameter("birthday"), request.getParameter("mail1"),
-                        request.getParameter("password1"));
-                     Adress adress = adressBean.createAdress(request.getParameter("street"),
-                        request.getParameter("housenumber"), request.getParameter("city"),
-                        request.getParameter("country"), request.getParameter("postalcode"),
-                        true, true, user);
-                userBean.addAdressToUser(user, adress);
+                            request.getParameter("firstname"), request.getParameter("lastname"),
+                            request.getParameter("birthday"), request.getParameter("mail1"),
+                            request.getParameter("password1"));
+                    Adress adress = adressBean.createAdress(request.getParameter("street"),
+                            request.getParameter("housenumber"), request.getParameter("city"),
+                            request.getParameter("country"), request.getParameter("postalcode"),
+                            true, true, user);
+                    userBean.addAdressToUser(user, adress);
                 }
                 if (user == null) {
                     request.getRequestDispatcher("/register.jsp").forward(request, response);

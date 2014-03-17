@@ -792,11 +792,26 @@ exists or setup the property manually. For example like this:
         <!-- You can override this target in the ../build.xml file. -->
     </target>
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
-    <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user"/>
+    <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
+        <copyfiles files="${file.reference.commons-validator-1.4.0-javadoc.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.commons-validator-1.4.0-sources.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.commons-validator-1.4.0.jar}" todir="${build.classes.dir}"/>
+    </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
-        <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
+        <basename file="${file.reference.commons-validator-1.4.0-javadoc.jar}" property="manifest.file.reference.commons-validator-1.4.0-javadoc.jar"/>
+        <basename file="${file.reference.commons-validator-1.4.0-sources.jar}" property="manifest.file.reference.commons-validator-1.4.0-sources.jar"/>
+        <basename file="${file.reference.commons-validator-1.4.0.jar}" property="manifest.file.reference.commons-validator-1.4.0.jar"/>
+        <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 "/>
+            <attribute name="jar-1-Extension-Name" value="${manifest.file.reference.commons-validator-1.4.0-javadoc.jar}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.file.reference.commons-validator-1.4.0-sources.jar}"/>
+            <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.commons-validator-1.4.0.jar}"/>
+        </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
+        <copyfiles files="${file.reference.commons-validator-1.4.0-javadoc.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.commons-validator-1.4.0-sources.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.commons-validator-1.4.0.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">

@@ -28,7 +28,7 @@
                     <p>Vorname: <input type="text" name="firstname" /></p>
                     <p>Nachname: <input type="text" name="lastname" /></p>
                     <p>Geburtstag: <input type="date" name="birthday" /></p>
-                    <p>Email: <input type="email" name="mail1" />${MailInUseError}</p>
+                    <p>Email: <input type="email" name="mail1" />${MailInUseError}${IllegalMailError}</p>
                     <p>Wiederholung: <input type="email" name="mail2" />${MailsNotEqualError}</p>
                     <p>Passwort: <input type="password" name="password1" /></p>
                     <p>Wiederholung: <input type="password" name="password2" />${PasswordNotEqualError}</p>
