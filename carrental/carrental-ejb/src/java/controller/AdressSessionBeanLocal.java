@@ -2,11 +2,12 @@ package controller;
 
 import javax.ejb.Local;
 import model.Adress;
+import model.User;
 
 @Local
 public interface AdressSessionBeanLocal {
 
-    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress);
+    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, User userID);
 
     public void changeStreet(Adress adress, String street);
 

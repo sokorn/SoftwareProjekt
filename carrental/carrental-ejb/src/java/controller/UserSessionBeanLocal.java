@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.Date;
 import javax.ejb.Local;
 import model.Adress;
 import model.User;
@@ -8,8 +7,12 @@ import model.User;
 @Local
 public interface UserSessionBeanLocal {
 
-    public User createUser(String title, String firstname, String lastname, String birthday, String mail1, String mail2, String password1, String password2, Adress adress);
+    public User createUser(String title, String firstname, String lastname, String birthday, String mail, String password);
 
+    public void addAdressToUser(User user, Adress adress);
+    
+    public boolean mailAlreadyUsed(String mail);
+    
     public User login(String loginname, String passwort);
 
     public void changeFirstname(User user, String newFirstname);

@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -17,22 +18,16 @@ public class UserSessionBean implements UserSessionBeanLocal {
 
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Override
-    public User createUser(String title, String firstname, String lastname, String birthday, String mail1, String mail2, String password1, String password2, Adress adress) {
-        if(mail1.equals(mail2) && password1.equals(password2)){
-            String passwordHash = Password.hashPassword(password1);
+    public User createUser(String title, String firstname, String lastname, String birthday, String mail, String password) {
+            String passwordHash = Password.hashPassword(password);
             Date birthdate = DateParser.parseToDate(birthday);
-            User user = new User(title, firstname, lastname, birthdate, mail1, passwordHash, adress);
-            /*
-            User in die Datenbank schreiben und danach das Objekt user zurückgeben
-            */
+            User user = new User(title, firstname, lastname, birthdate, mail, passwordHash);
+            entityManager.persist(user);
+            entityManager.flush();
             return user;
-        } else {
-            return null;
-        }
     }
-    
 
     @Override
     public User login(String login, String password) {
@@ -80,5 +75,17 @@ public class UserSessionBean implements UserSessionBeanLocal {
         entityManager.flush();
     }
 
-    
+    @Override
+    public void addAdressToUser(User user, Adress adress) {
+        user.addAdress(adress);
+    }
+
+    @Override
+    public boolean mailAlreadyUsed(String mail) {
+        Query query = entityManager.createNamedQuery("User.login");
+        query.setParameter("login", mail);
+        List queryResult = query.getResultList();
+        return !queryResult.isEmpty();
+    }
+
 }

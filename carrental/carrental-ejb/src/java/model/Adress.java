@@ -78,6 +78,8 @@ public class Adress implements Serializable {
     @ManyToOne(optional = false)
     private User useruserId;
 
+    
+
     public Adress() {
     }
 
@@ -174,7 +176,7 @@ public class Adress implements Serializable {
     public void setUseruserId(User useruserId) {
         this.useruserId = useruserId;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

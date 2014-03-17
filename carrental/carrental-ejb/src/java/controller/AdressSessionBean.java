@@ -4,7 +4,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
+import javax.validation.ConstraintViolationException;
 import model.Adress;
+import model.User;
 
 @Stateless(name="AdressSessionBean")
 public class AdressSessionBean implements AdressSessionBeanLocal {
@@ -13,12 +15,12 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress) {
-        entityManager.setFlushMode(FlushModeType.AUTO);
+    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, User userID) {
+        //entityManager.setFlushMode(FlushModeType.AUTO);
 
         Adress adress = new Adress(street, housenumber, city, country, postalCode, isShippingAdress, isInvoiceAddress);
+        adress.setUseruserId(userID);
         entityManager.persist(adress);
-        adress = entityManager.merge(adress);
         entityManager.flush();
         return adress;
     }

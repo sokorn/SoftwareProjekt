@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.ejb.SessionContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +20,11 @@ public class ControllerServlet extends HttpServlet {
 
     @EJB
     private UserSessionBeanLocal userBean;
+    @EJB
     private AdressSessionBeanLocal adressBean;
+    @EJB
     private CarSessionBeanLocal carBean;
+    @EJB
     private RentSessionBeanLocal rentBean;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -28,6 +32,7 @@ public class ControllerServlet extends HttpServlet {
 
         String currentStep = request.getParameter("step");
         User user = null;
+        SessionContext sessionContext;
 
         switch (currentStep) {
             case "index":
@@ -47,16 +52,27 @@ public class ControllerServlet extends HttpServlet {
             case "registerPage":
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
-            case "register":
-                Adress adress = adressBean.createAdress(request.getParameter("street"),
-                        request.getParameter("housenumber"), request.getParameter("city"),
-                        request.getParameter("country"), request.getParameter("postalCode"),
-                        true, true);
-                user = userBean.createUser(request.getParameter("title"),
+            case "register":   
+                if(userBean.mailAlreadyUsed(request.getParameter("mail1"))){
+                    request.setAttribute("MailInUseError", "Email bereits benutzt!");
+                }
+                else if(request.getParameter("mail1").equals(request.getParameter("mail2"))){
+                    request.setAttribute("MailsNotEqualError", "Emails stimmen nicht überein!");
+                }
+                else if(request.getParameter("password1").equals(request.getParameter("password2"))){
+                    request.setAttribute("PasswordNotEqualError", "Passwörter stimmen nicht überein!");
+                }
+                else{
+                    user = userBean.createUser(request.getParameter("title"),
                         request.getParameter("firstname"), request.getParameter("lastname"),
                         request.getParameter("birthday"), request.getParameter("mail1"),
-                        request.getParameter("mail2"), request.getParameter("password1"),
-                        request.getParameter("password2"), adress);
+                        request.getParameter("password1"));
+                     Adress adress = adressBean.createAdress(request.getParameter("street"),
+                        request.getParameter("housenumber"), request.getParameter("city"),
+                        request.getParameter("country"), request.getParameter("postalcode"),
+                        true, true, user);
+                userBean.addAdressToUser(user, adress);
+                }
                 if (user == null) {
                     request.getRequestDispatcher("/register.jsp").forward(request, response);
                 } else {

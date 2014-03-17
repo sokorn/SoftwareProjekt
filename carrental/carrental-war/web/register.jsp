@@ -28,16 +28,22 @@
                     <p>Vorname: <input type="text" name="firstname" /></p>
                     <p>Nachname: <input type="text" name="lastname" /></p>
                     <p>Geburtstag: <input type="date" name="birthday" /></p>
-                    <p>Email: <input type="email" name="mail1" /></p>
-                    <p>Wiederholung: <input type="email" name="mail2" /></p>
+                    <p>Email: <input type="email" name="mail1" />${MailInUseError}</p>
+                    <p>Wiederholung: <input type="email" name="mail2" />${MailsNotEqualError}</p>
                     <p>Passwort: <input type="password" name="password1" /></p>
-                    <p>Wiederholung: <input type="password" name="password2" /></p>
+                    <p>Wiederholung: <input type="password" name="password2" />${PasswordNotEqualError}</p>
                     <p>Adresse:</p>
                     <p>Straße: <input type="text" name="street" /></p>
                     <p>Hausnummer: <input type="text" name="housenumber" /></p>
                     <p>Postleitzahl: <input type="number" name="postalcode"/></p>
                     <p>Stadt: <input type="text" name="city" /></p>
-                    <p>Land: <input type="text" name="country" /></p>
+                    <p>Land:   
+                        <select name="country">
+                            <option value="Deutschland">Deutschland</option>
+                            <option value="Schweiz">Schweiz</option>
+                            <option value="Österreich">Österreich</option>
+                        </select>
+                    </p>
                     <p>Region: <input type="text" name="region" /></p>
                     <p><input type="submit" value="Registrieren" /></p>
                     <p><input type="reset" value="Abbrechen" /></p>
