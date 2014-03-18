@@ -58,9 +58,9 @@ public class ControllerServlet extends HttpServlet {
                     request.setAttribute("MailInUseError", "Email bereits benutzt!");
                 } else if (!Validator.validateMail(request.getParameter("mail1"))) {
                     request.setAttribute("IllegalMailError", "Keine gültige Mailadresse");
-                } else if (request.getParameter("mail1").equals(request.getParameter("mail2"))) {
+                } else if (!request.getParameter("mail1").equals(request.getParameter("mail2"))) {
                     request.setAttribute("MailsNotEqualError", "Emails stimmen nicht überein!");
-                } else if (request.getParameter("password1").equals(request.getParameter("password2"))) {
+                } else if (!request.getParameter("password1").equals(request.getParameter("password2"))) {
                     request.setAttribute("PasswordNotEqualError", "Passwörter stimmen nicht überein!");
                 } else {
                     user = userBean.createUser(request.getParameter("title"),
