@@ -74,9 +74,6 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private Collection<Rent> rentCollection;
 
-    public User() {
-    }
-
     public User(String title, String firstname, String lastname, Date birthdate, String mail, String passwordHash) {
         this.title = title;
         this.firstname = firstname;
@@ -152,8 +149,8 @@ public class User implements Serializable {
         return rentCollection;
     }
 
-    public void setRentCollection(Collection<Rent> rentCollection) {
-        this.rentCollection = rentCollection;
+    public void addRent(Rent rent) {
+        rentCollection.add(rent);
     }
 
     @Override

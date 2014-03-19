@@ -78,11 +78,6 @@ public class Adress implements Serializable {
     @ManyToOne(optional = false)
     private User useruserId;
 
-    
-
-    public Adress() {
-    }
-
     public Adress(Integer adressId) {
         this.adressId = adressId;
     }

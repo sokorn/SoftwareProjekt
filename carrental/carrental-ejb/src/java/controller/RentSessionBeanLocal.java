@@ -9,13 +9,13 @@ import model.User;
 @Local
 public interface RentSessionBeanLocal {
     
-    public Double getRentPrice(Car car);
+    public Double getRentPrice(Car car, Rent rent);
     
-    public int getLengthOfRent(Date startDate, Date endDate);
+    public int getLengthOfRent(Rent rent);
     
     public void blockCar(Car car);
     
-    public Rent createRent(User user, Car car, double totalPrice, int length, Date startDate, Date endDate);
+    public Rent createRent(Date startDate, Date endDate);
     
     public void cancelRent(Rent rent);
     
