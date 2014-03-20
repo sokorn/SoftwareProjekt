@@ -2,11 +2,8 @@ package controller;
 
 import java.util.Date;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import model.Car;
-import model.Rent;
-import model.User;
+import javax.persistence.*;
+import model.*;
 
 
 // stellt methoden zum Umgang mit Buchungsobjekten bereit
@@ -50,7 +47,8 @@ public class RentSessionBean implements RentSessionBeanLocal {
     // storniert/löscht ein Buchungsobjekt in der Datenbank
     @Override
     public void cancelRent(Rent rent) {
-        
+        entityManager.remove(rent);
+        entityManager.flush();
     }
 
     // fügt einem Buchungsobjekt seinen Gesamtpreis hinzu

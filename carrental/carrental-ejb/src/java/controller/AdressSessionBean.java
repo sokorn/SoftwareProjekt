@@ -2,11 +2,8 @@ package controller;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
-import javax.validation.ConstraintViolationException;
-import model.Adress;
-import model.User;
+import model.*;
 
 @Stateless(name="AdressSessionBean")
 public class AdressSessionBean implements AdressSessionBeanLocal {

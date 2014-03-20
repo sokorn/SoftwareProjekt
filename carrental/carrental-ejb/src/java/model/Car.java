@@ -232,9 +232,10 @@ public class Car implements Serializable {
     public Collection<Rent> getRentCollection() {
         return rentCollection;
     }
-
-    public void setRentCollection(Collection<Rent> rentCollection) {
-        this.rentCollection = rentCollection;
+    
+    // fügt dem Benutzer eine Buchung hinzu
+    public void addRent(Rent rent) {
+        rentCollection.add(rent);
     }
 
     public Car() {
