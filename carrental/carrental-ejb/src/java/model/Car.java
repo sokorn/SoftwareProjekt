@@ -47,6 +47,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Car.findByModelname", query = "SELECT c FROM Car c WHERE c.modelname = :modelname"),
     @NamedQuery(name = "Car.findByBrandname", query = "SELECT c FROM Car c WHERE c.brandname = :brandname"),
     @NamedQuery(name = "Car.findByModelpicture", query = "SELECT c FROM Car c WHERE c.modelpicture = :modelpicture")})
+
+// Auto Entität
 public class Car implements Serializable {
     @Basic(optional = false)
     @NotNull
@@ -233,31 +235,6 @@ public class Car implements Serializable {
 
     public void setRentCollection(Collection<Rent> rentCollection) {
         this.rentCollection = rentCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (carId != null ? carId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Car)) {
-            return false;
-        }
-        Car other = (Car) object;
-        if ((this.carId == null && other.carId != null) || (this.carId != null && !this.carId.equals(other.carId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.Car[ carId=" + carId + " ]";
     }
 
     public Car() {

@@ -13,12 +13,15 @@ import model.User;
 import utils.DateParser;
 import utils.Password;
 
+// stellt methoden zum Umgang mit Usern bereit
 @Stateless(name = "UserSessionBean")
 public class UserSessionBean implements UserSessionBeanLocal {
 
     @PersistenceContext
     private EntityManager entityManager;
-
+    
+    // erstellt ein Userobjekt und speichert es in die Datenbank. Hierfür wird das Passwort durch einen Hashwert verschlüsselt und das
+    // Geburtsdatum von einem String in ein Date-Objekt geparsed
     @Override
     public User createUser(String title, String firstname, String lastname, String birthday, String mail, String password) {
             String passwordHash = Password.hashPassword(password);
@@ -29,6 +32,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             return user;
     }
 
+    // ermöglicht den Login eines Benutzers. Hierbei wird in der Datenbank nach dem Loginnamen gesucht und das Passwort validiert.
     @Override
     public User login(String login, String password) {
         Query query = entityManager.createNamedQuery("User.login");
@@ -74,12 +78,14 @@ public class UserSessionBean implements UserSessionBeanLocal {
         entityManager.merge(this);
         entityManager.flush();
     }
-
+    
+    // fügt einem Benutzer eine Adresse hinzu
     @Override
     public void addAdressToUser(User user, Adress adress) {
         user.addAdress(adress);
     }
 
+    // prüft ob eine Emailadresse bereits in der Datenbank vorhanden ist
     @Override
     public boolean mailAlreadyUsed(String mail) {
         Query query = entityManager.createNamedQuery("User.login");

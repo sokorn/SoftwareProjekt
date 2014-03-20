@@ -11,7 +11,9 @@ public interface RentSessionBeanLocal {
     
     public Double getRentPrice(Car car, Rent rent);
     
-    public int getLengthOfRent(Rent rent);
+    public void addTotalPriceToRent(Rent rent);
+    
+    public void addLengthToRent(Rent rent);
     
     public void blockCar(Car car);
     
@@ -19,6 +21,9 @@ public interface RentSessionBeanLocal {
     
     public void cancelRent(Rent rent);
     
+    public void unBlockCar(Car car);
     
+    public void changeStartDate(Rent rent, Date startDate);
     
+    public void changeEndDate(Rent rent, Date endDate);
 }
