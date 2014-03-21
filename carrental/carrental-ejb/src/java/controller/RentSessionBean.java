@@ -39,7 +39,7 @@ public class RentSessionBean implements RentSessionBeanLocal {
     @Override
     public Rent createRent(Date startDate, Date endDate) {
             Rent rent = new Rent(startDate, endDate);
-            entityManager.persist(endDate);
+            entityManager.persist(rent);
             entityManager.flush();
             return rent;
     }
