@@ -1,8 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.ejb.EJB;
-import javax.ejb.SessionContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,6 +46,7 @@ public class ControllerServlet extends HttpServlet {
             case "login":
                 user = userBean.login(request.getParameter("login"), request.getParameter("password"));
                 if (user == null) {
+                    request.setAttribute("LoginError", "Fehler beim Login");
                     request.getRequestDispatcher("/login.jsp").forward(request, response);
                 } else {
                     request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
@@ -55,15 +56,28 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
             case "register":
-                if (userBean.mailAlreadyUsed(request.getParameter("mail1"))) {
+                //Testen ob es nicht ausgefüllte Felder gibt
+                if (request.getParameter("title").isEmpty() || request.getParameter("firstname").isEmpty()
+                        || request.getParameter("lastname").isEmpty() || request.getParameter("birthday").isEmpty()
+                        || request.getParameter("mail1").isEmpty() || request.getParameter("mail2").isEmpty()
+                        || request.getParameter("password1").isEmpty() || request.getParameter("password2").isEmpty()
+                        || request.getParameter("street").isEmpty() || request.getParameter("housenumber").isEmpty()
+                        || request.getParameter("postalcode").isEmpty() || request.getParameter("city").isEmpty()) {
+                    request.setAttribute("EmptyFieldError", "Bitte alle mit * markierten Felder ausfüllen");
+                } //Testen, ob die eingegebene Mail schon benutzt wird
+                else if (userBean.mailAlreadyUsed(request.getParameter("mail1"))) {
                     request.setAttribute("MailInUseError", "Email bereits benutzt!");
-                } else if (!Validator.validateMail(request.getParameter("mail1"))) {
+                } //Testen, ob es sich bei der eingegebenen Mail, um eine gültige Mail handelt
+                else if (!Validator.validateMail(request.getParameter("mail1"))) {
                     request.setAttribute("IllegalMailError", "Keine gültige Mailadresse");
-                } else if (!request.getParameter("mail1").equals(request.getParameter("mail2"))) {
+                } //Testen, ob Mail und Wiederholung übereinstimmen
+                else if (!request.getParameter("mail1").equals(request.getParameter("mail2"))) {
                     request.setAttribute("MailsNotEqualError", "Emails stimmen nicht überein!");
-                } else if (!request.getParameter("password1").equals(request.getParameter("password2"))) {
+                } //Testen, ob die eingegebenen Passwörter übereinstimmen
+                else if (!request.getParameter("password1").equals(request.getParameter("password2"))) {
                     request.setAttribute("PasswordNotEqualError", "Passwörter stimmen nicht überein!");
-                } else {
+                } //Wenn alle bisherigen Tests negativ waren, kann der User angelegt werden
+                else {
                     user = userBean.createUser(request.getParameter("title"),
                             request.getParameter("firstname"), request.getParameter("lastname"),
                             request.getParameter("birthday"), request.getParameter("mail1"),

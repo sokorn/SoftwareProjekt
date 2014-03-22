@@ -12,11 +12,9 @@
                 <div class="content">
                     <span class="logo"></span>
                     <nav>
-                        <ul></ul>
                     </nav>
                 </div>
             </div>
-            <div id="message"></div>
             <div id="main">
                 <form method="post" action="/carrental-war/servlet?step=register">
                     <p>Anrede: 
@@ -48,13 +46,12 @@
                     <p><input type="submit" value="Registrieren" /></p>
                     <p><input type="reset" value="Abbrechen" /></p>
                 </form>
-                    <p>Felder mit * sind essentiell</p>
-                    <p>${EmptyFieldError}</p>
+                <p>Felder mit * müssen ausgefüllt werden</p>
+                <p id="error">${EmptyFieldError}</p>
             </div>
         </div>
         <div id="footer">
-            <nav>
-                <ul></ul>    
+            <nav>  
             </nav>
         </div>
 

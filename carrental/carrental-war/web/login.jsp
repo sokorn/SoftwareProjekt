@@ -12,17 +12,16 @@
                 <div class="content">
                     <span class="logo"></span>
                     <nav>
-                        <ul></ul>
                     </nav>
                 </div>
             </div>
-            <div id="message"></div>
             <div id="main">
                 <form method="post" action="/carrental-war/servlet?step=login">
                     <p>Login: <input type="text" name="login" /></p>
                     <p>Passwort: <input type="password" name="password" /></p>
                     <p><input type="submit" value="Anmelden" /></p>
                 </form>
+                <p>${LoginError}</p>
             </div>
         </div>
         <div id="footer">
