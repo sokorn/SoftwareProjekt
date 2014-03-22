@@ -12,10 +12,8 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, User userID) {
-        //entityManager.setFlushMode(FlushModeType.AUTO);
-
-        Adress adress = new Adress(street, housenumber, city, country, postalCode, isShippingAdress, isInvoiceAddress);
+    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region, User userID) {
+        Adress adress = new Adress(street, housenumber, city, country, postalCode, isShippingAdress, isInvoiceAddress, region);
         adress.setUseruserId(userID);
         entityManager.persist(adress);
         entityManager.flush();

@@ -87,7 +87,7 @@ public class Adress implements Serializable {
         this.adressId = adressId;
     }
 
-    public Adress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress) {
+    public Adress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region) {
         this.street = street;
         this.housenumber = housenumber;
         this.city = city;
@@ -95,6 +95,7 @@ public class Adress implements Serializable {
         this.postalCode = postalCode;
         this.isShippingAdress = isShippingAdress;
         this.isInvoiceAddress = isInvoiceAddress;
+        this.region = region;
     }
 
     public Integer getAdressId() {

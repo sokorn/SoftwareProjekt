@@ -37,9 +37,11 @@ public class RentSessionBean implements RentSessionBeanLocal {
     
     // erstellt ein Buchungsobjekt und speichert es in die Datebank
     @Override
-    public Rent createRent(Date startDate, Date endDate) {
+    public Rent createRent(Date startDate, Date endDate, User userID, Car carID) {
             Rent rent = new Rent(startDate, endDate);
-            entityManager.persist(endDate);
+            rent.setCarcarId(carID);
+            rent.setUseruserId(userID);
+            entityManager.persist(rent);
             entityManager.flush();
             return rent;
     }

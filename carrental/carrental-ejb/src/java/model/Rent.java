@@ -69,7 +69,7 @@ public class Rent implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "car_carId")
-    private int carcarId;
+    private Car carcarId;
     @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
     private User useruserId;
@@ -125,11 +125,11 @@ public class Rent implements Serializable {
         this.enddate = enddate;
     }
 
-    public int getCarcarId() {
+    public Car getCarcarId() {
         return carcarId;
     }
 
-    public void setCarcarId(int carcarId) {
+    public void setCarcarId(Car carcarId) {
         this.carcarId = carcarId;
     }
 

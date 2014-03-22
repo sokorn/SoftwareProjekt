@@ -70,7 +70,7 @@ public class ControllerServlet extends HttpServlet {
                     Adress adress = adressBean.createAdress(request.getParameter("street"),
                             request.getParameter("housenumber"), request.getParameter("city"),
                             request.getParameter("country"), request.getParameter("postalcode"),
-                            true, true, user);
+                            true, true, request.getParameter("region"), user);
                     userBean.addAdressToUser(user, adress);
                 }
                 if (user == null) {
