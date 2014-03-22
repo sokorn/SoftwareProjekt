@@ -1,3 +1,4 @@
+<%@taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,6 +19,9 @@
             </div>
             <div id="message"></div>
             <div id="main">
+                <c:if test="carList.size() != 0">
+                    Test
+                </c:if>
             </div>
         </div>
         <div id="footer">

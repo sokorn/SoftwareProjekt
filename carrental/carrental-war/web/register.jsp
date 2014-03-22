@@ -29,7 +29,7 @@
                     <p>Email*: <input type="email" name="mail1" />${MailInUseError}${IllegalMailError}</p>
                     <p>Wiederholung*: <input type="email" name="mail2" />${MailsNotEqualError}</p>
                     <p>Passwort*: <input type="password" name="password1" /></p>
-                    <p>Wiederholung*: <input type="password" name="password2" />${PasswordNotEqualError}</p>
+                    <p>Wiederholung*: <input type="password" name="password2" />${PasswordsNotEqualError}</p>
                     <p>Adresse*:</p>
                     <p>Straße*: <input type="text" name="street" /></p>
                     <p>Hausnummer*: <input type="text" name="housenumber" /></p>

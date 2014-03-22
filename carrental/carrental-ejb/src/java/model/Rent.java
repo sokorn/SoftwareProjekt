@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package model;
 
 import java.io.Serializable;
@@ -26,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Marco
+ * Buchungs Entität
  */
 @Entity
 @Table(name = "rent")
@@ -37,11 +31,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Rent.findByTotalPrice", query = "SELECT r FROM Rent r WHERE r.totalPrice = :totalPrice"),
     @NamedQuery(name = "Rent.findByLength", query = "SELECT r FROM Rent r WHERE r.length = :length"),
     @NamedQuery(name = "Rent.findByStartdate", query = "SELECT r FROM Rent r WHERE r.startdate = :startdate"),
-    @NamedQuery(name = "Rent.findByEnddate", query = "SELECT r FROM Rent r WHERE r.enddate = :enddate"),
-    @NamedQuery(name = "Rent.findByCarcarId", query = "SELECT r FROM Rent r WHERE r.carcarId = :carcarId")})
+    @NamedQuery(name = "Rent.findByEnddate", query = "SELECT r FROM Rent r WHERE r.enddate = :enddate")})
 
-// Buchungs Entität
 public class Rent implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,10 +59,6 @@ public class Rent implements Serializable {
     @Column(name = "enddate")
     @Temporal(TemporalType.DATE)
     private Date enddate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "car_carId")
-    private Car carcarId;
     @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
     private User useruserId;
@@ -125,14 +114,6 @@ public class Rent implements Serializable {
         this.enddate = enddate;
     }
 
-    public Car getCarcarId() {
-        return carcarId;
-    }
-
-    public void setCarcarId(Car carcarId) {
-        this.carcarId = carcarId;
-    }
-
     public User getUseruserId() {
         return useruserId;
     }
@@ -148,11 +129,11 @@ public class Rent implements Serializable {
     public void setCarmodelId(Car carmodelId) {
         this.carmodelId = carmodelId;
     }
-        
+
     // berechnet die Dauer der Buchung in Tagen
     public int getLengthOfRent(Rent rent) {
-        int diffInDays = (int)( (rent.getEnddate().getTime() - rent.getStartdate().getTime()) 
-                 / (1000 * 60 * 60 * 24) );
+        int diffInDays = (int) ((rent.getEnddate().getTime() - rent.getStartdate().getTime())
+                / (1000 * 60 * 60 * 24));
         return diffInDays;
     }
 }

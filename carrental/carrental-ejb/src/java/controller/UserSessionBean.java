@@ -12,9 +12,8 @@ import utils.DateParser;
 import utils.Password;
 
 /**
+ *
  * stellt Methoden zum Umgang mit Usern bereit
- *
- *
  */
 @Stateless(name = "UserSessionBean")
 public class UserSessionBean implements UserSessionBeanLocal {
@@ -23,17 +22,13 @@ public class UserSessionBean implements UserSessionBeanLocal {
     private EntityManager entityManager;
 
     /**
-     * erstellt ein Userobjekt und speichert es in die Datenbank. Hierfür wird
-     * das Passwort durch einen Hashwert verschlüsselt und das Geburtsdatum von
-     * einem String in ein Date-Objekt geparsed
+     * erstellt ein Userobjekt und speichert es in die Datenbank.
      *
-     * @param title
-     * @param firstname
-     * @param lastname
-     * @param birthday
-     * @param mail
-     * @param password
-     * @return
+     * @param password wird gehashed in der Datenbank gespeichert
+     * @param birthday wird von der Methode parseToDate von einem String in ein
+     * Dateobjekt gewandelt
+     *
+     * @return gibt das gespeicherte Userobjekt an das Servlet zurück
      */
     @Override
     public User createUser(String title, String firstname, String lastname, String birthday, String mail, String password) {
@@ -50,9 +45,12 @@ public class UserSessionBean implements UserSessionBeanLocal {
      * dem Loginnamen gesucht und danach das in der Datenbank vorhandene
      * Passwort mit dem eingegebenen und gehashed Passwort verglichen.
      *
-     * @param login
-     * @param password
-     * @return
+     * @param login Datenbankabfrage, ob die angegebene Mail hier gespeichert
+     * ist.
+     * @param password wird gehashed und mit dem in der Datenbank gespeicherten
+     * Wert verglichen
+     * @return Gibt das Userobjekt zurück, auf das die Mail und das Passwort
+     * passen
      */
     @Override
     public User login(String login, String password) {
@@ -100,13 +98,23 @@ public class UserSessionBean implements UserSessionBeanLocal {
         entityManager.flush();
     }
 
-    // fügt einem Benutzer eine Adresse hinzu
+    /**
+     * fügt einem Benutzer eine Adresse hinzu.
+     *
+     * @param user
+     * @param adress
+     */
     @Override
     public void addAdressToUser(User user, Adress adress) {
         user.addAdress(adress);
     }
 
-    // prüft ob eine Emailadresse bereits in der Datenbank vorhanden ist
+    /**
+     * prüft ob eine Emailadresse bereits in der Datenbank vorhanden ist.
+     *
+     * @param mail Zu prüfende Mailadresse
+     * @return
+     */
     @Override
     public boolean mailAlreadyUsed(String mail) {
         Query query = entityManager.createNamedQuery("User.login");

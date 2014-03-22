@@ -5,9 +5,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import model.*;
 
-@Stateless(name="AdressSessionBean")
+/**
+ *
+ * stellt Methoden zum Umgang mit Adressobjekten bereit
+ */
+@Stateless(name = "AdressSessionBean")
 public class AdressSessionBean implements AdressSessionBeanLocal {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
 

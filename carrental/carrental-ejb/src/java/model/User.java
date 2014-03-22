@@ -21,6 +21,10 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * Benutzer Entität
+ */
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -32,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
     @NamedQuery(name = "User.login", query = "SELECT u from User u WHERE u.mail = :login")})
 
-// Benutzer Entität
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;

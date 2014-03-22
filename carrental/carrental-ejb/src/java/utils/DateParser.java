@@ -4,7 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// wandelt ein Stringdatum des formats dd-MM-yyyy in ein Date Objekt um
+/**
+ * wandelt ein Stringdatum des formats dd-MM-yyyy in ein Date Objekt um
+ *
+ */
 public class DateParser {
 
     public static Date parseToDate(String date) {

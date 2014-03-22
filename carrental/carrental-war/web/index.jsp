@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,10 +21,10 @@
                 <form method="post" action="/carrental-war/servlet?step=search">
                     <p><select name="brand">
                             <option value="0">Marke auswählen</option>
-     
+
                         </select>
                         <select name="model">
-
+                            <option value="0">Model auswählen</option>
                         </select></p>
                     <p><input type="submit" value="Suchen" /></p>
                 </form>
@@ -33,7 +32,7 @@
         </div>
         <div id="footer">
             <nav>
-                <ul></ul>    
+                <ul></ul>
             </nav>
         </div>
     </body>

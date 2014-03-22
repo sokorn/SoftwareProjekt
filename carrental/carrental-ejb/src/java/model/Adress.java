@@ -16,6 +16,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * Entität für Adressen von Benutzern
+ */
 @Entity
 @Table(name = "adress")
 @XmlRootElement
@@ -31,7 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Adress.findByIsShippingAdress", query = "SELECT a FROM Adress a WHERE a.isShippingAdress = :isShippingAdress"),
     @NamedQuery(name = "Adress.findByIsInvoiceAddress", query = "SELECT a FROM Adress a WHERE a.isInvoiceAddress = :isInvoiceAddress")})
 
-// Entität für Adressen von Benutzern
 public class Adress implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -83,10 +86,6 @@ public class Adress implements Serializable {
     public Adress() {
     }
 
-    public Adress(Integer adressId) {
-        this.adressId = adressId;
-    }
-
     public Adress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region) {
         this.street = street;
         this.housenumber = housenumber;
@@ -100,10 +99,6 @@ public class Adress implements Serializable {
 
     public Integer getAdressId() {
         return adressId;
-    }
-
-    public void setAdressId(Integer adressId) {
-        this.adressId = adressId;
     }
 
     public String getStreet() {

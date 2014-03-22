@@ -10,9 +10,9 @@ public interface UserSessionBeanLocal {
     public User createUser(String title, String firstname, String lastname, String birthday, String mail, String password);
 
     public void addAdressToUser(User user, Adress adress);
-    
+
     public boolean mailAlreadyUsed(String mail);
-    
+
     public User login(String loginname, String passwort);
 
     public void changeFirstname(User user, String newFirstname);
