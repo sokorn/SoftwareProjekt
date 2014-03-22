@@ -11,8 +11,9 @@
             <div id="topbar">
                 <div class="content">
                     <span class="logo"></span>
-                    <nav>
-                        <ul></ul>
+                    <nav id="head">
+                        <p><a href="/carrental-war/servlet?step=registerPage">Registrieren</a>
+                        <a href="/carrental-war/servlet?step=loginPage">Anmelden</a></p>
                     </nav>
                 </div>
             </div>
@@ -22,8 +23,6 @@
                     <p><input type="text" name="search" /></p>
                     <p><input type="submit" value="Suchen" /></p>
                 </form>
-                <p><a href="/carrental-war/servlet?step=registerPage">Registrieren</a></p>
-                <p><a href="/carrental-war/servlet?step=loginPage">Anmelden</a></p>
             </div>
         </div>
         <div id="footer">
