@@ -4,14 +4,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
-        <link rel="stylesheet" href="css/stylesheet.css"/>
+        <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
-        <div id="head">
-            <a href="/carrental-war/servlet?step=index">zur Startseite</a>
-            <%@include file="templates/head.jsp" %>
-        </div>
-        <div id="main">
+        <%@include file="templates/head.jsp" %>
+        <div class="main">
             <form method="post" action="/carrental-war/servlet?step=login">
                 <p>Login: <input type="text" name="login" /></p>
                 <p>Passwort: <input type="password" name="password" /></p>
@@ -19,7 +16,6 @@
             </form>
             <p>${LoginError}</p>
         </div>
-        <div id="footer">
-        </div>
+        <%@include file="templates/footer.jsp" %>
     </body>
 </html>

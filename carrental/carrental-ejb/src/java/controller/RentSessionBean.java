@@ -17,6 +17,34 @@ public class RentSessionBean implements RentSessionBeanLocal {
     private EntityManager entityManager;
 
     /**
+     * erstellt ein Buchungsobjekt.
+     *
+     * @param startDate
+     * @param endDate
+     * @param userID
+     * @param carID
+     * @return
+     */
+    @Override
+    public Rent prepareRent(String startDate, String endDate, User userID, Car carID) {
+        Date sDate = DateParser.parseToDate(startDate);
+        Date eDate = DateParser.parseToDate(endDate);
+
+        Rent rent = new Rent(sDate, eDate);
+        rent.setCarmodelId(carID);
+        rent.setUseruserId(userID);
+        rent.setLength(this.getLengthOfRent(sDate, eDate));
+        rent.setTotalPrice(this.getRentPrice(carID, rent));
+        return rent;
+    }
+
+    @Override
+    public void persistRent(Rent rent) {
+        entityManager.persist(rent);
+        entityManager.flush();
+    }
+
+    /**
      * berechnet den Buchungspreis anhand des Tagessatzes und der Dauer der
      * Buchung
      *
@@ -38,6 +66,7 @@ public class RentSessionBean implements RentSessionBeanLocal {
     public void blockCar(Car car) {
         if (car.isAvailable()) {
             car.setAvailable(false);
+            entityManager.merge(car);
         }
     }
 
@@ -50,26 +79,8 @@ public class RentSessionBean implements RentSessionBeanLocal {
     public void unBlockCar(Car car) {
         if (!car.isAvailable()) {
             car.setAvailable(true);
+            entityManager.merge(car);
         }
-    }
-
-    /**
-     * erstellt ein Buchungsobjekt und speichert es in die Datebank
-     *
-     * @param startDate
-     * @param endDate
-     * @param userID
-     * @param carID
-     * @return
-     */
-    @Override
-    public Rent createRent(String startDate, String endDate, User userID, Car carID) {
-        Rent rent = new Rent(DateParser.parseToDate(startDate), DateParser.parseToDate(endDate));
-        rent.setCarmodelId(carID);
-        rent.setUseruserId(userID);
-        entityManager.persist(rent);
-        entityManager.flush();
-        return rent;
     }
 
     /**
@@ -123,6 +134,13 @@ public class RentSessionBean implements RentSessionBeanLocal {
     @Override
     public void changeEndDate(Rent rent, Date endDate) {
         rent.setEnddate(endDate);
+    }
+
+    @Override
+    public int getLengthOfRent(Date startDate, Date endDate) {
+        int diffInDays = (int) ((endDate.getTime() - startDate.getTime())
+                / (1000 * 60 * 60 * 24));
+        return diffInDays;
     }
 
 }

@@ -173,19 +173,35 @@ public class ControllerServlet extends HttpServlet {
                 session.setAttribute("car", car);
                 request.getRequestDispatcher("/details.jsp").forward(request, response);
                 break;
-            case "rent":
+            case "rentOverview":
                 id = Integer.parseInt(request.getParameter("id"));
                 car = carBean.getCarById(id);
                 if (sessionUser == null) {
                     request.setAttribute("NotLoggedInError", "Bitte melden Sie sich an, bevor Sie buchen");
                     request.getRequestDispatcher("/details.jsp").forward(request, response);
                 } else {
-                    Rent rent = rentBean.createRent(request.getParameter("startdate"),
-                            request.getParameter("enddate"), sessionUser, car);
+                    if (request.getParameter("startdate").equals("")) {
+                        request.setAttribute("WrongStartDate", "Bitte geben Sie ein Startdatum ein");
+                        request.getRequestDispatcher("/details.jsp").forward(request, response);
+                    } else if (request.getParameter("enddate").equals("")) {
+                        request.setAttribute("WrongEndDate", "Bitte geben Sie ein Enddatum ein");
+                        request.getRequestDispatcher("/details.jsp").forward(request, response);
+                    } else {
+                        Rent rent = rentBean.prepareRent(request.getParameter("startdate"),
+                                request.getParameter("enddate"), sessionUser, car);
+                        if (rent != null) {
+                            session.setAttribute("rent", rent);
+                            request.getRequestDispatcher("/rentOverview.jsp").forward(request, response);
+                        }
+                    }
                 }
-                /**
-                 * Benutzer hat ein verfügbares Modell ausgewählt.
-                 */
+                break;
+            case "rent":
+                Rent rent = (Rent) session.getAttribute("rent");
+                rentBean.blockCar(rent.getCarmodelId());
+                rentBean.persistRent(rent);
+                request.setAttribute("SuccessfulRent", "Buchung wurde erfolgreich ausgeführt");
+                request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
                 break;
         }
 
