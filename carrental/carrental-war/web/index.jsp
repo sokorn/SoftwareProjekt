@@ -2,11 +2,16 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Startseite</title> 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Startseite</title>
-
+        <link rel="stylesheet" href="css/stylesheet.css"/>
     </head>
+
     <body>
+         <h1 align="center">Willkommen bei Car Rental</h1>
+         <font color="#FF0000">
+         <p>Billig kann jeder!</p>
+        
         <div class="body">
             <div id="topbar">
                 <div class="content">
