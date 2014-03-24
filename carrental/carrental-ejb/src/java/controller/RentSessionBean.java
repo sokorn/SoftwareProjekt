@@ -4,6 +4,7 @@ import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import model.*;
+import utils.DateParser;
 
 /**
  *
@@ -35,7 +36,7 @@ public class RentSessionBean implements RentSessionBeanLocal {
      */
     @Override
     public void blockCar(Car car) {
-        if (car.getAvailable()) {
+        if (car.isAvailable()) {
             car.setAvailable(false);
         }
     }
@@ -47,7 +48,7 @@ public class RentSessionBean implements RentSessionBeanLocal {
      */
     @Override
     public void unBlockCar(Car car) {
-        if (!car.getAvailable()) {
+        if (!car.isAvailable()) {
             car.setAvailable(true);
         }
     }
@@ -62,8 +63,8 @@ public class RentSessionBean implements RentSessionBeanLocal {
      * @return
      */
     @Override
-    public Rent createRent(Date startDate, Date endDate, User userID, Car carID) {
-        Rent rent = new Rent(startDate, endDate);
+    public Rent createRent(String startDate, String endDate, User userID, Car carID) {
+        Rent rent = new Rent(DateParser.parseToDate(startDate), DateParser.parseToDate(endDate));
         rent.setCarmodelId(carID);
         rent.setUseruserId(userID);
         entityManager.persist(rent);

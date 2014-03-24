@@ -1,0 +1,26 @@
+@CHARSET "UTF-8";
+
+#result {
+    background-color: white;
+    opacity: 0.8;
+}
+
+.picture {
+    display: inline-block;
+    width: 8em;
+}
+
+.description {
+    display: inline-block;
+}
+
+.model {
+    border-width:1px;
+    border-style:solid;
+    border-color:blue;
+
+}
+
+.modelHeader {
+    font-weight: bold;
+}

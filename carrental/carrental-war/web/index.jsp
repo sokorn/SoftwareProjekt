@@ -6,39 +6,28 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/stylesheet.css"/>
     </head>
-
     <body>
-         <h1 align="center">Willkommen bei Car Rental</h1>
-         <font color="#FF0000">
-         <p>Billig kann jeder!</p>
-        
-        <div class="body">
-            <div id="topbar">
-                <div class="content">
-                    <span class="logo"></span>
-                    <nav id="head">
-                        <p><a href="/carrental-war/servlet?step=registerPage">Registrieren</a>
-                            <a href="/carrental-war/servlet?step=loginPage">Anmelden</a></p>
-                    </nav>
-                </div>
-            </div>
-            <div id="main">
-                <form method="post" action="/carrental-war/servlet?step=search">
-                    <p><select name="brand">
-                            <option value="0">Marke auswählen</option>
+        <h1 align="center">Willkommen bei Car Rental</h1>
+        <font color="#FF0000"></font>
+        <p>Billig kann jeder!</p>
 
-                        </select>
-                        <select name="model">
-                            <option value="0">Model auswählen</option>
-                        </select></p>
-                    <p><input type="submit" value="Suchen" /></p>
-                </form>
-            </div>
+        <div id="head">
+            <a href="/carrental-war/servlet?step=index">zur Startseite</a>
+            <%@include file="templates/head.jsp" %>
+        </div>
+        <div id="main">
+            <form method="post" action="/carrental-war/servlet?step=search">
+                <p><select name="brand">
+                        <option value="0">Marke auswählen</option>
+
+                    </select>
+                    <select name="model">
+                        <option value="0">Model auswählen</option>
+                    </select></p>
+                <p><input type="submit" value="Suchen" /></p>
+            </form>
         </div>
         <div id="footer">
-            <nav>
-                <ul></ul>
-            </nav>
         </div>
     </body>
 </html>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Adress;
 import model.Car;
+import model.Rent;
 import model.User;
 import utils.Validator;
 
@@ -38,9 +39,10 @@ public class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String currentStep = request.getParameter("step");
-        User user = null;
-        List<Car> carList;
         HttpSession session = request.getSession();
+
+        User sessionUser = (User) session.getAttribute("user");
+        List<Car> sessionCarList = (List<Car>) session.getAttribute("carList");
 
         switch (currentStep) {
             case "index":
@@ -50,12 +52,12 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
                 break;
             case "login":
-                user = userBean.login(request.getParameter("login"), request.getParameter("password"));
+                User user = userBean.login(request.getParameter("login"), request.getParameter("password"));
+                session.setAttribute("user", user);
                 if (user == null) {
                     request.setAttribute("LoginError", "Fehler beim Login");
                     request.getRequestDispatcher("/login.jsp").forward(request, response);
                 } else {
-                    session.setAttribute("user", user);
                     request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
                 }
                 break;
@@ -63,6 +65,7 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
             case "register":
+                user = null;
                 /**
                  * Testen ob es nicht ausgefüllte Felder gibt. Wenn ein Feld
                  * oder mehrere Felder leer sind, wird der Parameter
@@ -122,6 +125,7 @@ public class ControllerServlet extends HttpServlet {
                             request.getParameter("country"), request.getParameter("postalcode"),
                             true, true, request.getParameter("region"), user);
                     userBean.addAdressToUser(user, adress);
+                    session.setAttribute("user", user);
                 }
                 if (user == null) {
                     request.getRequestDispatcher("/register.jsp").forward(request, response);
@@ -130,6 +134,7 @@ public class ControllerServlet extends HttpServlet {
                 }
                 break;
             case "search":
+                List<Car> carList;
                 /**
                  * Wenn keine Auswahl getroffen wurde, zeige alle Modelle aller
                  * Marken auf der result.jsp an.
@@ -144,6 +149,7 @@ public class ControllerServlet extends HttpServlet {
                  */
                 else if (!request.getParameter("brand").equals("0") && request.getParameter("model").equals("0")) {
                     carList = carBean.getListOfCarsOfSelectedBrand(request.getParameter("brand"));
+                    session.setAttribute("carList", carList);
                     request.getRequestDispatcher("/result.jsp").forward(request, response);
                 } /**
                  * Es wurde bei Marke und Modell eine Auswahl getroffen. Zeige
@@ -151,22 +157,32 @@ public class ControllerServlet extends HttpServlet {
                  */
                 else if (!request.getParameter("brand").equals("0") && !request.getParameter("model").equals("0")) {
                     carList = carBean.getListOfCarsOfSelectedModel(request.getParameter("model"));
+                    session.setAttribute("carList", carList);
                     request.getRequestDispatcher("/result.jsp").forward(request, response);
                 }
                 break;
             case "logout":
-                /**
-                 * TODO: User logout
-                 */
+                if (sessionUser != null) {
+                    session.setAttribute("user", null);
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                }
                 break;
             case "details":
-                /**
-                 * Benutzer klickt auf der result.jsp auf ein Modell. Er wird
-                 * auf die details.jsp weitergeleitet, auf der er dann eine
-                 * Buchung machen kann
-                 */
+                int id = Integer.parseInt(request.getParameter("id"));
+                Car car = carBean.getCarById(id);
+                session.setAttribute("car", car);
+                request.getRequestDispatcher("/details.jsp").forward(request, response);
                 break;
             case "rent":
+                id = Integer.parseInt(request.getParameter("id"));
+                car = carBean.getCarById(id);
+                if (sessionUser == null) {
+                    request.setAttribute("NotLoggedInError", "Bitte melden Sie sich an, bevor Sie buchen");
+                    request.getRequestDispatcher("/details.jsp").forward(request, response);
+                } else {
+                    Rent rent = rentBean.createRent(request.getParameter("startdate"),
+                            request.getParameter("enddate"), sessionUser, car);
+                }
                 /**
                  * Benutzer hat ein verfügbares Modell ausgewählt.
                  */
