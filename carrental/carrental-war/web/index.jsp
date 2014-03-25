@@ -15,7 +15,9 @@
         <%@include file="templates/head.jsp" %>
         <div class="main">
             <form method="post" action="/carrental-war/servlet?step=search">
-                <p><select name="brand" onchange="">
+                <p><select name="brand" onchange="<%
+                session.setAttribute("selectedBrand", request.getParameter("brand"));
+                           %>">
                         <option value="0">Marke auswählen</option>
                         <% if (!(session.getAttribute("brandList") == null)) {
                                 List<String> brandList = (List<String>) session.getAttribute("brandList");

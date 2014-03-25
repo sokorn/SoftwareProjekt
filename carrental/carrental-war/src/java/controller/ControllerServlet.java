@@ -47,6 +47,11 @@ public class ControllerServlet extends HttpServlet {
         session.setAttribute("brandList", brandList);
         session.setAttribute("modelList", modelList);
 
+        if (!(session.getAttribute("selectedBrand") == null)) {
+            modelList = carBean.getNameListOfCarsOfSelectedBrand(request.getParameter("brand"));
+            session.setAttribute("modelList", modelList);
+        }
+
         if (currentStep == null) {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         } else {
@@ -162,12 +167,17 @@ public class ControllerServlet extends HttpServlet {
                      * Es wurde bei Marke und Modell eine Auswahl getroffen.
                      * Zeige alle Objekte des Modells auf der result.jsp an.
                      */
-                    else if (!request.getParameter("brand").equals("0") && !request.getParameter("model").equals("0")) {
+                    else if (request.getParameter("brand").equals("0") && !request.getParameter("model").equals("0")) {
                         carList = carBean.getListOfCarsOfSelectedModel(request.getParameter("model"));
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp").forward(request, response);
+                    } else if (!request.getParameter("brand").equals("0") && !request.getParameter("model").equals("0")) {
+                        carList = carBean.getListOfCarsOfSelectedModel(request.getParameter("model"));
+                        session.setAttribute("carList", carList);
+                        request.getRequestDispatcher("/result.jsp").forward(request, response);
+                        break;
                     }
-                    break;
+
                 case "logout":
                     if (sessionUser != null) {
                         session.setAttribute("user", null);
@@ -227,4 +237,5 @@ public class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
 }

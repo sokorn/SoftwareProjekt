@@ -56,6 +56,15 @@ public class CarSessionBean implements CarSessionBeanLocal {
         List modelQueryResult = brandQuery.getResultList();
         return modelQueryResult;
     }
+    
+    @Override
+    public List<String> getNameListOfCarsOfSelectedBrand(String brandname) {
+        Query brandQuery;
+        brandQuery = entityManager.createNamedQuery("Car.getModelnameByBrandname");
+        brandQuery.setParameter("brandname", brandname);
+        List modelQueryResult = brandQuery.getResultList();
+        return modelQueryResult;
+    }
 
     @Override
     public Car getCarById(Integer id) {

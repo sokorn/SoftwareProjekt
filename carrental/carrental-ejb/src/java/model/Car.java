@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Car.findByModelname", query = "SELECT c FROM Car c WHERE c.modelname = :modelname"),
     @NamedQuery(name = "Car.findByBrandname", query = "SELECT c FROM Car c WHERE c.brandname = :brandname"),
     @NamedQuery(name = "Car.getBrandList", query = "SELECT distinct c.brandname FROM Car c ORDER BY c.brandname"),
-    @NamedQuery(name = "Car.getModelList", query = "SELECT distinct c.modelname FROM Car c ORDER BY c.modelname")})
+    @NamedQuery(name = "Car.getModelList", query = "SELECT distinct c.modelname FROM Car c ORDER BY c.modelname"),
+    @NamedQuery(name= "Car.getModelnameByBrandname", query = "SELECT distinct c.modelname FROM Car c WHERE c.brandname = :brandname")})
 
 public class Car implements Serializable {
 

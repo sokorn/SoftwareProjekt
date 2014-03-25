@@ -17,4 +17,6 @@ public interface CarSessionBeanLocal {
 
     public List<String> getNameList(String type);
 
+    public List<String> getNameListOfCarsOfSelectedBrand(String brandname);
+
 }
