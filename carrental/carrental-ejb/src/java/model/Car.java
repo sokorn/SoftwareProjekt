@@ -160,7 +160,7 @@ public class Car implements Serializable {
         rentCollection.add(rent);
     }
 
-    public boolean getAvailable() {
+    public boolean isAvailable() {
         return available;
     }
 

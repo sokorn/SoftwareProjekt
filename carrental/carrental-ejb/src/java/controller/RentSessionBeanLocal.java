@@ -17,7 +17,7 @@ public interface RentSessionBeanLocal {
 
     public void blockCar(Car car);
 
-    public Rent createRent(Date startDate, Date endDate, User userID, Car carID);
+    public Rent prepareRent(String startDate, String endDate, User userID, Car carID);
 
     public void cancelRent(Rent rent);
 
@@ -26,4 +26,8 @@ public interface RentSessionBeanLocal {
     public void changeStartDate(Rent rent, Date startDate);
 
     public void changeEndDate(Rent rent, Date endDate);
+
+    public int getLengthOfRent(Date startDate, Date endDate);
+
+    public void persistRent(Rent rent);
 }

@@ -13,4 +13,6 @@ public interface CarSessionBeanLocal {
 
     public List<Car> getListOfCarsOfSelectedBrand(String brandname);
 
+    public Car getCarById(Integer id);
+
 }
