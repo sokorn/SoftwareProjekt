@@ -18,7 +18,7 @@
         if (request.getParameter("step") != null) {
             if (!request.getParameter("step").equals("index")) {
     %>
-    <div class="header_right"><a href="/carrental-war/servlet?step=index">zur Startseite</a></div>
+    <div class="header_left"><a href="/carrental-war/servlet?step=index">zur Startseite</a></div>
     <%
             }
         }
