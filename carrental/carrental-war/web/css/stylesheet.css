@@ -2,13 +2,14 @@
 
 body {
        background-image: url(../img/auto.jpg);
-       background-repeat:no-repeat;
+       background-attachment: fixed;
        background-size:100%; 
        color: black; 
-       font-size:150%;   
+       font-size:130%;   
        alignment-adjust: central;
        padding-left:20px;
        padding-right:20px;
+       position:absolute;
       
 }
 
@@ -20,6 +21,8 @@ body {
     border-color: black;
     padding-left: 10px;
     padding-right: 10px;
+    
+    
     
     
     width:auto;
