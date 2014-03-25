@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,13 +15,31 @@
         <%@include file="templates/head.jsp" %>
         <div class="main">
             <form method="post" action="/carrental-war/servlet?step=search">
-                <p><select name="brand">
+                <p><select name="brand" onchange="">
                         <option value="0">Marke auswählen</option>
-
+                        <% if (!(session.getAttribute("brandList") == null)) {
+                                List<String> brandList = (List<String>) session.getAttribute("brandList");
+                                for (String brand : brandList) {
+                        %>
+                        <option value="<%=brand%>"><%=brand%></option>
+                        <%
+                                }
+                            }
+                        %>
                     </select>
                     <select name="model">
                         <option value="0">Model auswählen</option>
-                    </select></p>
+                        <% if (!(session.getAttribute("modelList") == null)) {
+                                List<String> modelList = (List<String>) session.getAttribute("modelList");
+                                for (String model : modelList) {
+                        %>
+                        <option value="<%=model%>"><%=model%></option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
+                </p>
                 <p><input type="submit" value="Suchen" /></p>
             </form>
         </div>

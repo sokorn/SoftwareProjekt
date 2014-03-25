@@ -56,18 +56,44 @@ public class CarSessionBean implements CarSessionBeanLocal {
         List modelQueryResult = brandQuery.getResultList();
         return modelQueryResult;
     }
-    
-    public Car getCarById(Integer id){
+
+    @Override
+    public Car getCarById(Integer id) {
         Query idQuery;
         idQuery = entityManager.createNamedQuery("Car.findByCarId");
         idQuery.setParameter("carId", id);
         List<Car> carList = idQuery.getResultList();
-        if(carList.size() == 1){
+        if (carList.size() == 1) {
             return carList.get(0);
-        }else{
+        } else {
             return null;
         }
-            
+
+    }
+
+    @Override
+    public List<String> getNameList(String type) {
+        List<String> nameList;
+        if (type.equals("brand")) {
+            Query brandNameQuery;
+            brandNameQuery = entityManager.createNamedQuery("Car.getBrandList");
+            nameList = brandNameQuery.getResultList();
+            if (nameList.size() > 0) {
+                return nameList;
+            } else {
+                return null;
+            }
+        } else if (type.equals("model")) {
+            Query modelNameQuery;
+            modelNameQuery = entityManager.createNamedQuery("Car.getModelList");
+            nameList = modelNameQuery.getResultList();
+            if (nameList.size() > 0) {
+                return nameList;
+            } else {
+                return null;
+            }
+        }
+        return null;
     }
 
 }
