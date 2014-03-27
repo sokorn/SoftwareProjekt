@@ -35,25 +35,23 @@ public class ControllerServlet extends HttpServlet {
     @EJB
     private RentSessionBeanLocal rentBean;
 
+    private User sessionUser;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String currentStep = request.getParameter("step");
         HttpSession session = request.getSession();
 
-        User sessionUser = (User) session.getAttribute("user");
+        sessionUser = (User) session.getAttribute("user");
+
         List<String> brandList = carBean.getNameList("brand");
         List<String> modelList = carBean.getNameList("model");
         session.setAttribute("brandList", brandList);
         session.setAttribute("modelList", modelList);
 
-        if (!(session.getAttribute("selectedBrand") == null)) {
-            modelList = carBean.getNameListOfCarsOfSelectedBrand(request.getParameter("brand"));
-            session.setAttribute("modelList", modelList);
-        }
-
         if (currentStep == null) {
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
         } else {
             switch (currentStep) {
                 case "index":
@@ -177,10 +175,10 @@ public class ControllerServlet extends HttpServlet {
                         request.getRequestDispatcher("/result.jsp").forward(request, response);
                         break;
                     }
-
                 case "logout":
                     if (sessionUser != null) {
-                        session.setAttribute("user", null);
+                        session.removeAttribute("user");
+                        session.invalidate();
                         request.getRequestDispatcher("/index.jsp").forward(request, response);
                     }
                     break;
@@ -220,7 +218,12 @@ public class ControllerServlet extends HttpServlet {
                     request.setAttribute("SuccessfulRent", "Buchung wurde erfolgreich ausgeführt");
                     request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
                     break;
-                default:
+                case "impressum":
+                    request.getRequestDispatcher("/impressum.jsp").forward(request, response);
+                    break;
+                case "personal":
+                    request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
+                    break;
 
             }
         }

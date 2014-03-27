@@ -11,15 +11,20 @@
     </head>
     <%@include file="templates/head.jsp" %>
     <div class="main">
-        <%                List<Car> carList = (List<Car>) session.getAttribute("carList");
+        <%  List<Car> carList = (List<Car>) session.getAttribute("carList");
             for (Car car : carList) {
         %>
         <div class="model">
-            <div class="picture"><img src="<%=car.getModelpicture()%>" alt="<%=car.getModelname()%>"></div>
+            <div class="picture">
+                <img src="<%=car.getModelpicture()%>" alt="<%=car.getModelname()%>">
+            </div>
             <div class="description">
-                <div class="modelHeader"><a href="/carrental-war/servlet?step=details&id=<%=car.getCarId()%>">
-                        <%=car.getBrandname()%> <%=car.getModelname()%></a></div>
-                <div><%=car.getPrice()%></div>
+                <div class="modelHeader"><a href="/carrental-war/servlet?step=details&amp;id=<%=car.getCarId()%>">
+                        <%=car.getBrandname()%> <%=car.getModelname()%></a>
+                </div>
+                <div>
+                    Preis/Tag: <%=car.getPrice()%> €
+                </div>
             </div>
         </div>
         <%

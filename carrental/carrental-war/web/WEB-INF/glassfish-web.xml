@@ -8,4 +8,9 @@
             <description>Keep a copy of the generated servlet class' java code.</description>
         </property>
     </jsp-config>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
 </glassfish-web-app>

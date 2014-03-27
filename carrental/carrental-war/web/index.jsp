@@ -8,16 +8,11 @@
         <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
-        <h1 align="center">Willkommen bei Car Rental</h1>
-        <font color="#FF0000"></font>
-        <p>Billig kann jeder!</p>
-
         <%@include file="templates/head.jsp" %>
         <div class="main">
             <form method="post" action="/carrental-war/servlet?step=search">
-                <p><select name="brand" onchange="<%
-                session.setAttribute("selectedBrand", request.getParameter("brand"));
-                           %>">
+                <p>
+                    <select name="brand">
                         <option value="0">Marke auswählen</option>
                         <% if (!(session.getAttribute("brandList") == null)) {
                                 List<String> brandList = (List<String>) session.getAttribute("brandList");
@@ -42,7 +37,9 @@
                         %>
                     </select>
                 </p>
-                <p><input type="submit" value="Suchen" /></p>
+                <p>
+                    <input type="submit" value="Suchen" />
+                </p>
             </form>
         </div>
         <%@include file="templates/footer.jsp" %>
