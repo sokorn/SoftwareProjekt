@@ -10,11 +10,11 @@ import java.util.Date;
  */
 public class DateParser {
 
-    public static Date parseToDate(String date) {
+    public static Date parseToDate(String stringDate) {
         Date birthdate = null;
         try {
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
-            birthdate = dt.parse(date);
+            birthdate = dt.parse(stringDate);
         } catch (ParseException ex) {
         }
         return birthdate;

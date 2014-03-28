@@ -24,7 +24,7 @@ import utils.Validator;
             "/servlet"
         })
 
-public class ControllerServlet extends HttpServlet {
+public class CarRentalServlet extends HttpServlet {
 
     @EJB
     private UserSessionBeanLocal userBean;
@@ -173,8 +173,8 @@ public class ControllerServlet extends HttpServlet {
                         carList = carBean.getListOfCarsOfSelectedModel(request.getParameter("model"));
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp").forward(request, response);
-                        break;
                     }
+                break;
                 case "logout":
                     if (sessionUser != null) {
                         session.removeAttribute("user");
