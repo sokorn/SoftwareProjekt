@@ -94,25 +94,6 @@ public class RentSessionBean implements RentSessionBeanLocal {
         entityManager.flush();
     }
 
-    /**
-     * fügt einem Buchungsobjekt seinen Gesamtpreis hinzu
-     *
-     * @param rent
-     */
-    @Override
-    public void addTotalPriceToRent(Rent rent) {
-        rent.setTotalPrice(rent.getLengthOfRent(rent));
-    }
-
-    /**
-     * fügt einem Buchungsobjekt seine Buchungsdauer hinzu
-     *
-     * @param rent
-     */
-    @Override
-    public void addLengthToRent(Rent rent) {
-        rent.setLength(rent.getLengthOfRent(rent));
-    }
 
     /**
      * ändert den Buchungsbeginn einer Buchung
@@ -135,12 +116,12 @@ public class RentSessionBean implements RentSessionBeanLocal {
     public void changeEndDate(Rent rent, Date endDate) {
         rent.setEnddate(endDate);
     }
-
+    
+    // berechnet die Dauer der Buchung in Tagen, falls nur 1 Tag gebucht wird gib 1 zurück
     @Override
     public int getLengthOfRent(Date startDate, Date endDate) {
         int diffInDays = (int) ((endDate.getTime() - startDate.getTime())
                 / (1000 * 60 * 60 * 24));
-        return diffInDays;
+        return (diffInDays==0) ? 1 : diffInDays+1;
     }
-
 }

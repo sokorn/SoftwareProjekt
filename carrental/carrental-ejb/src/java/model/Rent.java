@@ -129,11 +129,4 @@ public class Rent implements Serializable {
     public void setCarmodelId(Car carmodelId) {
         this.carmodelId = carmodelId;
     }
-
-    // berechnet die Dauer der Buchung in Tagen, falls nur 1 Tag gebucht wird gib 1 zurück
-    public int getLengthOfRent(Rent rent) {
-        int diffInDays = (int) ((rent.getEnddate().getTime() - rent.getStartdate().getTime())
-                / (1000 * 60 * 60 * 24));
-        return (diffInDays==0) ? 1 : diffInDays;
-    }
 }

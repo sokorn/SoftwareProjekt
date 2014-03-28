@@ -11,10 +11,6 @@ public interface RentSessionBeanLocal {
 
     public Double getRentPrice(Car car, Rent rent);
 
-    public void addTotalPriceToRent(Rent rent);
-
-    public void addLengthToRent(Rent rent);
-
     public void blockCar(Car car);
 
     public Rent prepareRent(String startDate, String endDate, User userID, Car carID);
