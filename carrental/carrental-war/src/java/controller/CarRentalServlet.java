@@ -36,6 +36,7 @@ public class CarRentalServlet extends HttpServlet {
     private RentSessionBeanLocal rentBean;
 
     private User sessionUser;
+    private List<Adress> sessionAdressList;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,6 +45,7 @@ public class CarRentalServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         sessionUser = (User) session.getAttribute("user");
+        sessionAdressList = (List<Adress>) session.getAttribute("adressList");
 
         List<String> brandList = carBean.getNameList("brand");
         List<String> modelList = carBean.getNameList("model");
@@ -55,92 +57,109 @@ public class CarRentalServlet extends HttpServlet {
         } else {
             switch (currentStep) {
                 case "index":
-                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                    request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     break;
                 case "loginPage":
-                    request.getRequestDispatcher("/login.jsp").forward(request, response);
-                    break;
-                case "login":
-                    User user = userBean.login(request.getParameter("login"), request.getParameter("password"));
-                    session.setAttribute("user", user);
-                    if (user == null) {
-                        request.setAttribute("LoginError", "Fehler beim Login");
+                    if (sessionUser == null) {
                         request.getRequestDispatcher("/login.jsp").forward(request, response);
                     } else {
-                        request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    }
+                    break;
+                case "login":
+                    if (sessionUser == null) {
+                        User user = userBean.login(request.getParameter("login"), request.getParameter("password"));
+                        session.setAttribute("user", user);
+                        if (user == null) {
+                            request.setAttribute("LoginError", "Fehler beim Login");
+                            request.getRequestDispatcher("/login.jsp").forward(request, response);
+                        } else {
+                            request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                        }
+                    } else {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     }
                     break;
                 case "registerPage":
-                    request.getRequestDispatcher("/register.jsp").forward(request, response);
-                    break;
-                case "register":
-                    user = null;
-                    /**
-                     * Testen ob es nicht ausgefüllte Felder gibt. Wenn ein Feld
-                     * oder mehrere Felder leer sind, wird der Parameter
-                     * EmptyFieldError auf der register.jsp gesetzt und die
-                     * angegebene Nachricht angezeigt.
-                     */
-                    if (request.getParameter("title").isEmpty() || request.getParameter("firstname").isEmpty()
-                            || request.getParameter("lastname").isEmpty() || request.getParameter("birthday").isEmpty()
-                            || request.getParameter("mail1").isEmpty() || request.getParameter("mail2").isEmpty()
-                            || request.getParameter("password1").isEmpty() || request.getParameter("password2").isEmpty()
-                            || request.getParameter("street").isEmpty() || request.getParameter("housenumber").isEmpty()
-                            || request.getParameter("postalcode").isEmpty() || request.getParameter("city").isEmpty()) {
-                        request.setAttribute("EmptyFieldError", "Bitte alle mit * markierten Felder ausfüllen");
-                    } /**
-                     * Testen, ob die eingegebene Mail schon benutzt wird. Wenn
-                     * ja, wird der Parameter MailInUseError auf der
-                     * register.jsp gesetzt und die angegebene Nachricht
-                     * angezeigt.
-                     */
-                    else if (userBean.mailAlreadyUsed(request.getParameter("mail1"))) {
-                        request.setAttribute("MailInUseError", "Email bereits benutzt!");
-                    } /**
-                     * Testen, ob es sich bei der eingegebenen Mail, um eine
-                     * gültige Mail handelt. Wenn ja, wird der Parameter
-                     * IllegalMailError auf der register.jsp gesetzt und die
-                     * angegebene Nachricht angezeigt.
-                     */
-                    else if (!Validator.validateMail(request.getParameter("mail1"))) {
-                        request.setAttribute("IllegalMailError", "Keine gültige Mailadresse");
-                    } /**
-                     * Testen, ob Mail und Wiederholung übereinstimmen. Wenn sie
-                     * nicht übereinstimmen, wird der Parameter
-                     * MailsNotEqualError auf der register.jsp gesetzt und die
-                     * angegebene Nachricht angezeigt.
-                     */
-                    else if (!request.getParameter("mail1").equals(request.getParameter("mail2"))) {
-                        request.setAttribute("MailsNotEqualError", "Emails stimmen nicht überein!");
-                    } /**
-                     * Testen, ob die eingegebenen Passwörter übereinstimmen.
-                     * Wenn sie nicht übereinstimmen, wird der Parameter
-                     * PasswordsNotEqualError gesetzt und die angegebene
-                     * Nachricht angezeigt.
-                     */
-                    else if (!request.getParameter("password1").equals(request.getParameter("password2"))) {
-                        request.setAttribute("PasswordsNotEqualError", "Passwörter stimmen nicht überein!");
-                    } /**
-                     * Wenn alle bisherigen Tests negativ waren, kann der User
-                     * angelegt werden. Dazu werden die benötigten Parameter aus
-                     * der register.jsp an die UserSessionBean weitergegeben.
-                     */
-                    else {
-                        user = userBean.createUser(request.getParameter("title"),
-                                request.getParameter("firstname"), request.getParameter("lastname"),
-                                request.getParameter("birthday"), request.getParameter("mail1"),
-                                request.getParameter("password1"));
-                        Adress adress = adressBean.createAdress(request.getParameter("street"),
-                                request.getParameter("housenumber"), request.getParameter("city"),
-                                request.getParameter("country"), request.getParameter("postalcode"),
-                                true, true, request.getParameter("region"), user);
-                        userBean.addAdressToUser(user, adress);
-                        session.setAttribute("user", user);
-                    }
-                    if (user == null) {
+                    if (sessionUser == null) {
                         request.getRequestDispatcher("/register.jsp").forward(request, response);
                     } else {
-                        request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    }
+                    break;
+                case "register":
+                    if (sessionUser == null) {
+                        User user = null;
+                        /**
+                         * Testen ob es nicht ausgefüllte Felder gibt. Wenn ein
+                         * Feld oder mehrere Felder leer sind, wird der
+                         * Parameter EmptyFieldError auf der register.jsp
+                         * gesetzt und die angegebene Nachricht angezeigt.
+                         */
+                        if (request.getParameter("title").isEmpty() || request.getParameter("firstname").isEmpty()
+                                || request.getParameter("lastname").isEmpty() || request.getParameter("birthday").isEmpty()
+                                || request.getParameter("mail1").isEmpty() || request.getParameter("mail2").isEmpty()
+                                || request.getParameter("password1").isEmpty() || request.getParameter("password2").isEmpty()
+                                || request.getParameter("street").isEmpty() || request.getParameter("housenumber").isEmpty()
+                                || request.getParameter("postalcode").isEmpty() || request.getParameter("city").isEmpty()) {
+                            request.setAttribute("EmptyFieldError", "Bitte alle mit * markierten Felder ausfüllen");
+                        } /**
+                         * Testen, ob die eingegebene Mail schon benutzt wird.
+                         * Wenn ja, wird der Parameter MailInUseError auf der
+                         * register.jsp gesetzt und die angegebene Nachricht
+                         * angezeigt.
+                         */
+                        else if (userBean.mailAlreadyUsed(request.getParameter("mail1"))) {
+                            request.setAttribute("MailInUseError", "Email bereits benutzt!");
+                        } /**
+                         * Testen, ob es sich bei der eingegebenen Mail, um eine
+                         * gültige Mail handelt. Wenn ja, wird der Parameter
+                         * IllegalMailError auf der register.jsp gesetzt und die
+                         * angegebene Nachricht angezeigt.
+                         */
+                        else if (!Validator.validateMail(request.getParameter("mail1"))) {
+                            request.setAttribute("IllegalMailError", "Keine gültige Mailadresse");
+                        } /**
+                         * Testen, ob Mail und Wiederholung übereinstimmen. Wenn
+                         * sie nicht übereinstimmen, wird der Parameter
+                         * MailsNotEqualError auf der register.jsp gesetzt und
+                         * die angegebene Nachricht angezeigt.
+                         */
+                        else if (!request.getParameter("mail1").equals(request.getParameter("mail2"))) {
+                            request.setAttribute("MailsNotEqualError", "Emails stimmen nicht überein!");
+                        } /**
+                         * Testen, ob die eingegebenen Passwörter
+                         * übereinstimmen. Wenn sie nicht übereinstimmen, wird
+                         * der Parameter PasswordsNotEqualError gesetzt und die
+                         * angegebene Nachricht angezeigt.
+                         */
+                        else if (!request.getParameter("password1").equals(request.getParameter("password2"))) {
+                            request.setAttribute("PasswordsNotEqualError", "Passwörter stimmen nicht überein!");
+                        } /**
+                         * Wenn alle bisherigen Tests negativ waren, kann der
+                         * User angelegt werden. Dazu werden die benötigten
+                         * Parameter aus der register.jsp an die UserSessionBean
+                         * weitergegeben.
+                         */
+                        else {
+                            user = userBean.createUser(request.getParameter("title"),
+                                    request.getParameter("firstname"), request.getParameter("lastname"),
+                                    request.getParameter("birthday"), request.getParameter("mail1"),
+                                    request.getParameter("password1"));
+                            Adress adress = adressBean.createAdress(request.getParameter("street"),
+                                    request.getParameter("housenumber"), request.getParameter("city"),
+                                    request.getParameter("country"), request.getParameter("postalcode"),
+                                    true, true, request.getParameter("region"), user);
+                            userBean.addAdressToUser(user, adress);
+                            session.setAttribute("user", user);
+                        }
+                        if (user == null) {
+                            request.getRequestDispatcher("/register.jsp").forward(request, response);
+                        } else {
+                            request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                        }
+                    } else {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     }
                     break;
                 case "search":
@@ -174,57 +193,185 @@ public class CarRentalServlet extends HttpServlet {
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp").forward(request, response);
                     }
-                break;
+                    break;
                 case "logout":
-                    if (sessionUser != null) {
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
                         session.removeAttribute("user");
                         session.invalidate();
-                        request.getRequestDispatcher("/index.jsp").forward(request, response);
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     }
                     break;
                 case "details":
-                    int id = Integer.parseInt(request.getParameter("id"));
-                    Car car = carBean.getCarById(id);
-                    session.setAttribute("car", car);
-                    request.getRequestDispatcher("/details.jsp").forward(request, response);
+                    if (request.getParameter("id") == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        Car car = carBean.getCarById(id);
+                        session.setAttribute("car", car);
+                        request.getRequestDispatcher("/details.jsp").forward(request, response);
+                    }
                     break;
                 case "rentOverview":
-                    id = Integer.parseInt(request.getParameter("id"));
-                    car = carBean.getCarById(id);
-                    if (sessionUser == null) {
-                        request.setAttribute("NotLoggedInError", "Bitte melden Sie sich an, bevor Sie buchen");
-                        request.getRequestDispatcher("/details.jsp").forward(request, response);
+                    if (request.getParameter("id") == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     } else {
-                        if (request.getParameter("startdate").equals("")) {
-                            request.setAttribute("WrongStartDate", "Bitte geben Sie ein Startdatum ein");
-                            request.getRequestDispatcher("/details.jsp").forward(request, response);
-                        } else if (request.getParameter("enddate").equals("")) {
-                            request.setAttribute("WrongEndDate", "Bitte geben Sie ein Enddatum ein");
+                        if (sessionUser == null) {
+                            request.setAttribute("NotLoggedInError", "Bitte melden Sie sich an, bevor Sie buchen");
                             request.getRequestDispatcher("/details.jsp").forward(request, response);
                         } else {
-                            Rent rent = rentBean.prepareRent(request.getParameter("startdate"),
-                                    request.getParameter("enddate"), sessionUser, car);
-                            if (rent != null) {
-                                session.setAttribute("rent", rent);
-                                request.getRequestDispatcher("/rentOverview.jsp").forward(request, response);
+
+                            int id = Integer.parseInt(request.getParameter("id"));
+                            Car car = carBean.getCarById(id);
+                            if (request.getParameter("startdate").equals("")) {
+                                request.setAttribute("WrongStartDate", "Bitte geben Sie ein Startdatum ein");
+                                request.getRequestDispatcher("/details.jsp").forward(request, response);
+                            } else if (request.getParameter("enddate").equals("")) {
+                                request.setAttribute("WrongEndDate", "Bitte geben Sie ein Enddatum ein");
+                                request.getRequestDispatcher("/details.jsp").forward(request, response);
+                            } else {
+                                Rent rent = rentBean.prepareRent(request.getParameter("startdate"),
+                                        request.getParameter("enddate"), sessionUser, car);
+                                if (rent != null) {
+                                    session.setAttribute("rent", rent);
+                                    request.getRequestDispatcher("/rentOverview.jsp").forward(request, response);
+                                }
                             }
                         }
                     }
                     break;
                 case "rent":
-                    Rent rent = (Rent) session.getAttribute("rent");
-                    rentBean.blockCar(rent.getCarmodelId());
-                    rentBean.persistRent(rent);
-                    request.setAttribute("SuccessfulRent", "Buchung wurde erfolgreich ausgeführt");
-                    request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        Rent rent = (Rent) session.getAttribute("rent");
+                        if (rent.getCarmodelId().isAvailable()) {
+                            rentBean.blockCar(rent.getCarmodelId());
+                            rentBean.persistRent(rent);
+                            request.setAttribute("SuccessfulRent", "Buchung wurde erfolgreich ausgeführt");
+                            request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                        } else {
+                            request.setAttribute("RentError", "Fehler bei der Buchung");
+                            request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                        }
+                    }
                     break;
                 case "impressum":
                     request.getRequestDispatcher("/impressum.jsp").forward(request, response);
                     break;
                 case "personal":
-                    request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
+                    if (sessionUser == null) {
+                        request.setAttribute("NotLoggedInError", "Sie müssen angemeldet sein, um diese Seite zu sehen");
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        List<Adress> adressList = adressBean.getAdresses(sessionUser);
+                        session.setAttribute("adressList", adressList);
+                        request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                    }
                     break;
+                case "changes":
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                    }
+                    break;
+                case "changepwd":
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        if (request.getParameter("oldPassword").isEmpty()
+                                || request.getParameter("newPassword").isEmpty()
+                                || request.getParameter("newPassword2").isEmpty()) {
+                            request.setAttribute("EmptyFieldError", "Bitte alle Felder ausfüllen");
+                            request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                        } else if (!request.getParameter("newPassword")
+                                .equals(request.getParameter("newPassword2"))) {
+                            request.setAttribute("PasswordsNotEqualError", "Passwörter stimmen nicht überein");
+                            request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                        } else {
+                            if (userBean.changePassword(sessionUser,
+                                    request.getParameter("oldPassword"),
+                                    request.getParameter("newPassword"))) {
+                                request.setAttribute("passwordChanged", "Passwort erfolgreich aktualisiert");
+                                request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
 
+                            } else {
+                                request.setAttribute("passwordChanged", "Fehler bei der Passwortaktualisierung, bitte versuchen Sie es später noch einmal");
+                                request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                            }
+                        }
+                    }
+                    break;
+                case "changPersData":
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        if (request.getParameter("firstname").isEmpty() || request.getParameter("lastname").isEmpty()
+                                || request.getParameter("email1").isEmpty() || request.getParameter("email2").isEmpty()) {
+                            request.setAttribute("EmptyFieldError", "Bitte alle Felder ausfüllen");
+                            request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                        } else if (!request.getParameter("email1").equals(request.getParameter("email2"))) {
+                            request.setAttribute("MailNotEqualError", "Mailadressen stimmen nicht überein");
+                            request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                        } else {
+                            if (!sessionUser.getFirstname().equals(request.getParameter("firstname"))) {
+                                userBean.changeFirstname(sessionUser, request.getParameter("firstname"));
+                            }
+                            if (!sessionUser.getLastname().equals(request.getParameter("lastname"))) {
+                                userBean.changeLastname(sessionUser, request.getParameter("lastname"));
+                            }
+                            if (!sessionUser.getMail().equals(request.getParameter("email1"))) {
+                                userBean.changeMail(sessionUser, request.getParameter("email1"));
+                            }
+                            request.setAttribute("persDataChanged", "Persönliche Daten aktualisiert");
+                            request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                        }
+                    }
+                    break;
+                case "changAdress":
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        if (request.getParameter("street").isEmpty()
+                                || request.getParameter("housenumber").isEmpty()
+                                || request.getParameter("postalcode").isEmpty()
+                                || request.getParameter("city").isEmpty()
+                                || request.getParameter("country").isEmpty()) {
+                            request.setAttribute("EmptyFieldError", "Bitte alle Felder ausfüllen");
+                            request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                        } else {
+                            if (sessionUser.getAdressCollection().size() == 1) {
+                                List<Adress> adressList = (List<Adress>) session.getAttribute("adressList");
+                                Adress adress = adressList.get(0);
+                                if (!adress.getStreet().equals(request.getParameter("street"))) {
+                                    adressBean.changeCity(adress, request.getParameter("street"));
+                                }
+                                if (!adress.getHousenumber().equals(request.getParameter("housenumber"))) {
+                                    adressBean.changeHousenumber(adress, request.getParameter("housenumber"));
+                                }
+                                if (!adress.getPostalCode().equals(request.getParameter("postalcode"))) {
+                                    adressBean.changePostalcode(adress, request.getParameter("postalcode"));
+                                }
+                                if (!adress.getCity().equals(request.getParameter("city"))) {
+                                    adressBean.changeCity(adress, request.getParameter("city"));
+                                }
+                                if (!adress.getCountry().equals(request.getParameter("country"))) {
+                                    adressBean.changeCountry(adress, request.getParameter("country"));
+                                }
+                                if (!adress.getRegion().equals(request.getParameter("region"))) {
+                                    adressBean.changeRegion(adress, request.getParameter("region"));
+                                }
+                                request.setAttribute("AdressChanged", "Adresse aktualisiert");
+                                request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    break;
             }
         }
     }

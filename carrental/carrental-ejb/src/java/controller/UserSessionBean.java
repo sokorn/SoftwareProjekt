@@ -70,31 +70,58 @@ public class UserSessionBean implements UserSessionBeanLocal {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @Override
+    public boolean changePassword(User user, String oldPassword, String newPassword) {
+        Query query = entityManager.createNamedQuery("User.login");
+        query.setParameter("login", user.getMail());
+        List queryResult = query.getResultList();
+        if (queryResult.size() == 1) {
+            String oldHashedPassword = Password.hashPassword(oldPassword);
+            if (user.getPasswordhash().equals(oldHashedPassword)) {
+                String newHashesPassword = Password.hashPassword(newPassword);
+                user.setPasswordhash(newHashesPassword);
+                entityManager.merge(user);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void changeFirstname(User user, String newFirstname) {
         user.setFirstname(newFirstname);
-        entityManager.merge(this);
+        entityManager.merge(user);
         entityManager.flush();
     }
 
     @Override
     public void changeLastname(User user, String newLastname) {
         user.setFirstname(newLastname);
-        entityManager.merge(this);
+        entityManager.merge(user);
         entityManager.flush();
     }
 
     @Override
     public void changeMail(User user, String newMail) {
         user.setFirstname(newMail);
-        entityManager.merge(this);
+        entityManager.merge(user);
         entityManager.flush();
     }
 
     @Override
     public void changeTitle(User user, String newTitle) {
         user.setFirstname(newTitle);
-        entityManager.merge(this);
+        entityManager.merge(user);
         entityManager.flush();
     }
 

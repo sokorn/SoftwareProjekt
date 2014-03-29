@@ -10,6 +10,7 @@
     <body>
         <%@include file="templates/head.jsp" %>
         <div class="main">
+            <div>${NotLoggedInError}</div>
             <form method="post" action="/carrental-war/servlet?step=search">
                 <p>
                     <select name="brand">

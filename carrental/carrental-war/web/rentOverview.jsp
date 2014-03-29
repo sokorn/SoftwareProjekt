@@ -11,7 +11,7 @@
     <body>
         <%@include file="templates/head.jsp" %>
         <div class="main">
-            <%                Rent rent = (Rent) session.getAttribute("rent");
+            <%  Rent rent = (Rent) session.getAttribute("rent");
                 Car car = rent.getCarmodelId();
             %>
             <h1>Übersicht:</h1>

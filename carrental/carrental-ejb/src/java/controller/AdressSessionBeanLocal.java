@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.List;
 import javax.ejb.Local;
 import model.Adress;
 import model.User;
@@ -22,5 +23,9 @@ public interface AdressSessionBeanLocal {
     public void changeShippingAdress(Adress adress, boolean isShippingAdress);
 
     public void changeInvoiceAdress(Adress adress, boolean isInvoiceAddress);
+
+    public List<Adress> getAdresses(User user);
+
+    public void changeRegion(Adress adress, String newRegion);
 
 }

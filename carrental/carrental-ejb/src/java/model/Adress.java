@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Adress.findByCountry", query = "SELECT a FROM Adress a WHERE a.country = :country"),
     @NamedQuery(name = "Adress.findByRegion", query = "SELECT a FROM Adress a WHERE a.region = :region"),
     @NamedQuery(name = "Adress.findByPostalCode", query = "SELECT a FROM Adress a WHERE a.postalCode = :postalCode"),
+    @NamedQuery(name = "Adress.findByUserId", query = "SELECT a FROM Adress a WHERE a.useruserId = :userId"),
     @NamedQuery(name = "Adress.findByIsShippingAdress", query = "SELECT a FROM Adress a WHERE a.isShippingAdress = :isShippingAdress"),
     @NamedQuery(name = "Adress.findByIsInvoiceAddress", query = "SELECT a FROM Adress a WHERE a.isInvoiceAddress = :isInvoiceAddress")})
 
