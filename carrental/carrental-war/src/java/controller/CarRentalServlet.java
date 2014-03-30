@@ -152,6 +152,10 @@ public class CarRentalServlet extends HttpServlet {
                                     true, true, request.getParameter("region"), user);
                             userBean.addAdressToUser(user, adress);
                             session.setAttribute("user", user);
+                            sessionUser = (User) session.getAttribute("user");
+                            List<Adress> adressList = adressBean.getAdresses(sessionUser);
+                            session.setAttribute("adressList", adressList);
+                            sessionAdressList = (List<Adress>) session.getAttribute("adressList");
                         }
                         if (user == null) {
                             request.getRequestDispatcher("/register.jsp").forward(request, response);
@@ -245,6 +249,11 @@ public class CarRentalServlet extends HttpServlet {
                     if (sessionUser == null) {
                         request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     } else {
+                        if (sessionAdressList == null) {
+                            List<Adress> adressList = adressBean.getAdresses(sessionUser);
+                            session.setAttribute("adressList", adressList);
+                            sessionAdressList = (List<Adress>) session.getAttribute("adressList");
+                        }
                         Rent rent = (Rent) session.getAttribute("rent");
                         if (rent.getCarmodelId().isAvailable()) {
                             rentBean.blockCar(rent.getCarmodelId());
