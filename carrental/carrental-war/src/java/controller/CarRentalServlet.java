@@ -43,6 +43,7 @@ public class CarRentalServlet extends HttpServlet {
 
         String currentStep = request.getParameter("step");
         HttpSession session = request.getSession();
+        session.setAttribute("action", currentStep);
 
         sessionUser = (User) session.getAttribute("user");
         sessionAdressList = (List<Adress>) session.getAttribute("adressList");
@@ -279,7 +280,21 @@ public class CarRentalServlet extends HttpServlet {
                         request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
                     }
                     break;
-                case "changes":
+                case "adressChanges":
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                    }
+                    break;
+                case "pwdChanges":
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                    }
+                    break;
+                case "persDataChanges":
                     if (sessionUser == null) {
                         request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     } else {
@@ -377,6 +392,18 @@ public class CarRentalServlet extends HttpServlet {
                             }
                         }
                     }
+                    break;
+                case "deleteAcc":
+                    if(sessionUser == null){
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
+                    }
+                    break;
+                case "confirmDelete":
+                    /**
+                     * TODO @Sören
+                     */
                     break;
                 default:
                     request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);

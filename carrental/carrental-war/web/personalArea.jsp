@@ -22,8 +22,8 @@
                 <div>Nachname: <%=user.getLastname()%></div>
                 <div>Geburtstag: <%=user.getBirthdate()%></div>
                 <div>Mail: <%=user.getMail()%></div>
-                <div><a href="/carrental-war/servlet?step=changes" onclick="<%session.setAttribute("action", "personalData");%>">Persönliche Daten ändern</a></div>
-                <div><a href="/carrental-war/servlet?step=changes" onclick="<%session.setAttribute("action", "password");%>">Passwort ändern</a></div>
+                <div><a href="/carrental-war/servlet?step=persDataChanges">Persönliche Daten ändern</a></div>
+                <div><a href="/carrental-war/servlet?step=pwdChanges">Passwort ändern</a></div>
                 <%  if (user.getAdressCollection().size() == 1) {
                         List<Adress> adressList = (List<Adress>) session.getAttribute("adressList");
                         Adress adress = adressList.get(0);
@@ -39,12 +39,16 @@
                 <div><%=adress.getCountry()%></div>
                 <% }
                 %>
-                <div><a href="/carrental-war/servlet?step=changes" onclick="<%session.setAttribute("action", "adress");%>">Adresse ändern</a></div>
+                <div><a href="/carrental-war/servlet?step=adressChanges">Adresse ändern</a></div>
+                <form method="post" action="/carrental-war/servlet?step=deleteAcc">
+                    <p><input type="submit" value="Konto löschen" /></p>
+                </form>
             </div>
             ${SuccessfulRent}
             ${passwordChanged}
             ${persDataChanged}
             ${RentError}
+            ${AdressChanged}
         </div>
         <%@include file="templates/footer.jsp" %>
     </body>
