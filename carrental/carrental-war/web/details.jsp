@@ -1,3 +1,5 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@page import="model.Car"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -26,11 +28,13 @@
                     <div>Preis <%=car.getPrice()%> Euro/Tag</div>
                 </div>
                 <%
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    String dateString = formatter.format(new Date());
                     if (car.isAvailable()) {
                 %>
                 <form method="post" action="/carrental-war/servlet?step=rentOverview&id=<%=car.getCarId()%>">
-                    <p>Startdatum: <input type="date" name="startdate" />${WrongStartDate}</p>
-                    <p>Enddatum: <input type="date" name="enddate" />${WrongEndDate}</p>
+                    <p>Startdatum: <input type="date" name="startdate" min="<%=dateString%>"/>${WrongStartDate}</p>
+                    <p>Enddatum: <input type="date" name="enddate" min="<%=dateString%>"/>${WrongEndDate}</p>
                     <p><input type="submit" value="Buchungsübersicht" /></p>
                 </form>
                 <%
