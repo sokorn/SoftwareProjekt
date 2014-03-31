@@ -394,16 +394,63 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "deleteAcc":
-                    if(sessionUser == null){
+                    if (sessionUser == null) {
                         request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     } else {
-                        request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
+                        User user = sessionUser;
+                        List<Rent> rentList = rentBean.getRents(user);
+                        if (rentList == null) {
+                            request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
+                        } else {
+                            if (rentBean.activeRents(user)) {
+                                request.setAttribute("ActiveRentsError", "Sie können Ihr Konto nicht löschen, wenn Sie aktive Buchungen haben");
+                                request.getRequestDispatcher("/personalArea.jsp?step=personal").forward(request, response);
+                            } else {
+                                request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
+                            }
+                        }
+
                     }
                     break;
                 case "confirmDelete":
-                    /**
-                     * TODO @Sören
-                     */
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        if (request.getParameter("email").isEmpty() || request.getParameter("password").isEmpty()) {
+                            request.setAttribute("EmptyFieldError", "Bitte alle Felder ausfüllen");
+                            request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
+                        } else if (!sessionUser.getMail().equals(request.getParameter("email"))) {
+                            request.setAttribute("WrongMailError", "Bitte geben Sie die richtige Mail an");
+                            request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
+                        } else {
+                            if (userBean.confirmPassword(request.getParameter("email"), request.getParameter("password"))) {
+                                User user = sessionUser;
+                                List<Adress> adressList = adressBean.getAdresses(user);
+                                if (adressList == null) {
+                                } else {
+                                    for (Adress adress : adressList) {
+                                        adressBean.removeAdress(adress);
+                                    }
+                                }
+                                List<Rent> rentList = rentBean.getRents(user);
+                                if (rentList == null) {
+                                } else {
+                                    for (Rent rent : rentList) {
+                                        rentBean.removeRent(rent);
+                                    }
+                                }
+                                userBean.removeUser(user);
+                                session.removeAttribute("user");
+                                session.removeAttribute("adressList");
+                                session.invalidate();
+                                request.setAttribute("AccDeleteDone", "Ihr Konto wurde erfolgreich gelöscht");
+                                request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                            } else {
+                                request.setAttribute("PasswordError", "Falsches Passwort");
+                                request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
+                            }
+                        }
+                    }
                     break;
                 default:
                     request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);

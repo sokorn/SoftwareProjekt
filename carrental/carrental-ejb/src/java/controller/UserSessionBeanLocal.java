@@ -25,4 +25,8 @@ public interface UserSessionBeanLocal {
     
     public boolean changePassword(User user, String oldPassword, String newPassword);
 
+    public boolean confirmPassword(String login, String password);
+
+    public void removeUser(User user);
+
 }

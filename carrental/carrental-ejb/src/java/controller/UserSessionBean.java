@@ -70,6 +70,20 @@ public class UserSessionBean implements UserSessionBeanLocal {
         }
     }
 
+    @Override
+    public boolean confirmPassword(String login, String password) {
+        Query query = entityManager.createNamedQuery("User.login");
+        query.setParameter("login", login);
+        List queryResult = query.getResultList();
+        if (queryResult.size() == 1) {
+            User user = (User) queryResult.get(0);
+            String hashedPassword = Password.hashPassword(password);
+            return user.getPasswordhash().equals(hashedPassword);
+        } else {
+            return false;
+        }
+    }
+
     /**
      *
      * @param user
@@ -150,4 +164,10 @@ public class UserSessionBean implements UserSessionBeanLocal {
         return !queryResult.isEmpty();
     }
 
+    @Override
+    public void removeUser(User user) {
+        user = entityManager.merge(user);
+        entityManager.remove(user);
+        entityManager.flush();
+    }
 }

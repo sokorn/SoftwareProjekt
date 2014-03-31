@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 import model.Car;
 import model.Rent;
@@ -26,4 +27,10 @@ public interface RentSessionBeanLocal {
     public int getLengthOfRent(Date startDate, Date endDate);
 
     public void persistRent(Rent rent);
+
+    public List<Rent> getRents(User user);
+
+    public boolean activeRents(User user);
+
+    public void removeRent(Rent rent);
 }

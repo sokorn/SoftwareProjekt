@@ -23,6 +23,12 @@
             <%  } else if (currentStep.equals("persDataChanges")) {
             %>
             <form method="post" action="/carrental-war/servlet?step=changPersData">
+                <p>Anrede: 
+                    <select name="title">
+                        <option value="Herr">Herr</option>
+                        <option value="Frau">Frau</option>
+                    </select>
+                </p>
                 <p>Vorname: <input type="text" name="firstname" value="<%=user.getFirstname()%>"/></p>
                 <p>Nachname: <input type="text" name="lastname" value="<%=user.getLastname()%>"/></p>
                 <p>Mail: <input type="email" name="email1" value="<%=user.getMail()%>"/></p>

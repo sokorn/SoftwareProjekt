@@ -1,6 +1,11 @@
 package controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import model.*;
@@ -42,6 +47,36 @@ public class RentSessionBean implements RentSessionBeanLocal {
     public void persistRent(Rent rent) {
         entityManager.persist(rent);
         entityManager.flush();
+    }
+
+    @Override
+    public List<Rent> getRents(User user) {
+        Query query = entityManager.createNamedQuery("Rent.findByUser");
+        query.setParameter("useruserId", user);
+        List queryResult = query.getResultList();
+        if (queryResult.size() > 0) {
+            return queryResult;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean activeRents(User user) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(new Date());
+        Date date = null;
+        try {
+            date = formatter.parse(dateString);
+        } catch (ParseException ex) {
+            Logger.getLogger(RentSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Query query = entityManager.createNamedQuery("Rent.findActiveRents");
+        query.setParameter("useruserId", user);
+        query.setParameter("date", date);
+        List queryResult = query.getResultList();
+        return queryResult.size() > 0;
+
     }
 
     /**
@@ -94,7 +129,6 @@ public class RentSessionBean implements RentSessionBeanLocal {
         entityManager.flush();
     }
 
-
     /**
      * ändert den Buchungsbeginn einer Buchung
      *
@@ -116,12 +150,18 @@ public class RentSessionBean implements RentSessionBeanLocal {
     public void changeEndDate(Rent rent, Date endDate) {
         rent.setEnddate(endDate);
     }
-    
+
     // berechnet die Dauer der Buchung in Tagen, falls nur 1 Tag gebucht wird gib 1 zurück
     @Override
     public int getLengthOfRent(Date startDate, Date endDate) {
         int diffInDays = (int) ((endDate.getTime() - startDate.getTime())
                 / (1000 * 60 * 60 * 24));
-        return (diffInDays==0) ? 1 : diffInDays+1;
+        return (diffInDays == 0) ? 1 : diffInDays + 1;
     }
+    
+    @Override
+    public void removeRent(Rent rent){
+        entityManager.remove(rent);
+    }
+
 }

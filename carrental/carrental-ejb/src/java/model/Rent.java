@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Rent.findAll", query = "SELECT r FROM Rent r"),
     @NamedQuery(name = "Rent.findByRentId", query = "SELECT r FROM Rent r WHERE r.rentId = :rentId"),
+    @NamedQuery(name = "Rent.findByUser", query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId"),
+    @NamedQuery(name = "Rent.findActiveRents", query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId AND (:date BETWEEN r.startdate AND r.enddate OR :date < r.startdate)"),
     @NamedQuery(name = "Rent.findByTotalPrice", query = "SELECT r FROM Rent r WHERE r.totalPrice = :totalPrice"),
     @NamedQuery(name = "Rent.findByLength", query = "SELECT r FROM Rent r WHERE r.length = :length"),
     @NamedQuery(name = "Rent.findByStartdate", query = "SELECT r FROM Rent r WHERE r.startdate = :startdate"),

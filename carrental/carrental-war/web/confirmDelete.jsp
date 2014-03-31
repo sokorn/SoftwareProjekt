@@ -17,6 +17,11 @@
                 <p>Passwort: <input type="password" name="password"/></p>
                 <p><input type="submit" value="Entgültig löschen" /></p>
             </form>
+            <div>
+                ${EmptyFieldError}
+                ${WrongMailError}
+                ${PasswordError}
+            </div>
         </div>
         <%@include file="templates/footer.jsp" %>
     </body>

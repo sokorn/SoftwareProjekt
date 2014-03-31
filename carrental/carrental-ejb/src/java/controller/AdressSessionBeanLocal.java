@@ -28,4 +28,6 @@ public interface AdressSessionBeanLocal {
 
     public void changeRegion(Adress adress, String newRegion);
 
+    public void removeAdress(Adress adress);
+
 }

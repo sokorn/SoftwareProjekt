@@ -49,6 +49,7 @@
             ${persDataChanged}
             ${RentError}
             ${AdressChanged}
+            ${ActiveRentsError}
         </div>
         <%@include file="templates/footer.jsp" %>
     </body>
