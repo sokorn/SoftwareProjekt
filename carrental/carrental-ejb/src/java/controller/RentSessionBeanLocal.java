@@ -18,8 +18,6 @@ public interface RentSessionBeanLocal {
 
     public void cancelRent(Rent rent);
 
-    public void unBlockCar(Car car);
-
     public void changeStartDate(Rent rent, Date startDate);
 
     public void changeEndDate(Rent rent, Date endDate);

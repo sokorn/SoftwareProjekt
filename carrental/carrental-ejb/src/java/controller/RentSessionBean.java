@@ -1,11 +1,10 @@
 package controller;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ejb.Timer;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import model.*;
@@ -65,12 +64,7 @@ public class RentSessionBean implements RentSessionBeanLocal {
     public boolean activeRents(User user) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(new Date());
-        Date date = null;
-        try {
-            date = formatter.parse(dateString);
-        } catch (ParseException ex) {
-            Logger.getLogger(RentSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Date date = DateParser.parseToDate(dateString);
         Query query = entityManager.createNamedQuery("Rent.findActiveRents");
         query.setParameter("useruserId", user);
         query.setParameter("date", date);
@@ -106,16 +100,28 @@ public class RentSessionBean implements RentSessionBeanLocal {
     }
 
     /**
-     * setzt den Status des Autos auf verfügbar/nicht ausgeliehen
+     * Timer der jeden Tag um 18:30 Uhr über alle Buchungen iteriert und das
+     * Auto der Buchung wieder auf verfügbar setzt, falls das Enddatum der Buchung
+     * erreicht ist
      *
-     * @param car
+     * @param timer
+     * 
      */
-    @Override
-    public void unBlockCar(Car car) {
-        if (!car.isAvailable()) {
-            car.setAvailable(true);
-            entityManager.merge(car);
+    
+    @Schedule(second="*",minute="30",hour="18")
+    public void automaticUnblockCarTimer(Timer timer) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(new Date());
+        Date date = DateParser.parseToDate(dateString);
+        Query query = entityManager.createNamedQuery("Rent.findAll");
+        List<Rent> queryResult = query.getResultList();
+        for(Rent rent : queryResult){
+            if(rent.getEnddate().before(date) || rent.getEnddate().equals(date)){
+                rent.getCarmodelId().setAvailable(true);
+                entityManager.merge(rent.getCarmodelId());
+            }
         }
+        timer.cancel();
     }
 
     /**
@@ -161,6 +167,7 @@ public class RentSessionBean implements RentSessionBeanLocal {
     
     @Override
     public void removeRent(Rent rent){
+        rent = entityManager.merge(rent);
         entityManager.remove(rent);
     }
 
