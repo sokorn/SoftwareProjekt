@@ -3,8 +3,19 @@ package utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * stellt Methoden zum Hashen von Passwörtern bereit.
+ *
+ */
 public class Password {
 
+    /**
+     * öffentliche Methode, erhöht, die Sicherheit, da sie nicht direkt in
+     * anderen Klassen aufgerufen wird
+     *
+     * @param passwordToHash
+     * @return
+     */
     public static String hashPassword(String passwordToHash) {
         return hashing(passwordToHash);
     }

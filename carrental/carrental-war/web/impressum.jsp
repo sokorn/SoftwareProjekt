@@ -3,9 +3,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Impressum</title>
+        <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <%@include file="templates/head.jsp" %>
+        <div class="main">
+
+        </div>
+        <%@include file="templates/footer.jsp" %>
     </body>
 </html>

@@ -1,35 +1,51 @@
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Startseite</title> 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Startseite</title>
-        
+        <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
-        <div class="body">
-            <div id="topbar">
-                <div class="content">
-                    <span class="logo"></span>
-                    <nav>
-                        <ul></ul>
-                    </nav>
-                </div>
+        <%@include file="templates/head.jsp" %>
+        <div class="main">
+            <div>
+                ${NotLoggedInError}
+                ${AccDeleteDone}
             </div>
-            <div id="message"></div>
-            <div id="main">
-                <form method="post" action="/carrental-war/servlet?step=search">
-                    <p><input type="text" name="search" /></p>
-                    <p><input type="submit" value="Suchen" /></p>
-                </form>
-                <p><a href="/carrental-war/servlet?step=registerPage">Registrieren</a></p>
-                <p><a href="/carrental-war/servlet?step=loginPage">Anmelden</a></p>
-            </div>
+            <form method="post" action="/carrental-war/servlet?step=search">
+                <p>
+                    <select name="brand">
+                        <option value="0">Marke auswählen</option>
+                        <% if (!(session.getAttribute("brandList") == null)) {
+                                List<String> brandList = (List<String>) session.getAttribute("brandList");
+                                for (String brand : brandList) {
+                        %>
+                        <option value="<%=brand%>"><%=brand%></option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
+                    <select name="model">
+                        <option value="0">Model auswählen</option>
+                        <% if (!(session.getAttribute("modelList") == null)) {
+                                List<String> modelList = (List<String>) session.getAttribute("modelList");
+                                for (String model : modelList) {
+                        %>
+                        <option value="<%=model%>"><%=model%></option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
+                </p>
+                <p>
+                    <input type="submit" value="Suchen" />
+                </p>
+            </form>
         </div>
-        <div id="footer">
-            <nav>
-                <ul></ul>    
-            </nav>
-        </div>
+        <%@include file="templates/footer.jsp" %>
     </body>
 </html>

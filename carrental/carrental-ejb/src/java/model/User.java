@@ -21,6 +21,10 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * Benutzer Entität
+ */
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -31,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
     @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
     @NamedQuery(name = "User.login", query = "SELECT u from User u WHERE u.mail = :login")})
+
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -143,6 +148,7 @@ public class User implements Serializable {
         return adressCollection;
     }
 
+    // fügt dem Benutzer eine Adresse hinzu
     public void addAdress(Adress adress) {
         adressCollection.add(adress);
     }
@@ -152,33 +158,8 @@ public class User implements Serializable {
         return rentCollection;
     }
 
-    public void setRentCollection(Collection<Rent> rentCollection) {
-        this.rentCollection = rentCollection;
+    // fügt dem Benutzer eine Buchung hinzu
+    public void addRent(Rent rent) {
+        rentCollection.add(rent);
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (userId != null ? userId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
-            return false;
-        }
-        User other = (User) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.User[ userId=" + userId + " ]";
-    }
-
 }

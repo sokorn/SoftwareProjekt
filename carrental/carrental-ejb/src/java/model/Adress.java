@@ -16,6 +16,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * Entität für Adressen von Benutzern
+ */
 @Entity
 @Table(name = "adress")
 @XmlRootElement
@@ -28,8 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Adress.findByCountry", query = "SELECT a FROM Adress a WHERE a.country = :country"),
     @NamedQuery(name = "Adress.findByRegion", query = "SELECT a FROM Adress a WHERE a.region = :region"),
     @NamedQuery(name = "Adress.findByPostalCode", query = "SELECT a FROM Adress a WHERE a.postalCode = :postalCode"),
+    @NamedQuery(name = "Adress.findByUserId", query = "SELECT a FROM Adress a WHERE a.useruserId = :userId"),
     @NamedQuery(name = "Adress.findByIsShippingAdress", query = "SELECT a FROM Adress a WHERE a.isShippingAdress = :isShippingAdress"),
     @NamedQuery(name = "Adress.findByIsInvoiceAddress", query = "SELECT a FROM Adress a WHERE a.isInvoiceAddress = :isInvoiceAddress")})
+
 public class Adress implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -78,16 +84,10 @@ public class Adress implements Serializable {
     @ManyToOne(optional = false)
     private User useruserId;
 
-    
-
     public Adress() {
     }
 
-    public Adress(Integer adressId) {
-        this.adressId = adressId;
-    }
-
-    public Adress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress) {
+    public Adress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region) {
         this.street = street;
         this.housenumber = housenumber;
         this.city = city;
@@ -95,14 +95,11 @@ public class Adress implements Serializable {
         this.postalCode = postalCode;
         this.isShippingAdress = isShippingAdress;
         this.isInvoiceAddress = isInvoiceAddress;
+        this.region = region;
     }
 
     public Integer getAdressId() {
         return adressId;
-    }
-
-    public void setAdressId(Integer adressId) {
-        this.adressId = adressId;
     }
 
     public String getStreet() {
@@ -176,30 +173,4 @@ public class Adress implements Serializable {
     public void setUseruserId(User useruserId) {
         this.useruserId = useruserId;
     }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (adressId != null ? adressId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Adress)) {
-            return false;
-        }
-        Adress other = (Adress) object;
-        if ((this.adressId == null && other.adressId != null) || (this.adressId != null && !this.adressId.equals(other.adressId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.Adress[ adressId=" + adressId + " ]";
-    }
-
 }

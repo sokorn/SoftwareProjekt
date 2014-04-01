@@ -1,30 +1,65 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="model.Adress"%>
+<%@page import="model.Adress"%>
+<%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Persönlicher Bereich</title>
+        <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
-        <div class="body">
-            <div id="topbar">
-                <a href="/carrental-war/servlet?step=index">zur Startseite</a>
-                <div class="content">
-                    <span class="logo"></span>
-                    <nav>
-                        <ul></ul>
-                    </nav>
-                </div>
+        <%@include file="templates/head.jsp" %>
+        <div class="main">
+            <%  user = (User) session.getAttribute("user");
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                String birthdate = formatter.format(user.getBirthdate());
+            %>
+            <div>
+                <h3>Persönliche Daten:</h3>
+                <div>Anrede: <%=user.getTitle()%></div>
+                <div>Vorname: <%=user.getFirstname()%></div>
+                <div>Nachname: <%=user.getLastname()%></div>
+                <div>Geburtstag: <%=birthdate%></div>
+                <div>Mail: <%=user.getMail()%></div>
+                <div><a href="/carrental-war/servlet?step=persDataChanges">Persönliche Daten ändern</a></div>
+                <div><a href="/carrental-war/servlet?step=pwdChanges">Passwort ändern</a></div>
+                <%  if (user.getAdressCollection().size() == 1) {
+                        List<Adress> adressList = (List<Adress>) session.getAttribute("adressList");
+                        Adress adress = adressList.get(0);
+                %>
+                <div>Standardadresse:</div>
+                <div><%=adress.getStreet()%> <%=adress.getHousenumber()%></div>
+                <div><%=adress.getPostalCode()%> <%=adress.getCity()%></div>
+                <% if (adress.getRegion() != null) {
+                %>
+                <div><%=adress.getRegion()%></div>
+                <% }
+                %>
+                <div><%=adress.getCountry()%></div>
+                <% }
+                %>
+                <div><a href="/carrental-war/servlet?step=adressChanges">Adresse ändern</a></div>
+                <h4><a href="/carrental-war/servlet?step=personalRents">Meine Buchungen</a></h4>
+                <form method="post" action="/carrental-war/servlet?step=deleteAcc">
+                    <p><input type="submit" value="Konto löschen" /></p>
+                </form>
             </div>
-            <div id="message"></div>
-            <div id="main">
-                
+            <div class="messages">
+                ${SuccessfulRent}
+                ${passwordChanged}
+                ${persDataChanged}
+                ${RentError}
+                ${AdressChanged}
+                ${ActiveRentsError}
+                ${RentCancelled}
             </div>
+
         </div>
-        <div id="footer">
-            <nav>
-                <ul></ul>    
-            </nav>
-        </div>
+        <%@include file="templates/footer.jsp" %>
     </body>
 </html>
