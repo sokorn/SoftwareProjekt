@@ -105,7 +105,10 @@ public class CarRentalServlet extends HttpServlet {
                                 || request.getParameter("password1").isEmpty() || request.getParameter("password2").isEmpty()
                                 || request.getParameter("street").isEmpty() || request.getParameter("housenumber").isEmpty()
                                 || request.getParameter("postalcode").isEmpty() || request.getParameter("city").isEmpty()) {
+                            request.setAttribute("password1", null);
+                            request.setAttribute("password2", null);
                             request.setAttribute("EmptyFieldError", "Bitte alle mit * markierten Felder ausfüllen");
+                            request.getRequestDispatcher("/register.jsp").forward(request, response);
                         } /**
                          * Testen, ob die eingegebene Mail schon benutzt wird.
                          * Wenn ja, wird der Parameter MailInUseError auf der
@@ -113,7 +116,12 @@ public class CarRentalServlet extends HttpServlet {
                          * angezeigt.
                          */
                         else if (userBean.mailAlreadyUsed(request.getParameter("mail1"))) {
+                            request.setAttribute("mail1", null);
+                            request.setAttribute("mail2", null);
+                            request.setAttribute("password1", null);
+                            request.setAttribute("password2", null);
                             request.setAttribute("MailInUseError", "Email bereits benutzt!");
+                            request.getRequestDispatcher("/register.jsp").forward(request, response);
                         } /**
                          * Testen, ob es sich bei der eingegebenen Mail, um eine
                          * gültige Mail handelt. Wenn ja, wird der Parameter
@@ -121,7 +129,12 @@ public class CarRentalServlet extends HttpServlet {
                          * angegebene Nachricht angezeigt.
                          */
                         else if (!Validator.validateMail(request.getParameter("mail1"))) {
+                            request.setAttribute("mail1", null);
+                            request.setAttribute("mail2", null);
+                            request.setAttribute("password1", null);
+                            request.setAttribute("password2", null);
                             request.setAttribute("IllegalMailError", "Keine gültige Mailadresse");
+                            request.getRequestDispatcher("/register.jsp").forward(request, response);
                         } /**
                          * Testen, ob Mail und Wiederholung übereinstimmen. Wenn
                          * sie nicht übereinstimmen, wird der Parameter
@@ -129,7 +142,12 @@ public class CarRentalServlet extends HttpServlet {
                          * die angegebene Nachricht angezeigt.
                          */
                         else if (!request.getParameter("mail1").equals(request.getParameter("mail2"))) {
+                            request.setAttribute("mail1", null);
+                            request.setAttribute("mail2", null);
+                            request.setAttribute("password1", null);
+                            request.setAttribute("password2", null);
                             request.setAttribute("MailsNotEqualError", "Emails stimmen nicht überein!");
+                            request.getRequestDispatcher("/register.jsp").forward(request, response);
                         } /**
                          * Testen, ob die eingegebenen Passwörter
                          * übereinstimmen. Wenn sie nicht übereinstimmen, wird
@@ -137,7 +155,10 @@ public class CarRentalServlet extends HttpServlet {
                          * angegebene Nachricht angezeigt.
                          */
                         else if (!request.getParameter("password1").equals(request.getParameter("password2"))) {
+                            request.setAttribute("password1", null);
+                            request.setAttribute("password2", null);
                             request.setAttribute("PasswordsNotEqualError", "Passwörter stimmen nicht überein!");
+                            request.getRequestDispatcher("/register.jsp").forward(request, response);
                         } /**
                          * Wenn alle bisherigen Tests negativ waren, kann der
                          * User angelegt werden. Dazu werden die benötigten
