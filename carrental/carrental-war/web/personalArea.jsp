@@ -17,14 +17,14 @@
         <div class="main">
             <%  user = (User) session.getAttribute("user");
                 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                String dateString = formatter.format(user.getBirthdate());
+                String birthdate = formatter.format(user.getBirthdate());
             %>
             <div>
                 <div>Persönliche Daten:</div>
                 <div>Anrede: <%=user.getTitle()%></div>
                 <div>Vorname: <%=user.getFirstname()%></div>
                 <div>Nachname: <%=user.getLastname()%></div>
-                <div>Geburtstag: <%=dateString%></div>
+                <div>Geburtstag: <%=birthdate%></div>
                 <div>Mail: <%=user.getMail()%></div>
                 <div><a href="/carrental-war/servlet?step=persDataChanges">Persönliche Daten ändern</a></div>
                 <div><a href="/carrental-war/servlet?step=pwdChanges">Passwort ändern</a></div>

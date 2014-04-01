@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="model.Rent"%>
 <%@page import="model.Car"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,11 +14,14 @@
         <div class="main">
             <%  Rent rent = (Rent) session.getAttribute("rent");
                 Car car = rent.getCarmodelId();
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                String startdate = formatter.format(rent.getStartdate());
+                String enddate = formatter.format(rent.getEnddate());
             %>
             <h1>Übersicht:</h1>
             <div>Ausgewähltes Fahrzeug: <%=car.getBrandname()%> <%=car.getModelname()%></div>
-            <div>Beginn: <%=rent.getStartdate()%></div>
-            <div>Ende: <%=rent.getEnddate()%></div>
+            <div>Beginn: <%=startdate%></div>
+            <div>Ende: <%=enddate%></div>
             <div>Dauer: <%=rent.getLength()%> Tage</div>
             <div>Preis: <%=rent.getTotalPrice()%> Euro</div>
             <form method="post" action="/carrental-war/servlet?step=rent">
