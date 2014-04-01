@@ -25,6 +25,18 @@
                 <div>
                     Preis/Tag: <%=car.getPrice()%> €
                 </div>
+                <%  if (car.isAvailable()) {
+                %>
+                <div class="carAvailable">
+                    Verfügbar
+                </div>
+                <% } else {
+                %>
+                <div class="carNotAvailable">
+                    Zur Zeit nicht verfügbar
+                </div>
+                <%}
+                %>
             </div>
         </div>
         <%

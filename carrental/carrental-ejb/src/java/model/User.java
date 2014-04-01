@@ -147,7 +147,7 @@ public class User implements Serializable {
     public Collection<Adress> getAdressCollection() {
         return adressCollection;
     }
-    
+
     // fügt dem Benutzer eine Adresse hinzu
     public void addAdress(Adress adress) {
         adressCollection.add(adress);

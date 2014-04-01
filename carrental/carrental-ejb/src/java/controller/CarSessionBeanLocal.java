@@ -19,4 +19,6 @@ public interface CarSessionBeanLocal {
 
     public List<String> getNameListOfCarsOfSelectedBrand(String brandname);
 
+    public void unBlockCar(Car car);
+
 }

@@ -93,9 +93,9 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
         entityManager.merge(adress);
         entityManager.flush();
     }
-    
+
     @Override
-    public void removeAdress(Adress adress){
+    public void removeAdress(Adress adress) {
         adress = entityManager.merge(adress);
         entityManager.remove(adress);
         entityManager.flush();

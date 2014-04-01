@@ -20,7 +20,7 @@
                 String birthdate = formatter.format(user.getBirthdate());
             %>
             <div>
-                <div>Persönliche Daten:</div>
+                <h3>Persönliche Daten:</h3>
                 <div>Anrede: <%=user.getTitle()%></div>
                 <div>Vorname: <%=user.getFirstname()%></div>
                 <div>Nachname: <%=user.getLastname()%></div>
@@ -44,16 +44,21 @@
                 <% }
                 %>
                 <div><a href="/carrental-war/servlet?step=adressChanges">Adresse ändern</a></div>
+                <h4><a href="/carrental-war/servlet?step=personalRents">Meine Buchungen</a></h4>
                 <form method="post" action="/carrental-war/servlet?step=deleteAcc">
                     <p><input type="submit" value="Konto löschen" /></p>
                 </form>
             </div>
-            ${SuccessfulRent}
-            ${passwordChanged}
-            ${persDataChanged}
-            ${RentError}
-            ${AdressChanged}
-            ${ActiveRentsError}
+            <div class="messages">
+                ${SuccessfulRent}
+                ${passwordChanged}
+                ${persDataChanged}
+                ${RentError}
+                ${AdressChanged}
+                ${ActiveRentsError}
+                ${RentCancelled}
+            </div>
+
         </div>
         <%@include file="templates/footer.jsp" %>
     </body>

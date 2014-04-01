@@ -30,5 +30,5 @@ public interface RentSessionBeanLocal {
 
     public boolean activeRents(User user);
 
-    public void removeRent(Rent rent);
+    public Rent getRentById(Integer id);
 }

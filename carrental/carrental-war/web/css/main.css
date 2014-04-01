@@ -95,3 +95,20 @@ img{
 h1 {
     text-align: center;
 }
+
+.carAvailable {
+    color: green;
+}
+
+.carNotAvailable {
+    color: red;
+}
+
+.messages {
+    color: red;
+}
+
+table{
+    width: 100%;
+    table-layout: auto;
+}

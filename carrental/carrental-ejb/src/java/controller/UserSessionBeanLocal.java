@@ -22,7 +22,7 @@ public interface UserSessionBeanLocal {
     public void changeMail(User user, String newLastname);
 
     public void changeTitle(User user, String newLastname);
-    
+
     public boolean changePassword(User user, String oldPassword, String newPassword);
 
     public boolean confirmPassword(String login, String password);

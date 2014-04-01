@@ -37,6 +37,7 @@ public class CarRentalServlet extends HttpServlet {
 
     private User sessionUser;
     private List<Adress> sessionAdressList;
+    private List<Rent> sessionRentList;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,6 +48,7 @@ public class CarRentalServlet extends HttpServlet {
 
         sessionUser = (User) session.getAttribute("user");
         sessionAdressList = (List<Adress>) session.getAttribute("adressList");
+        sessionRentList = (List<Rent>) session.getAttribute("rentList");
 
         List<String> brandList = carBean.getNameList("brand");
         List<String> modelList = carBean.getNameList("model");
@@ -226,7 +228,6 @@ public class CarRentalServlet extends HttpServlet {
                             request.setAttribute("NotLoggedInError", "Bitte melden Sie sich an, bevor Sie buchen");
                             request.getRequestDispatcher("/details.jsp").forward(request, response);
                         } else {
-
                             int id = Integer.parseInt(request.getParameter("id"));
                             Car car = carBean.getCarById(id);
                             if (request.getParameter("startdate").equals("")) {
@@ -436,7 +437,7 @@ public class CarRentalServlet extends HttpServlet {
                                 if (rentList == null) {
                                 } else {
                                     for (Rent rent : rentList) {
-                                        rentBean.removeRent(rent);
+                                        rentBean.cancelRent(rent);
                                     }
                                 }
                                 userBean.removeUser(user);
@@ -450,6 +451,41 @@ public class CarRentalServlet extends HttpServlet {
                                 request.getRequestDispatcher("/confirmDelete.jsp").forward(request, response);
                             }
                         }
+                    }
+                    break;
+                case "personalRents":
+                    if (sessionUser == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        User user = sessionUser;
+                        List<Rent> rentList = rentBean.getRents(user);
+                        session.setAttribute("rentList", rentList);
+                        request.getRequestDispatcher("/personalRents.jsp").forward(request, response);
+                    }
+                    break;
+                case "cancelRent":
+                    if (request.getParameter("rentId") == null) {
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        if (sessionUser == null) {
+                            request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                        } else {
+                            int id = Integer.parseInt(request.getParameter("rentId"));
+                            Rent rent = rentBean.getRentById(id);
+                            session.setAttribute("rent", rent);
+                            request.getRequestDispatcher("/cancelRent.jsp").forward(request, response);
+                        }
+                    }
+                    break;
+                case "canceled":
+                    if(sessionUser == null){
+                        request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
+                    } else {
+                        Rent rent = (Rent) session.getAttribute("rent");
+                        carBean.unBlockCar(rent.getCarmodelId());
+                        rentBean.cancelRent(rent);
+                        request.setAttribute("RentCancelled", "Buchung wurde storniert");
+                        request.getRequestDispatcher("/personalArea.jsp").forward(request, response);
                     }
                     break;
                 default:

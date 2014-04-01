@@ -101,22 +101,21 @@ public class RentSessionBean implements RentSessionBeanLocal {
 
     /**
      * Timer der jeden Tag um 18:30 Uhr über alle Buchungen iteriert und das
-     * Auto der Buchung wieder auf verfügbar setzt, falls das Enddatum der Buchung
-     * erreicht ist
+     * Auto der Buchung wieder auf verfügbar setzt, falls das Enddatum der
+     * Buchung erreicht ist
      *
      * @param timer
-     * 
+     *
      */
-    
-    @Schedule(second="*",minute="30",hour="18")
+    @Schedule(second = "*", minute = "30", hour = "18")
     public void automaticUnblockCarTimer(Timer timer) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(new Date());
         Date date = DateParser.parseToDate(dateString);
         Query query = entityManager.createNamedQuery("Rent.findAll");
         List<Rent> queryResult = query.getResultList();
-        for(Rent rent : queryResult){
-            if(rent.getEnddate().before(date) || rent.getEnddate().equals(date)){
+        for (Rent rent : queryResult) {
+            if (rent.getEnddate().before(date) || rent.getEnddate().equals(date)) {
                 rent.getCarmodelId().setAvailable(true);
                 entityManager.merge(rent.getCarmodelId());
             }
@@ -131,6 +130,7 @@ public class RentSessionBean implements RentSessionBeanLocal {
      */
     @Override
     public void cancelRent(Rent rent) {
+        rent = entityManager.merge(rent);
         entityManager.remove(rent);
         entityManager.flush();
     }
@@ -157,6 +157,20 @@ public class RentSessionBean implements RentSessionBeanLocal {
         rent.setEnddate(endDate);
     }
 
+    @Override
+    public Rent getRentById(Integer id) {
+        Query idQuery;
+        idQuery = entityManager.createNamedQuery("Rent.findByRentId");
+        idQuery.setParameter("rentId", id);
+        List<Rent> rentList = idQuery.getResultList();
+        if (rentList.size() == 1) {
+            return rentList.get(0);
+        } else {
+            return null;
+        }
+
+    }
+
     // berechnet die Dauer der Buchung in Tagen, falls nur 1 Tag gebucht wird gib 1 zurück
     @Override
     public int getLengthOfRent(Date startDate, Date endDate) {
@@ -164,11 +178,4 @@ public class RentSessionBean implements RentSessionBeanLocal {
                 / (1000 * 60 * 60 * 24));
         return (diffInDays == 0) ? 1 : diffInDays + 1;
     }
-    
-    @Override
-    public void removeRent(Rent rent){
-        rent = entityManager.merge(rent);
-        entityManager.remove(rent);
-    }
-
 }

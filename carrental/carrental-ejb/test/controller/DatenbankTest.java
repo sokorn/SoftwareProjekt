@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import java.util.Date;
@@ -22,29 +21,29 @@ import static org.junit.Assert.*;
  * @author Marco
  */
 public class DatenbankTest {
-    
+
     public DatenbankTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
     /*
-    Date d = new Date();
-    Adress adress = new Adress();
+     Date d = new Date();
+     Adress adress = new Adress();
             
-    UserSessionBeanLocal usbl = BeanFactory.getUserSessionBean();
-    usbl.createUser("marco.rentschler@arcor.de ", d, "qler", "Mr.", "marco", "rentschler", "1234password", adress);*/
+     UserSessionBeanLocal usbl = BeanFactory.getUserSessionBean();
+     usbl.createUser("marco.rentschler@arcor.de ", d, "qler", "Mr.", "marco", "rentschler", "1234password", adress);*/
 }
