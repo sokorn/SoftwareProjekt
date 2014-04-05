@@ -1,8 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,74 +9,27 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * Entität für Adressen von Benutzern
  */
 @Entity
-@Table(name = "adress")
-@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Adress.findAll", query = "SELECT a FROM Adress a"),
-    @NamedQuery(name = "Adress.findByAdressId", query = "SELECT a FROM Adress a WHERE a.adressId = :adressId"),
-    @NamedQuery(name = "Adress.findByStreet", query = "SELECT a FROM Adress a WHERE a.street = :street"),
-    @NamedQuery(name = "Adress.findByHousenumber", query = "SELECT a FROM Adress a WHERE a.housenumber = :housenumber"),
-    @NamedQuery(name = "Adress.findByCity", query = "SELECT a FROM Adress a WHERE a.city = :city"),
-    @NamedQuery(name = "Adress.findByCountry", query = "SELECT a FROM Adress a WHERE a.country = :country"),
-    @NamedQuery(name = "Adress.findByRegion", query = "SELECT a FROM Adress a WHERE a.region = :region"),
-    @NamedQuery(name = "Adress.findByPostalCode", query = "SELECT a FROM Adress a WHERE a.postalCode = :postalCode"),
-    @NamedQuery(name = "Adress.findByUserId", query = "SELECT a FROM Adress a WHERE a.useruserId = :userId"),
-    @NamedQuery(name = "Adress.findByIsShippingAdress", query = "SELECT a FROM Adress a WHERE a.isShippingAdress = :isShippingAdress"),
-    @NamedQuery(name = "Adress.findByIsInvoiceAddress", query = "SELECT a FROM Adress a WHERE a.isInvoiceAddress = :isInvoiceAddress")})
+    @NamedQuery(name = "Adress.findByUserId", query = "SELECT a FROM Adress a WHERE a.useruserId = :userId")})
 
 public class Adress implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "adressId")
     private Integer adressId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "street")
     private String street;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 5)
-    @Column(name = "housenumber")
     private String housenumber;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "city")
     private String city;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "country")
     private String country;
-    @Size(max = 45)
-    @Column(name = "region")
     private String region;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "postalCode")
     private String postalCode;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "isShippingAdress")
     private boolean isShippingAdress;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "isInvoiceAddress")
     private boolean isInvoiceAddress;
     @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)

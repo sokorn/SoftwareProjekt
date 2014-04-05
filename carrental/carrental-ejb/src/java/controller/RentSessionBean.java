@@ -3,8 +3,6 @@ package controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.Timer;
-import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import model.*;

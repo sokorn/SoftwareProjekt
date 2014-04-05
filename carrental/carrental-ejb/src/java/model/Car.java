@@ -12,10 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -23,8 +21,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * Auto Entität
  */
 @Entity
-@Table(name = "car")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Car.findAll", query = "SELECT c FROM Car c"),
     @NamedQuery(name = "Car.findByCarId", query = "SELECT c FROM Car c WHERE c.carId = :carId"),
@@ -36,66 +32,23 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class Car implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "carId")
     private Integer carId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "tourque")
     private int tourque;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ccm")
     private double ccm;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "acceleration")
     private double acceleration;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "power")
     private int power;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "maxSpeed")
     private int maxSpeed;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "weight")
     private int weight;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "price")
     private double price;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "travellers")
     private int travellers;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "minAge")
     private int minAge;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "modelname")
     private String modelname;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "brandname")
     private String brandname;
-    @Size(max = 45)
-    @Column(name = "modelpicture")
     private String modelpicture;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "carmodelId")
     private Collection<Rent> rentCollection;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "available")
     private boolean available;
 
     public Car() {
