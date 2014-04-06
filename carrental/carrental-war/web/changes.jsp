@@ -56,6 +56,9 @@
             </form>
             <%  }
             %>
+            ${MailNotValideError}
+            ${MailAlreadyUsedError}
+            ${MailNotEqualError}
             ${EmptyFieldError} 
             ${PasswordsNotEqualError}
         </div>

@@ -358,6 +358,14 @@ public class CarRentalServlet extends HttpServlet {
                                 || request.getParameter("email1").isEmpty() || request.getParameter("email2").isEmpty()) {
                             request.setAttribute("EmptyFieldError", "Bitte alle Felder ausfüllen");
                             request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                        } else if (!sessionUser.getMail().equals(request.getParameter("email1"))
+                                && userBean.mailAlreadyUsed(request.getParameter("email1"))) {
+                            request.setAttribute("MailAlreadyUsedError", "Mailadresse ist bereist vorhanden");
+                            request.getRequestDispatcher("/changes.jsp").forward(request, response);
+                        } else if (!sessionUser.getMail().equals(request.getParameter("email1"))
+                                && !Validator.validateMail(request.getParameter("email1"))) {
+                            request.setAttribute("MailNotValideError", "Bitte geben Sie eine gültige Mailadresse ein");
+                            request.getRequestDispatcher("/changes.jsp").forward(request, response);
                         } else if (!request.getParameter("email1").equals(request.getParameter("email2"))) {
                             request.setAttribute("MailNotEqualError", "Mailadressen stimmen nicht überein");
                             request.getRequestDispatcher("/changes.jsp").forward(request, response);
@@ -499,7 +507,7 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "canceled":
-                    if(sessionUser == null){
+                    if (sessionUser == null) {
                         request.getRequestDispatcher("/index.jsp?step=index").forward(request, response);
                     } else {
                         Rent rent = (Rent) session.getAttribute("rent");

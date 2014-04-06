@@ -127,7 +127,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
 
     @Override
     public void changeMail(User user, String newMail) {
-        user.setFirstname(newMail);
+        user.setMail(newMail);
         entityManager.merge(user);
         entityManager.flush();
     }
