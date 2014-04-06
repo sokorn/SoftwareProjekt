@@ -40,12 +40,20 @@ public class RentSessionBean implements RentSessionBeanLocal {
         return rent;
     }
 
+    /**
+     * Speichert ein Buchungsobjekt in der DB
+     *
+     */
     @Override
     public void persistRent(Rent rent) {
         entityManager.persist(rent);
         entityManager.flush();
     }
 
+    /**
+     * Gibt alle Buchungen eines Benutzers als Liste zurück
+     *
+     */
     @Override
     public List<Rent> getRents(User user) {
         Query query = entityManager.createNamedQuery("Rent.findByUser");
@@ -58,6 +66,10 @@ public class RentSessionBean implements RentSessionBeanLocal {
         }
     }
 
+    /**
+     * prüft ob ein Benutzer aktive Buchungen hat
+     *
+     */
     @Override
     public boolean activeRents(User user) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

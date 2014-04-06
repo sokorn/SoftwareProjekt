@@ -7,6 +7,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import model.Car;
 
+/**
+ *
+ * stellt Methoden zum Umgang mit Autoobjekten bereit
+ */
+
 @Stateless(name = "CarSessionBean")
 public class CarSessionBean implements CarSessionBeanLocal {
 
@@ -57,6 +62,13 @@ public class CarSessionBean implements CarSessionBeanLocal {
         return modelQueryResult;
     }
 
+     /**
+     * Sucht Modelnamen von Autos an Hand des ausgewählten Markennamens
+     * aus der Datenbank
+     *
+     * @param brandname ist der Markenname, der in der JSP ausgewählt wird
+     * @return
+     */
     @Override
     public List<String> getNameListOfCarsOfSelectedBrand(String brandname) {
         Query brandQuery;
@@ -66,11 +78,23 @@ public class CarSessionBean implements CarSessionBeanLocal {
         return modelQueryResult;
     }
     
+     /**
+     * Setzt ein nicht verfügbares/gebuchtes Auto auf
+     * verfügbar/buchbar
+     *
+     * @param car
+     */
     @Override
     public void unBlockCar(Car car){
         car.setAvailable(true);
     }
 
+     /**
+     * Sucht ein Auto anhand seiner ID in der Datenbank
+     *
+     * @param id
+     * @return 
+     */
     @Override
     public Car getCarById(Integer id) {
         Query idQuery;
@@ -85,6 +109,14 @@ public class CarSessionBean implements CarSessionBeanLocal {
 
     }
 
+     /**
+     * Gibt eine Liste aller Automarken aus der DB zurück
+     * Gibt eine Liste von Automodellen aus der DB zurück
+     * Beide Listen sind ohne Duplikate und Alphabetisch sortiert
+     *
+     * @param type
+     * @return 
+     */
     @Override
     public List<String> getNameList(String type) {
         List<String> nameList;

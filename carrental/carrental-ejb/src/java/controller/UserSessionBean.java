@@ -13,7 +13,7 @@ import utils.Password;
 
 /**
  *
- * stellt Methoden zum Umgang mit Usern bereit
+ * stellt Methoden zum Umgang mit Userobjekten bereit
  */
 @Stateless(name = "UserSessionBean")
 public class UserSessionBean implements UserSessionBeanLocal {
@@ -164,6 +164,10 @@ public class UserSessionBean implements UserSessionBeanLocal {
         return !queryResult.isEmpty();
     }
 
+    /**
+     * löscht einen Benutzer aus der Datenbank
+     *
+     */
     @Override
     public void removeUser(User user) {
         user = entityManager.merge(user);

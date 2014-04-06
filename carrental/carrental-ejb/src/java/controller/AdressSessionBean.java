@@ -17,6 +17,19 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * erstellt ein Adressobjekt
+     * @param street
+     * @param housenumber
+     * @param city
+     * @param country
+     * @param isShippingAdress
+     * @param userID
+     * @param postalCode
+     * @param isInvoiceAddress
+     * @param region
+     * @return 
+     */
     @Override
     public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region, User userID) {
         Adress adress = new Adress(street, housenumber, city, country, postalCode, isShippingAdress, isInvoiceAddress, region);
@@ -26,6 +39,12 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
         return adress;
     }
 
+    /**
+     * Gibt alle Adressen eines Benutzers als Liste zurück
+     *
+     * @param user
+     * @return 
+     */
     @Override
     public List<Adress> getAdresses(User user) {
         Query query = entityManager.createNamedQuery("Adress.findByUserId");
@@ -94,6 +113,10 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
         entityManager.flush();
     }
 
+    /**
+     * Löscht ein Adressobjekt aus der Datenbank
+     * @param adress
+     */
     @Override
     public void removeAdress(Adress adress) {
         adress = entityManager.merge(adress);
