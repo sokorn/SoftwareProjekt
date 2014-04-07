@@ -12,7 +12,7 @@
     } else {
     %>
     <div class="footer">
-        Copyright Car Rental - <a href="/carrental-war/servlet?step=impressum">Impressum</a>
+        Copyright Car Rental
     </div>
     <%
         }

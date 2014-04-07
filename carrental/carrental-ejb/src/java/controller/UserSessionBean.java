@@ -24,9 +24,12 @@ public class UserSessionBean implements UserSessionBeanLocal {
     /**
      * erstellt ein Userobjekt und speichert es in die Datenbank.
      *
-     * @param password wird gehashed in der Datenbank gespeichert
-     * @param birthday wird von der Methode parseToDate von einem String in ein
-     * Dateobjekt gewandelt
+     * @param title Titel des Users
+     * @param firstname Vorname des Users
+     * @param password gehashed Passwort
+     * @param lastname Nachname des Users
+     * @param birthday Geburtsdatum des Users
+     * @param mail EMailadresse, sowie Login des Users
      *
      * @return gibt das gespeicherte Userobjekt an das Servlet zurück
      */
@@ -45,10 +48,8 @@ public class UserSessionBean implements UserSessionBeanLocal {
      * dem Loginnamen gesucht und danach das in der Datenbank vorhandene
      * Passwort mit dem eingegebenen und gehashed Passwort verglichen.
      *
-     * @param login Datenbankabfrage, ob die angegebene Mail hier gespeichert
-     * ist.
-     * @param password wird gehashed und mit dem in der Datenbank gespeicherten
-     * Wert verglichen
+     * @param login
+     * @param password
      * @return Gibt das Userobjekt zurück, auf das die Mail und das Passwort
      * passen
      */
@@ -70,6 +71,12 @@ public class UserSessionBean implements UserSessionBeanLocal {
         }
     }
 
+    /**
+     *
+     * @param login
+     * @param password
+     * @return
+     */
     @Override
     public boolean confirmPassword(String login, String password) {
         Query query = entityManager.createNamedQuery("User.login");
@@ -111,6 +118,11 @@ public class UserSessionBean implements UserSessionBeanLocal {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @param newFirstname
+     */
     @Override
     public void changeFirstname(User user, String newFirstname) {
         user.setFirstname(newFirstname);
@@ -118,13 +130,23 @@ public class UserSessionBean implements UserSessionBeanLocal {
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param user
+     * @param newLastname
+     */
     @Override
     public void changeLastname(User user, String newLastname) {
-        user.setFirstname(newLastname);
+        user.setLastname(newLastname);
         entityManager.merge(user);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param user
+     * @param newMail
+     */
     @Override
     public void changeMail(User user, String newMail) {
         user.setMail(newMail);
@@ -132,9 +154,14 @@ public class UserSessionBean implements UserSessionBeanLocal {
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param user
+     * @param newTitle
+     */
     @Override
     public void changeTitle(User user, String newTitle) {
-        user.setFirstname(newTitle);
+        user.setTitle(newTitle);
         entityManager.merge(user);
         entityManager.flush();
     }
@@ -167,6 +194,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
     /**
      * löscht einen Benutzer aus der Datenbank
      *
+     * @param user
      */
     @Override
     public void removeUser(User user) {
