@@ -10,8 +10,8 @@
         <%@include file="templates/head.jsp" %>
         <div class="main">
             <form method="post" action="/carrental-war/servlet?step=login">
-                <p>Login: <input type="text" name="login" value="test@test.com"/></p>
-                <p>Passwort: <input type="password" name="password" value="test"/></p>
+                <p>Login: <input type="text" name="login"/></p>
+                <p>Passwort: <input type="password" name="password"/></p>
                 <p><input type="submit" value="Anmelden" /></p>
             </form>
             <p>${LoginError}</p>
