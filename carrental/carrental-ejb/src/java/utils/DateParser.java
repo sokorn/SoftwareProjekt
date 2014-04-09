@@ -8,14 +8,18 @@ import java.util.Date;
  * wandelt ein Stringdatum des formats dd-MM-yyyy in ein Date Objekt um
  *
  */
-public class DateParser {
+public class DateParser
+{
 
-    public static Date parseToDate(String stringDate) {
+    public static Date parseToDate(String stringDate)
+    {
         Date birthdate = null;
-        try {
+        try
+        {
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
             birthdate = dt.parse(stringDate);
-        } catch (ParseException ex) {
+        } catch (ParseException ex)
+        {
         }
         return birthdate;
     }

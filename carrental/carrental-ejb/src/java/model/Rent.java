@@ -21,12 +21,19 @@ import javax.validation.constraints.NotNull;
  * Buchungs Entität
  */
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "Rent.findByRentId", query = "SELECT r FROM Rent r WHERE r.rentId = :rentId"),
-    @NamedQuery(name = "Rent.findByUser", query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId"),
-    @NamedQuery(name = "Rent.findActiveRents", query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId AND (:date BETWEEN r.startdate AND r.enddate OR :date < r.startdate)")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "Rent.findByRentId",
+                    query = "SELECT r FROM Rent r WHERE r.rentId = :rentId"),
+            @NamedQuery(name = "Rent.findByUser",
+                    query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId"),
+            @NamedQuery(name = "Rent.findActiveRents",
+                    query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId AND "
+                    + "(:date BETWEEN r.startdate AND r.enddate OR :date < r.startdate)")
+        })
 
-public class Rent implements Serializable {
+public class Rent implements Serializable
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,67 +51,83 @@ public class Rent implements Serializable {
     @ManyToOne(optional = false)
     private Car carmodelId;
 
-    public Rent() {
+    public Rent()
+    {
     }
 
-    public Rent(Date startdate, Date enddate) {
+    public Rent(Date startdate, Date enddate)
+    {
         this.startdate = startdate;
         this.enddate = enddate;
     }
 
-    public Integer getRentId() {
+    public Integer getRentId()
+    {
         return rentId;
     }
 
-    public void setRentId(Integer rentId) {
+    public void setRentId(Integer rentId)
+    {
         this.rentId = rentId;
     }
 
-    public double getTotalPrice() {
+    public double getTotalPrice()
+    {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(double totalPrice)
+    {
         this.totalPrice = totalPrice;
     }
 
-    public int getLength() {
+    public int getLength()
+    {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(int length)
+    {
         this.length = length;
     }
 
-    public Date getStartdate() {
+    public Date getStartdate()
+    {
         return startdate;
     }
 
-    public void setStartdate(Date startdate) {
+    public void setStartdate(Date startdate)
+    {
         this.startdate = startdate;
     }
 
-    public Date getEnddate() {
+    public Date getEnddate()
+    {
         return enddate;
     }
 
-    public void setEnddate(Date enddate) {
+    public void setEnddate(Date enddate)
+    {
         this.enddate = enddate;
     }
 
-    public User getUseruserId() {
+    public User getUseruserId()
+    {
         return useruserId;
     }
 
-    public void setUseruserId(User useruserId) {
+    public void setUseruserId(User useruserId)
+    {
         this.useruserId = useruserId;
     }
 
-    public Car getCarmodelId() {
+    public Car getCarmodelId()
+    {
         return carmodelId;
     }
 
-    public void setCarmodelId(Car carmodelId) {
+    public void setCarmodelId(Car carmodelId)
+    {
         this.carmodelId = carmodelId;
     }
 }

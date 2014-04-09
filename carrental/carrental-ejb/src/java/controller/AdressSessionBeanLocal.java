@@ -6,9 +6,12 @@ import model.Adress;
 import model.User;
 
 @Local
-public interface AdressSessionBeanLocal {
+public interface AdressSessionBeanLocal
+{
 
-    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region, User userID);
+    public Adress createAdress(String street, String housenumber, String city,
+            String country, String postalCode, boolean isShippingAdress,
+            boolean isInvoiceAddress, String region, User userID);
 
     public void changeStreet(Adress adress, String street);
 

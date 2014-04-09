@@ -11,133 +11,140 @@ import model.Car;
  *
  * stellt Methoden zum Umgang mit Autoobjekten bereit
  */
-
 @Stateless(name = "CarSessionBean")
-public class CarSessionBean implements CarSessionBeanLocal {
+public class CarSessionBean implements CarSessionBeanLocal
+{
 
     @PersistenceContext
     private EntityManager entityManager;
 
     /**
-     * Gibt alle Autoobjekte aus der Datenbank zurück
+     * Sucht Autos an Hand des Namens und Typs aus der Datenbank.
      *
-     * @return
+     *
+     * @param name Bezieht sich sowohl auf Model- als auch auf Markenname
+     * @param type Mögliche Ausprägungen "model","brand" oder "all"
+     * @return Liste mit Car-Objekten
      */
     @Override
-    public List<Car> getListOfCars() {
-        Query query;
-        query = entityManager.createNamedQuery("Car.findAll");
-        List<Car> queryResult;
-        queryResult = query.getResultList();
-        return queryResult;
+    public List<Car> getCarList(String name, String type)
+    {
+        switch (type)
+        {
+            case "model":
+            {
+                Query modelQuery;
+                modelQuery = entityManager.createNamedQuery("Car.findByModelname");
+                modelQuery.setParameter("modelname", name);
+                List modelQueryResult = modelQuery.getResultList();
+                return modelQueryResult;
+            }
+            case "brand":
+            {
+                Query brandQuery;
+                brandQuery = entityManager.createNamedQuery("Car.findByBrandname");
+                brandQuery.setParameter("brandname", name);
+                List brandQueryResult = brandQuery.getResultList();
+                return brandQueryResult;
+            }
+            case "all":
+            {
+                Query query;
+                query = entityManager.createNamedQuery("Car.findAll");
+                List<Car> queryResult;
+                queryResult = query.getResultList();
+                return queryResult;
+            }
+            default:
+                return null;
+        }
     }
 
     /**
-     * Sucht Autos an Hand des Modelnamens aus der Datenbank
+     * Setzt ein nicht verfügbares/gebuchtes Auto auf verfügbar/buchbar
      *
-     * @param modelname ist der Modelname, der in der JSP ausgewählt wird
-     * @return
+     * @param car das zu bearbeitende Car-Objekt
      */
     @Override
-    public List<Car> getListOfCarsOfSelectedModel(String modelname) {
-        Query modelQuery;
-        modelQuery = entityManager.createNamedQuery("Car.findByModelname");
-        modelQuery.setParameter("modelname", modelname);
-        List modelQueryResult = modelQuery.getResultList();
-        return modelQueryResult;
+    public void unBlockCar(Car car)
+    {
+        car.setAvailable(true);
     }
 
     /**
-     * Sucht Autos an Hand des Markennamens aus der Datenbank
-     *
-     * @param brandname ist der Markenname, der in der JSP ausgewählt wird
-     * @return
-     */
-    @Override
-    public List<Car> getListOfCarsOfSelectedBrand(String brandname) {
-        Query brandQuery;
-        brandQuery = entityManager.createNamedQuery("Car.findByBrandname");
-        brandQuery.setParameter("brandname", brandname);
-        List modelQueryResult = brandQuery.getResultList();
-        return modelQueryResult;
-    }
-
-     /**
-     * Sucht Modelnamen von Autos an Hand des ausgewählten Markennamens
-     * aus der Datenbank
-     *
-     * @param brandname ist der Markenname, der in der JSP ausgewählt wird
-     * @return
-     */
-    @Override
-    public List<String> getNameListOfCarsOfSelectedBrand(String brandname) {
-        Query brandQuery;
-        brandQuery = entityManager.createNamedQuery("Car.getModelnameByBrandname");
-        brandQuery.setParameter("brandname", brandname);
-        List modelQueryResult = brandQuery.getResultList();
-        return modelQueryResult;
-    }
-    
-     /**
-     * Setzt ein nicht verfügbares/gebuchtes Auto auf
-     * verfügbar/buchbar
+     * setzt den Status des Autos auf nicht verfügbar/ausgeliehen
      *
      * @param car
      */
     @Override
-    public void unBlockCar(Car car){
-        car.setAvailable(true);
+    public void blockCar(Car car)
+    {
+        if (car.isAvailable())
+        {
+            car.setAvailable(false);
+            entityManager.merge(car);
+        }
     }
 
-     /**
-     * Sucht ein Auto anhand seiner ID in der Datenbank
+    /**
+     * Sucht ein Auto anhand seiner ID in der Datenbank.
      *
-     * @param id
-     * @return 
+     * @param id CarId des Autos
+     * @return Car-Objekt, auf das die ID passt
      */
     @Override
-    public Car getCarById(Integer id) {
+    public Car getCarById(Integer id)
+    {
         Query idQuery;
         idQuery = entityManager.createNamedQuery("Car.findByCarId");
         idQuery.setParameter("carId", id);
         List<Car> carList = idQuery.getResultList();
-        if (carList.size() == 1) {
+        if (carList.size() == 1)
+        {
             return carList.get(0);
-        } else {
+        } else
+        {
             return null;
         }
 
     }
 
-     /**
-     * Gibt eine Liste aller Automarken aus der DB zurück
-     * Gibt eine Liste von Automodellen aus der DB zurück
-     * Beide Listen sind ohne Duplikate und Alphabetisch sortiert
+    /**
+     * Gibt eine Liste aller Automarken aus der DB zurück Gibt eine Liste von
+     * Automodellen aus der DB zurück Beide Listen sind ohne Duplikate und
+     * Alphabetisch sortiert
      *
      * @param type
-     * @return 
+     * @return
      */
     @Override
-    public List<String> getNameList(String type) {
+    public List<String> getNameList(String type)
+    {
         List<String> nameList;
-        if (type.equals("brand")) {
-            Query brandNameQuery;
-            brandNameQuery = entityManager.createNamedQuery("Car.getBrandList");
-            nameList = brandNameQuery.getResultList();
-            if (nameList.size() > 0) {
-                return nameList;
-            } else {
-                return null;
-            }
-        } else if (type.equals("model")) {
-            Query modelNameQuery;
-            modelNameQuery = entityManager.createNamedQuery("Car.getModelList");
-            nameList = modelNameQuery.getResultList();
-            if (nameList.size() > 0) {
-                return nameList;
-            } else {
-                return null;
-            }
+        switch (type)
+        {
+            case "brand":
+                Query brandNameQuery;
+                brandNameQuery = entityManager.createNamedQuery("Car.getBrandList");
+                nameList = brandNameQuery.getResultList();
+                if (nameList.size() > 0)
+                {
+                    return nameList;
+                } else
+                {
+                    return null;
+                }
+            case "model":
+                Query modelNameQuery;
+                modelNameQuery = entityManager.createNamedQuery("Car.getModelList");
+                nameList = modelNameQuery.getResultList();
+                if (nameList.size() > 0)
+                {
+                    return nameList;
+                } else
+                {
+                    return null;
+                }
         }
         return null;
     }

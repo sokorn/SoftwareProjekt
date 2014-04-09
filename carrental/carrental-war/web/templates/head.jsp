@@ -9,22 +9,26 @@
 <div class="head">
     <%
         User user = (User) session.getAttribute("user");
-        if (user == null) {
+        if (user == null)
+        {
     %>
     <div class="header_right">
         <a href="/carrental-war/servlet?step=registerPage">Registrieren</a>
         <a href="/carrental-war/servlet?step=loginPage">Anmelden</a>
     </div>
     <%
-    } else {
+    } else
+    {
     %>
     <div class="header_right">
         Willkommen, <a href="/carrental-war/servlet?step=personal"><%=user.getTitle()%> <%=user.getLastname()%></a> <a href="/carrental-war/servlet?step=logout">Abmelden</a>
     </div>
     <%
         }
-        if (request.getParameter("step") != null) {
-            if (!request.getParameter("step").equals("index")) {
+        if (request.getParameter("step") != null)
+        {
+            if (!request.getParameter("step").equals("index"))
+            {
     %>
     <div class="header_left">
         <a href="/carrental-war/servlet?step=index">zur Startseite</a>

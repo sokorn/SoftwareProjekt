@@ -17,16 +17,23 @@ import javax.xml.bind.annotation.XmlTransient;
  * Auto Entität
  */
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "Car.findAll", query = "SELECT c FROM Car c"),
-    @NamedQuery(name = "Car.findByCarId", query = "SELECT c FROM Car c WHERE c.carId = :carId"),
-    @NamedQuery(name = "Car.findByModelname", query = "SELECT c FROM Car c WHERE c.modelname = :modelname"),
-    @NamedQuery(name = "Car.findByBrandname", query = "SELECT c FROM Car c WHERE c.brandname = :brandname"),
-    @NamedQuery(name = "Car.getBrandList", query = "SELECT distinct c.brandname FROM Car c ORDER BY c.brandname"),
-    @NamedQuery(name = "Car.getModelList", query = "SELECT distinct c.modelname FROM Car c ORDER BY c.modelname"),
-    @NamedQuery(name = "Car.getModelnameByBrandname", query = "SELECT distinct c.modelname FROM Car c WHERE c.brandname = :brandname")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "Car.findAll", query = "SELECT c FROM Car c"),
+            @NamedQuery(name = "Car.findByCarId",
+                    query = "SELECT c FROM Car c WHERE c.carId = :carId"),
+            @NamedQuery(name = "Car.findByModelname",
+                    query = "SELECT c FROM Car c WHERE c.modelname = :modelname"),
+            @NamedQuery(name = "Car.findByBrandname",
+                    query = "SELECT c FROM Car c WHERE c.brandname = :brandname"),
+            @NamedQuery(name = "Car.getBrandList",
+                    query = "SELECT distinct c.brandname FROM Car c ORDER BY c.brandname"),
+            @NamedQuery(name = "Car.getModelList",
+                    query = "SELECT distinct c.modelname FROM Car c ORDER BY c.modelname")
+        })
 
-public class Car implements Serializable {
+public class Car implements Serializable
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,76 +54,94 @@ public class Car implements Serializable {
     private Collection<Rent> rentCollection;
     private boolean available;
 
-    public Car() {
+    public Car()
+    {
     }
 
-    public Integer getCarId() {
+    public Integer getCarId()
+    {
         return carId;
     }
 
-    public int getTourque() {
+    public int getTourque()
+    {
         return tourque;
     }
 
-    public double getCcm() {
+    public double getCcm()
+    {
         return ccm;
     }
 
-    public double getAcceleration() {
+    public double getAcceleration()
+    {
         return acceleration;
     }
 
-    public int getPower() {
+    public int getPower()
+    {
         return power;
     }
 
-    public int getMaxSpeed() {
+    public int getMaxSpeed()
+    {
         return maxSpeed;
     }
 
-    public int getWeight() {
+    public int getWeight()
+    {
         return weight;
     }
 
-    public double getPrice() {
+    public double getPrice()
+    {
         return price;
     }
 
-    public int getTravellers() {
+    public int getTravellers()
+    {
         return travellers;
     }
 
-    public int getMinAge() {
+    public int getMinAge()
+    {
         return minAge;
     }
 
-    public String getModelname() {
+    public String getModelname()
+    {
         return modelname;
     }
 
-    public String getBrandname() {
+    public String getBrandname()
+    {
         return brandname;
     }
 
-    public String getModelpicture() {
+    public String getModelpicture()
+    {
         return modelpicture;
     }
 
     @XmlTransient
-    public Collection<Rent> getRentCollection() {
+    public Collection<Rent> getRentCollection()
+    {
         return rentCollection;
     }
 
     // fügt dem Benutzer eine Buchung hinzu
-    public void addRent(Rent rent) {
+    public void addRent(Rent rent)
+    {
         rentCollection.add(rent);
     }
 
-    public boolean isAvailable() {
+    public boolean isAvailable()
+    {
         return available;
     }
 
-    public void setAvailable(boolean available) {
+    public void setAvailable(boolean available)
+    {
         this.available = available;
     }
 

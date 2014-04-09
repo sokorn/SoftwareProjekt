@@ -20,10 +20,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * Benutzer Entität
  */
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "User.login", query = "SELECT u from User u WHERE u.mail = :login")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "User.login",
+                    query = "SELECT u from User u WHERE u.mail = :login")
+        })
 
-public class User implements Serializable {
+public class User implements Serializable
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,10 +44,13 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private Collection<Rent> rentCollection;
 
-    public User() {
+    public User()
+    {
     }
 
-    public User(String title, String firstname, String lastname, Date birthdate, String mail, String passwordHash) {
+    public User(String title, String firstname, String lastname,
+            Date birthdate, String mail, String passwordHash)
+    {
         this.title = title;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -52,75 +59,92 @@ public class User implements Serializable {
         this.passwordhash = passwordHash;
     }
 
-    public Integer getUserId() {
+    public Integer getUserId()
+    {
         return userId;
     }
 
-    public String getMail() {
+    public String getMail()
+    {
         return mail;
     }
 
-    public void setMail(String mail) {
+    public void setMail(String mail)
+    {
         this.mail = mail;
     }
 
-    public Date getBirthdate() {
+    public Date getBirthdate()
+    {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(Date birthdate)
+    {
         this.birthdate = birthdate;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public String getFirstname() {
+    public String getFirstname()
+    {
         return firstname;
     }
 
-    public void setFirstname(String firstname) {
+    public void setFirstname(String firstname)
+    {
         this.firstname = firstname;
     }
 
-    public String getLastname() {
+    public String getLastname()
+    {
         return lastname;
     }
 
-    public void setLastname(String lastname) {
+    public void setLastname(String lastname)
+    {
         this.lastname = lastname;
     }
 
-    public String getPasswordhash() {
+    public String getPasswordhash()
+    {
         return passwordhash;
     }
 
-    public void setPasswordhash(String passwordhash) {
+    public void setPasswordhash(String passwordhash)
+    {
         this.passwordhash = passwordhash;
     }
 
     @XmlTransient
-    public Collection<Adress> getAdressCollection() {
+    public Collection<Adress> getAdressCollection()
+    {
         return adressCollection;
     }
 
     // fügt dem Benutzer eine Adresse hinzu
-    public void addAdress(Adress adress) {
+    public void addAdress(Adress adress)
+    {
         adressCollection.add(adress);
     }
 
     @XmlTransient
-    public Collection<Rent> getRentCollection() {
+    public Collection<Rent> getRentCollection()
+    {
         return rentCollection;
     }
 
     // fügt dem Benutzer eine Buchung hinzu
-    public void addRent(Rent rent) {
+    public void addRent(Rent rent)
+    {
         rentCollection.add(rent);
     }
 }

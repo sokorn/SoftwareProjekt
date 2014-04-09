@@ -28,14 +28,16 @@
                 <div>Mail: <%=user.getMail()%></div>
                 <div><a href="/carrental-war/servlet?step=persDataChanges">Persönliche Daten ändern</a></div>
                 <div><a href="/carrental-war/servlet?step=pwdChanges">Passwort ändern</a></div>
-                <%  if (user.getAdressCollection().size() == 1) {
+                <%  if (user.getAdressCollection().size() == 1)
+                    {
                         List<Adress> adressList = (List<Adress>) session.getAttribute("adressList");
                         Adress adress = adressList.get(0);
                 %>
                 <div>Standardadresse:</div>
                 <div><%=adress.getStreet()%> <%=adress.getHousenumber()%></div>
                 <div><%=adress.getPostalCode()%> <%=adress.getCity()%></div>
-                <% if (adress.getRegion() != null) {
+                <% if (adress.getRegion() != null)
+                    {
                 %>
                 <div><%=adress.getRegion()%></div>
                 <% }

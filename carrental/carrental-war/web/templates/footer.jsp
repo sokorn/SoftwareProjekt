@@ -3,13 +3,15 @@
 <link rel="stylesheet" href="../css/main.css"/>
 <div>
     <%
-        if (request.getParameter("step").equals("impressum")) {
+        if (request.getParameter("step").equals("impressum"))
+        {
     %>
     <div class="footer">
         Copyright Car Rental
     </div>
     <%
-    } else {
+    } else
+    {
     %>
     <div class="footer">
         Copyright Car Rental

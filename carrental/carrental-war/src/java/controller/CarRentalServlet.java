@@ -16,11 +16,13 @@ import utils.Validator;
  Stellt die komplette Kommunikation zwischen JSP und EJB dar.
  */
 @WebServlet(urlPatterns
-        = {
+        =
+        {
             "/servlet"
         })
 
-public class CarRentalServlet extends HttpServlet {
+public class CarRentalServlet extends HttpServlet
+{
 
     @EJB
     private UserSessionBeanLocal userBean;
@@ -34,8 +36,9 @@ public class CarRentalServlet extends HttpServlet {
     private User sessionUser;
     private List<Adress> sessionAdressList;
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException
+    {
 
         String currentStep = request.getParameter("step");
         HttpSession session = request.getSession();
@@ -49,53 +52,65 @@ public class CarRentalServlet extends HttpServlet {
         session.setAttribute("brandList", brandList);
         session.setAttribute("modelList", modelList);
 
-        if (currentStep == null) {
+        if (currentStep == null)
+        {
             request.getRequestDispatcher("/index.jsp?step=index")
                     .forward(request, response);
-        } else {
-            switch (currentStep) {
+        } else
+        {
+            switch (currentStep)
+            {
                 case "index":
                     request.getRequestDispatcher("/index.jsp?step=index")
                             .forward(request, response);
                     break;
                 case "loginPage":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/login.jsp")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
                     }
                     break;
                 case "login":
-                    if (sessionUser == null) {
-                        User user = userBean.login(request.getParameter("login"),
+                    if (sessionUser == null)
+                    {
+                        User user = userBean.confirmUserLogin(request.getParameter("login"),
                                 request.getParameter("password"));
                         session.setAttribute("user", user);
-                        if (user == null) {
+                        if (user == null)
+                        {
                             request.setAttribute("LoginError", "Fehler beim Login");
                             request.getRequestDispatcher("/login.jsp")
                                     .forward(request, response);
-                        } else {
+                        } else
+                        {
                             request.getRequestDispatcher("/index.jsp?step=index")
                                     .forward(request, response);
                         }
-                    } else {
+                    } else
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
                     }
                     break;
                 case "registerPage":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/register.jsp")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
                     }
                     break;
                 case "register":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         User user = null;
                         /*
                          * Testen ob es nicht ausgefüllte Felder gibt. Wenn ein
@@ -114,7 +129,8 @@ public class CarRentalServlet extends HttpServlet {
                                 || request.getParameter("street").isEmpty()
                                 || request.getParameter("housenumber").isEmpty()
                                 || request.getParameter("postalcode").isEmpty()
-                                || request.getParameter("city").isEmpty()) {
+                                || request.getParameter("city").isEmpty())
+                        {
                             request.setAttribute("password1", null);
                             request.setAttribute("password2", null);
                             request.setAttribute("EmptyFieldError",
@@ -127,7 +143,8 @@ public class CarRentalServlet extends HttpServlet {
                          * register.jsp gesetzt und die angegebene Nachricht
                          * angezeigt.
                          */ else if (userBean.mailAlreadyUsed(
-                                request.getParameter("mail1"))) {
+                                request.getParameter("mail1")))
+                        {
                             request.setAttribute("mail1", null);
                             request.setAttribute("mail2", null);
                             request.setAttribute("password1", null);
@@ -142,7 +159,8 @@ public class CarRentalServlet extends HttpServlet {
                          * IllegalMailError auf der register.jsp gesetzt und die
                          * angegebene Nachricht angezeigt.
                          */ else if (!Validator.validateMail(
-                                request.getParameter("mail1"))) {
+                                request.getParameter("mail1")))
+                        {
                             request.setAttribute("mail1", null);
                             request.setAttribute("mail2", null);
                             request.setAttribute("password1", null);
@@ -157,7 +175,8 @@ public class CarRentalServlet extends HttpServlet {
                          * MailsNotEqualError auf der register.jsp gesetzt und
                          * die angegebene Nachricht angezeigt.
                          */ else if (!request.getParameter("mail1")
-                                .equals(request.getParameter("mail2"))) {
+                                .equals(request.getParameter("mail2")))
+                        {
                             request.setAttribute("mail1", null);
                             request.setAttribute("mail2", null);
                             request.setAttribute("password1", null);
@@ -172,7 +191,8 @@ public class CarRentalServlet extends HttpServlet {
                          * der Parameter PasswordsNotEqualError gesetzt und die
                          * angegebene Nachricht angezeigt.
                          */ else if (!request.getParameter("password1")
-                                .equals(request.getParameter("password2"))) {
+                                .equals(request.getParameter("password2")))
+                        {
                             request.setAttribute("password1", null);
                             request.setAttribute("password2", null);
                             request.setAttribute("PasswordsNotEqualError",
@@ -184,7 +204,8 @@ public class CarRentalServlet extends HttpServlet {
                          * User angelegt werden. Dazu werden die benötigten
                          * Parameter aus der register.jsp an die UserSessionBean
                          * weitergegeben.
-                         */ else {
+                         */ else
+                        {
                             user = userBean.createUser(request.getParameter("title"),
                                     request.getParameter("firstname"),
                                     request.getParameter("lastname"),
@@ -207,14 +228,17 @@ public class CarRentalServlet extends HttpServlet {
                             sessionAdressList
                                     = (List<Adress>) session.getAttribute("adressList");
                         }
-                        if (user == null) {
+                        if (user == null)
+                        {
                             request.getRequestDispatcher("/register.jsp")
                                     .forward(request, response);
-                        } else {
+                        } else
+                        {
                             request.getRequestDispatcher("/personalArea.jsp?step=personal")
                                     .forward(request, response);
                         }
-                    } else {
+                    } else
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
                     }
@@ -226,8 +250,9 @@ public class CarRentalServlet extends HttpServlet {
                      * aller Marken auf der result.jsp an.
                      */
                     if (request.getParameter("brand").equals("0")
-                            && request.getParameter("model").equals("0")) {
-                        carList = carBean.getListOfCars();
+                            && request.getParameter("model").equals("0"))
+                    {
+                        carList = carBean.getCarList("", "all");
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
@@ -235,9 +260,10 @@ public class CarRentalServlet extends HttpServlet {
                      * Es wurde nur bei der Marke eine Auswahl getroffen. Zeige
                      * alle Modelle der Marke auf der result.jsp an.
                      */ else if (!request.getParameter("brand").equals("0")
-                            && request.getParameter("model").equals("0")) {
-                        carList = carBean.getListOfCarsOfSelectedBrand(
-                                request.getParameter("brand"));
+                            && request.getParameter("model").equals("0"))
+                    {
+                        carList = carBean.getCarList(
+                                request.getParameter("brand"), "brand");
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
@@ -245,36 +271,42 @@ public class CarRentalServlet extends HttpServlet {
                      * Es wurde bei Marke und Modell eine Auswahl getroffen.
                      * Zeige alle Objekte des Modells auf der result.jsp an.
                      */ else if (request.getParameter("brand").equals("0")
-                            && !request.getParameter("model").equals("0")) {
-                        carList = carBean.getListOfCarsOfSelectedModel(
-                                request.getParameter("model"));
+                            && !request.getParameter("model").equals("0"))
+                    {
+                        carList = carBean.getCarList(
+                                request.getParameter("model"), "model");
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
                     } else if (!request.getParameter("brand").equals("0")
-                            && !request.getParameter("model").equals("0")) {
-                        carList = carBean.getListOfCarsOfSelectedModel(
-                                request.getParameter("model"));
+                            && !request.getParameter("model").equals("0"))
+                    {
+                        carList = carBean.getCarList(
+                                request.getParameter("model"), "model");
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
                     }
                     break;
                 case "logout":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         session.invalidate();
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
                     }
                     break;
                 case "details":
-                    if (request.getParameter("id") == null) {
+                    if (request.getParameter("id") == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         int id = Integer.parseInt(request.getParameter("id"));
                         Car car = carBean.getCarById(id);
                         session.setAttribute("car", car);
@@ -283,34 +315,42 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "rentOverview":
-                    if (request.getParameter("id") == null) {
+                    if (request.getParameter("id") == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
-                        if (sessionUser == null) {
+                    } else
+                    {
+                        if (sessionUser == null)
+                        {
                             request.setAttribute("NotLoggedInError",
                                     "Bitte melden Sie sich an, bevor Sie buchen");
                             request.getRequestDispatcher("/details.jsp")
                                     .forward(request, response);
-                        } else {
+                        } else
+                        {
                             int id = Integer.parseInt(request.getParameter("id"));
                             Car car = carBean.getCarById(id);
-                            if (request.getParameter("startdate").equals("")) {
+                            if (request.getParameter("startdate").equals(""))
+                            {
                                 request.setAttribute("WrongStartDate",
                                         "Bitte geben Sie ein Startdatum ein");
                                 request.getRequestDispatcher("/details.jsp")
                                         .forward(request, response);
-                            } else if (request.getParameter("enddate").equals("")) {
+                            } else if (request.getParameter("enddate").equals(""))
+                            {
                                 request.setAttribute("WrongEndDate",
                                         "Bitte geben Sie ein Enddatum ein");
                                 request.getRequestDispatcher("/details.jsp")
                                         .forward(request, response);
-                            } else {
+                            } else
+                            {
                                 Rent rent = rentBean.prepareRent(
                                         request.getParameter("startdate"),
                                         request.getParameter("enddate"),
                                         sessionUser, car);
-                                if (rent != null) {
+                                if (rent != null)
+                                {
                                     session.setAttribute("rent", rent);
                                     request.getRequestDispatcher("/rentOverview.jsp")
                                             .forward(request, response);
@@ -320,11 +360,14 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "rent":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
-                        if (sessionAdressList == null) {
+                    } else
+                    {
+                        if (sessionAdressList == null)
+                        {
                             List<Adress> adressList
                                     = adressBean.getAdresses(sessionUser);
                             session.setAttribute("adressList", adressList);
@@ -332,14 +375,16 @@ public class CarRentalServlet extends HttpServlet {
                                     .getAttribute("adressList");
                         }
                         Rent rent = (Rent) session.getAttribute("rent");
-                        if (rent.getCarmodelId().isAvailable()) {
-                            rentBean.blockCar(rent.getCarmodelId());
+                        if (rent.getCarmodelId().isAvailable())
+                        {
+                            carBean.blockCar(rent.getCarmodelId());
                             rentBean.persistRent(rent);
                             request.setAttribute("SuccessfulRent",
                                     "Buchung wurde erfolgreich ausgeführt");
                             request.getRequestDispatcher("/personalArea.jsp?step=personal")
                                     .forward(request, response);
-                        } else {
+                        } else
+                        {
                             request.setAttribute("RentError",
                                     "Fehler bei der Buchung");
                             request.getRequestDispatcher("/personalArea.jsp?step=personal")
@@ -352,12 +397,14 @@ public class CarRentalServlet extends HttpServlet {
                             .forward(request, response);
                     break;
                 case "personal":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.setAttribute("NotLoggedInError",
                                 "Sie müssen angemeldet sein, um diese Seite zu sehen");
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         List<Adress> adressList = adressBean.getAdresses(sessionUser);
                         session.setAttribute("adressList", adressList);
                         request.getRequestDispatcher("/personalArea.jsp?step=personal")
@@ -365,60 +412,73 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "adressChanges":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         request.getRequestDispatcher("/changes.jsp")
                                 .forward(request, response);
                     }
                     break;
                 case "pwdChanges":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         request.getRequestDispatcher("/changes.jsp")
                                 .forward(request, response);
                     }
                     break;
                 case "persDataChanges":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         request.getRequestDispatcher("/changes.jsp")
                                 .forward(request, response);
                     }
                     break;
                 case "changepwd":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         if (request.getParameter("oldPassword").isEmpty()
                                 || request.getParameter("newPassword").isEmpty()
-                                || request.getParameter("newPassword2").isEmpty()) {
+                                || request.getParameter("newPassword2").isEmpty())
+                        {
                             request.setAttribute("EmptyFieldError",
                                     "Bitte alle Felder ausfüllen");
                             request.getRequestDispatcher("/changes.jsp")
                                     .forward(request, response);
                         } else if (!request.getParameter("newPassword")
-                                .equals(request.getParameter("newPassword2"))) {
+                                .equals(request.getParameter("newPassword2")))
+                        {
                             request.setAttribute("PasswordsNotEqualError",
                                     "Passwörter stimmen nicht überein");
                             request.getRequestDispatcher("/changes.jsp")
                                     .forward(request, response);
-                        } else {
+                        } else
+                        {
                             if (userBean.changePassword(sessionUser,
                                     request.getParameter("oldPassword"),
-                                    request.getParameter("newPassword"))) {
+                                    request.getParameter("newPassword")))
+                            {
                                 request.setAttribute("passwordChanged",
                                         "Passwort erfolgreich aktualisiert");
                                 request.getRequestDispatcher("/personalArea.jsp?step=personal")
                                         .forward(request, response);
 
-                            } else {
+                            } else
+                            {
                                 request.setAttribute("passwordChanged",
                                         "Fehler bei der Passwortaktualisierung,"
                                         + " bitte versuchen Sie es später noch einmal");
@@ -429,57 +489,68 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "changPersData":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         if (request.getParameter("title").isEmpty()
                                 || request.getParameter("firstname").isEmpty()
                                 || request.getParameter("lastname").isEmpty()
                                 || request.getParameter("email1").isEmpty()
-                                || request.getParameter("email2").isEmpty()) {
+                                || request.getParameter("email2").isEmpty())
+                        {
                             request.setAttribute("EmptyFieldError",
                                     "Bitte alle Felder ausfüllen");
                             request.getRequestDispatcher("/changes.jsp?step=changPersData")
                                     .forward(request, response);
                         } else if (!sessionUser.getMail()
                                 .equals(request.getParameter("email1"))
-                                && userBean.mailAlreadyUsed(request.getParameter("email1"))) {
+                                && userBean.mailAlreadyUsed(request.getParameter("email1")))
+                        {
                             request.setAttribute("MailAlreadyUsedError",
                                     "Mailadresse ist bereist vorhanden");
                             request.getRequestDispatcher("/changes.jsp")
                                     .forward(request, response);
                         } else if (!sessionUser.getMail()
                                 .equals(request.getParameter("email1"))
-                                && !Validator.validateMail(request.getParameter("email1"))) {
+                                && !Validator.validateMail(request.getParameter("email1")))
+                        {
                             request.setAttribute("MailNotValideError",
                                     "Bitte geben Sie eine gültige Mailadresse ein");
                             request.getRequestDispatcher("/changes.jsp")
                                     .forward(request, response);
                         } else if (!request.getParameter("email1")
-                                .equals(request.getParameter("email2"))) {
+                                .equals(request.getParameter("email2")))
+                        {
                             request.setAttribute("MailNotEqualError",
                                     "Mailadressen stimmen nicht überein");
                             request.getRequestDispatcher("/changes.jsp")
                                     .forward(request, response);
-                        } else {
+                        } else
+                        {
                             if (!sessionUser.getTitle()
-                                    .equals(request.getParameter("title"))) {
+                                    .equals(request.getParameter("title")))
+                            {
                                 userBean.changeTitle(sessionUser,
                                         request.getParameter("title"));
                             }
                             if (!sessionUser.getFirstname()
-                                    .equals(request.getParameter("firstname"))) {
+                                    .equals(request.getParameter("firstname")))
+                            {
                                 userBean.changeFirstname(sessionUser,
                                         request.getParameter("firstname"));
                             }
                             if (!sessionUser.getLastname()
-                                    .equals(request.getParameter("lastname"))) {
+                                    .equals(request.getParameter("lastname")))
+                            {
                                 userBean.changeLastname(sessionUser,
                                         request.getParameter("lastname"));
                             }
                             if (!sessionUser.getMail()
-                                    .equals(request.getParameter("email1"))) {
+                                    .equals(request.getParameter("email1")))
+                            {
                                 userBean.changeMail(sessionUser,
                                         request.getParameter("email1"));
                             }
@@ -491,51 +562,62 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "changAdress":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         if (request.getParameter("street").isEmpty()
                                 || request.getParameter("housenumber").isEmpty()
                                 || request.getParameter("postalcode").isEmpty()
                                 || request.getParameter("city").isEmpty()
-                                || request.getParameter("country").isEmpty()) {
+                                || request.getParameter("country").isEmpty())
+                        {
                             request.setAttribute("EmptyFieldError",
                                     "Bitte alle Felder ausfüllen");
                             request.getRequestDispatcher("/changes.jsp")
                                     .forward(request, response);
-                        } else {
-                            if (sessionUser.getAdressCollection().size() == 1) {
+                        } else
+                        {
+                            if (sessionUser.getAdressCollection().size() == 1)
+                            {
                                 List<Adress> adressList
                                         = (List<Adress>) session.getAttribute("adressList");
                                 Adress adress = adressList.get(0);
                                 if (!adress.getStreet()
-                                        .equals(request.getParameter("street"))) {
+                                        .equals(request.getParameter("street")))
+                                {
                                     adressBean.changeCity(
                                             adress, request.getParameter("street"));
                                 }
                                 if (!adress.getHousenumber()
-                                        .equals(request.getParameter("housenumber"))) {
+                                        .equals(request.getParameter("housenumber")))
+                                {
                                     adressBean.changeHousenumber(
                                             adress, request.getParameter("housenumber"));
                                 }
                                 if (!adress.getPostalCode()
-                                        .equals(request.getParameter("postalcode"))) {
+                                        .equals(request.getParameter("postalcode")))
+                                {
                                     adressBean.changePostalcode(
                                             adress, request.getParameter("postalcode"));
                                 }
                                 if (!adress.getCity()
-                                        .equals(request.getParameter("city"))) {
+                                        .equals(request.getParameter("city")))
+                                {
                                     adressBean.changeCity(
                                             adress, request.getParameter("city"));
                                 }
                                 if (!adress.getCountry()
-                                        .equals(request.getParameter("country"))) {
+                                        .equals(request.getParameter("country")))
+                                {
                                     adressBean.changeCountry(
                                             adress, request.getParameter("country"));
                                 }
                                 if (!adress.getRegion()
-                                        .equals(request.getParameter("region"))) {
+                                        .equals(request.getParameter("region")))
+                                {
                                     adressBean.changeRegion(
                                             adress, request.getParameter("region"));
                                 }
@@ -548,23 +630,29 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "deleteAcc":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         User user = sessionUser;
                         List<Rent> rentList = rentBean.getRents(user);
-                        if (rentList == null) {
+                        if (rentList == null)
+                        {
                             request.getRequestDispatcher("/confirmDelete.jsp")
                                     .forward(request, response);
-                        } else {
-                            if (rentBean.activeRents(user)) {
+                        } else
+                        {
+                            if (rentBean.hasActiveRents(user))
+                            {
                                 request.setAttribute("ActiveRentsError",
                                         "Sie können Ihr Konto nicht löschen,"
                                         + " wenn Sie aktive Buchungen haben");
                                 request.getRequestDispatcher("/personalArea.jsp?step=personal")
                                         .forward(request, response);
-                            } else {
+                            } else
+                            {
                                 request.getRequestDispatcher("/confirmDelete.jsp")
                                         .forward(request, response);
                             }
@@ -573,39 +661,51 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "confirmDelete":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         if (request.getParameter("email").isEmpty()
-                                || request.getParameter("password").isEmpty()) {
+                                || request.getParameter("password").isEmpty())
+                        {
                             request.setAttribute("EmptyFieldError",
                                     "Bitte alle Felder ausfüllen");
                             request.getRequestDispatcher("/confirmDelete.jsp")
                                     .forward(request, response);
                         } else if (!sessionUser.getMail().equals(
-                                request.getParameter("email"))) {
+                                request.getParameter("email")))
+                        {
                             request.setAttribute("WrongMailError",
                                     "Bitte geben Sie die richtige Mail an");
                             request.getRequestDispatcher("/confirmDelete.jsp")
                                     .forward(request, response);
-                        } else {
-                            if (userBean.confirmPassword(
+                        } else
+                        {
+                            if (!(userBean.confirmUserLogin(
                                     request.getParameter("email"),
-                                    request.getParameter("password"))) {
+                                    request.getParameter("password")) == null))
+                            {
                                 User user = sessionUser;
                                 List<Adress> adressList
                                         = adressBean.getAdresses(user);
-                                if (adressList == null) {
-                                } else {
-                                    for (Adress adress : adressList) {
+                                if (adressList == null)
+                                {
+                                } else
+                                {
+                                    for (Adress adress : adressList)
+                                    {
                                         adressBean.removeAdress(adress);
                                     }
                                 }
                                 List<Rent> rentList = rentBean.getRents(user);
-                                if (rentList == null) {
-                                } else {
-                                    for (Rent rent : rentList) {
+                                if (rentList == null)
+                                {
+                                } else
+                                {
+                                    for (Rent rent : rentList)
+                                    {
                                         rentBean.cancelRent(rent);
                                     }
                                 }
@@ -617,7 +717,8 @@ public class CarRentalServlet extends HttpServlet {
                                         "Ihr Konto wurde erfolgreich gelöscht");
                                 request.getRequestDispatcher("/index.jsp?step=index")
                                         .forward(request, response);
-                            } else {
+                            } else
+                            {
                                 request.setAttribute("PasswordError",
                                         "Falsches Passwort");
                                 request.getRequestDispatcher("/confirmDelete.jsp")
@@ -627,10 +728,12 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "personalRents":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         User user = sessionUser;
                         List<Rent> rentList = rentBean.getRents(user);
                         session.setAttribute("rentList", rentList);
@@ -639,14 +742,18 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "cancelRent":
-                    if (request.getParameter("rentId") == null) {
+                    if (request.getParameter("rentId") == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
-                        if (sessionUser == null) {
+                    } else
+                    {
+                        if (sessionUser == null)
+                        {
                             request.getRequestDispatcher("/index.jsp?step=index")
                                     .forward(request, response);
-                        } else {
+                        } else
+                        {
                             int id = Integer.parseInt(
                                     request.getParameter("rentId"));
                             Rent rent = rentBean.getRentById(id);
@@ -657,10 +764,12 @@ public class CarRentalServlet extends HttpServlet {
                     }
                     break;
                 case "canceled":
-                    if (sessionUser == null) {
+                    if (sessionUser == null)
+                    {
                         request.getRequestDispatcher("/index.jsp?step=index")
                                 .forward(request, response);
-                    } else {
+                    } else
+                    {
                         Rent rent = (Rent) session.getAttribute("rent");
                         carBean.unBlockCar(rent.getCarmodelId());
                         rentBean.cancelRent(rent);
@@ -679,14 +788,16 @@ public class CarRentalServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException
+    {
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException
+    {
         processRequest(request, response);
     }
 

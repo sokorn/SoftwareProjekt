@@ -15,10 +15,14 @@ import javax.persistence.NamedQuery;
  * Entität für Adressen von Benutzern
  */
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "Adress.findByUserId", query = "SELECT a FROM Adress a WHERE a.useruserId = :userId")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "Adress.findByUserId",
+                    query = "SELECT a FROM Adress a WHERE a.useruserId = :userId")
+        })
 
-public class Adress implements Serializable {
+public class Adress implements Serializable
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +39,14 @@ public class Adress implements Serializable {
     @ManyToOne(optional = false)
     private User useruserId;
 
-    public Adress() {
+    public Adress()
+    {
     }
 
-    public Adress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region) {
+    public Adress(String street, String housenumber, String city,
+            String country, String postalCode, boolean isShippingAdress,
+            boolean isInvoiceAddress, String region)
+    {
         this.street = street;
         this.housenumber = housenumber;
         this.city = city;
@@ -49,79 +57,98 @@ public class Adress implements Serializable {
         this.region = region;
     }
 
-    public Integer getAdressId() {
+    public Integer getAdressId()
+    {
         return adressId;
     }
 
-    public String getStreet() {
+    public String getStreet()
+    {
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(String street)
+    {
         this.street = street;
     }
 
-    public String getHousenumber() {
+    public String getHousenumber()
+    {
         return housenumber;
     }
 
-    public void setHousenumber(String housenumber) {
+    public void setHousenumber(String housenumber)
+    {
         this.housenumber = housenumber;
     }
 
-    public String getCity() {
+    public String getCity()
+    {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(String city)
+    {
         this.city = city;
     }
 
-    public String getCountry() {
+    public String getCountry()
+    {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(String country)
+    {
         this.country = country;
     }
 
-    public String getRegion() {
+    public String getRegion()
+    {
         return region;
     }
 
-    public void setRegion(String region) {
+    public void setRegion(String region)
+    {
         this.region = region;
     }
 
-    public String getPostalCode() {
+    public String getPostalCode()
+    {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode) {
+    public void setPostalCode(String postalCode)
+    {
         this.postalCode = postalCode;
     }
 
-    public boolean getIsShippingAdress() {
+    public boolean getIsShippingAdress()
+    {
         return isShippingAdress;
     }
 
-    public void setIsShippingAdress(boolean isShippingAdress) {
+    public void setIsShippingAdress(boolean isShippingAdress)
+    {
         this.isShippingAdress = isShippingAdress;
     }
 
-    public boolean getIsInvoiceAddress() {
+    public boolean getIsInvoiceAddress()
+    {
         return isInvoiceAddress;
     }
 
-    public void setIsInvoiceAddress(boolean isInvoiceAddress) {
+    public void setIsInvoiceAddress(boolean isInvoiceAddress)
+    {
         this.isInvoiceAddress = isInvoiceAddress;
     }
 
-    public User getUseruserId() {
+    public User getUseruserId()
+    {
         return useruserId;
     }
 
-    public void setUseruserId(User useruserId) {
+    public void setUseruserId(User useruserId)
+    {
         this.useruserId = useruserId;
     }
 }

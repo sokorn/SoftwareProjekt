@@ -18,9 +18,11 @@
                 <p>
                     <select name="brand">
                         <option value="0">Marke auswählen</option>
-                        <% if (!(session.getAttribute("brandList") == null)) {
+                        <% if (!(session.getAttribute("brandList") == null))
+                            {
                                 List<String> brandList = (List<String>) session.getAttribute("brandList");
-                                for (String brand : brandList) {
+                                for (String brand : brandList)
+                                {
                         %>
                         <option value="<%=brand%>"><%=brand%></option>
                         <%
@@ -30,9 +32,11 @@
                     </select>
                     <select name="model">
                         <option value="0">Model auswählen</option>
-                        <% if (!(session.getAttribute("modelList") == null)) {
+                        <% if (!(session.getAttribute("modelList") == null))
+                            {
                                 List<String> modelList = (List<String>) session.getAttribute("modelList");
-                                for (String model : modelList) {
+                                for (String model : modelList)
+                                {
                         %>
                         <option value="<%=model%>"><%=model%></option>
                         <%

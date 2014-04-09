@@ -13,10 +13,12 @@
     <body>
         <%@include file="templates/head.jsp" %>
         <div class="main">
-            <% if (session.getAttribute("rentList") == null) {
+            <% if (session.getAttribute("rentList") == null)
+                {
             %>
             Sie haben bisher noch keine Buchungen vorgenommen.
-            <%  } else {
+            <%  } else
+            {
                 List<Rent> rentList = (List<Rent>) session.getAttribute("rentList");
             %>
             <table>
@@ -44,7 +46,8 @@
                     </th>
                 </tr>
                 <%
-                    for (Rent rent : rentList) {
+                    for (Rent rent : rentList)
+                    {
                         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                         String startDate = formatter.format(rent.getStartdate());
                         String endDate = formatter.format(rent.getEnddate());
@@ -70,11 +73,13 @@
                     </td>
                     <td>
                         <%  Date now = new Date();
-                            if ((rent.getStartdate().getTime() - now.getTime()) > 0) {
+                            if ((rent.getStartdate().getTime() - now.getTime()) > 0)
+                            {
                         %>
                         <a href="/carrental-war/servlet?step=cancelRent&amp;rentId=<%=rent.getRentId()%>">Buchung stornieren</a>
                         <%
-                        } else {
+                        } else
+                        {
                         %>
                         Keine Stornierung möglich
                         <%  }

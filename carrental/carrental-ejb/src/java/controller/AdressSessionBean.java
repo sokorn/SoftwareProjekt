@@ -12,13 +12,15 @@ import model.*;
  * stellt Methoden zum Umgang mit Adressobjekten bereit
  */
 @Stateless(name = "AdressSessionBean")
-public class AdressSessionBean implements AdressSessionBeanLocal {
+public class AdressSessionBean implements AdressSessionBeanLocal
+{
 
     @PersistenceContext
     private EntityManager entityManager;
 
     /**
      * erstellt ein Adressobjekt
+     *
      * @param street
      * @param housenumber
      * @param city
@@ -28,11 +30,15 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
      * @param postalCode
      * @param isInvoiceAddress
      * @param region
-     * @return 
+     * @return
      */
     @Override
-    public Adress createAdress(String street, String housenumber, String city, String country, String postalCode, boolean isShippingAdress, boolean isInvoiceAddress, String region, User userID) {
-        Adress adress = new Adress(street, housenumber, city, country, postalCode, isShippingAdress, isInvoiceAddress, region);
+    public Adress createAdress(String street, String housenumber, String city,
+            String country, String postalCode, boolean isShippingAdress,
+            boolean isInvoiceAddress, String region, User userID)
+    {
+        Adress adress = new Adress(street, housenumber, city, country,
+                postalCode, isShippingAdress, isInvoiceAddress, region);
         adress.setUseruserId(userID);
         entityManager.persist(adress);
         entityManager.flush();
@@ -43,71 +49,122 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
      * Gibt alle Adressen eines Benutzers als Liste zurück
      *
      * @param user
-     * @return 
+     * @return
      */
     @Override
-    public List<Adress> getAdresses(User user) {
+    public List<Adress> getAdresses(User user)
+    {
         Query query = entityManager.createNamedQuery("Adress.findByUserId");
         query.setParameter("userId", user);
         List queryResult = query.getResultList();
-        if (queryResult.size() > 0) {
+        if (queryResult.size() > 0)
+        {
             return queryResult;
-        } else {
+        } else
+        {
             return null;
         }
     }
 
+    /**
+     *
+     * @param adress
+     * @param newStreet
+     */
     @Override
-    public void changeStreet(Adress adress, String newStreet) {
+    public void changeStreet(Adress adress, String newStreet)
+    {
         adress.setStreet(newStreet);
         entityManager.merge(adress);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param adress
+     * @param newHousenumber
+     */
     @Override
-    public void changeHousenumber(Adress adress, String newHousenumber) {
+    public void changeHousenumber(Adress adress, String newHousenumber)
+    {
         adress.setHousenumber(newHousenumber);
         entityManager.merge(adress);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param adress
+     * @param newCity
+     */
     @Override
-    public void changeCity(Adress adress, String newCity) {
+    public void changeCity(Adress adress, String newCity)
+    {
         adress.setCity(newCity);
         entityManager.merge(adress);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param adress
+     * @param newCountry
+     */
     @Override
-    public void changeCountry(Adress adress, String newCountry) {
+    public void changeCountry(Adress adress, String newCountry)
+    {
         adress.setCountry(newCountry);
         entityManager.merge(adress);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param adress
+     * @param newPostalCode
+     */
     @Override
-    public void changePostalcode(Adress adress, String newPostalCode) {
+    public void changePostalcode(Adress adress, String newPostalCode)
+    {
         adress.setPostalCode(newPostalCode);
         entityManager.merge(adress);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param adress
+     * @param newRegion
+     */
     @Override
-    public void changeRegion(Adress adress, String newRegion) {
+    public void changeRegion(Adress adress, String newRegion)
+    {
         adress.setRegion(newRegion);
         entityManager.merge(adress);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param adress
+     * @param isShippingAdress
+     */
     @Override
-    public void changeShippingAdress(Adress adress, boolean isShippingAdress) {
+    public void changeShippingAdress(Adress adress, boolean isShippingAdress)
+    {
         adress.setIsShippingAdress(isShippingAdress);
         entityManager.merge(adress);
         entityManager.flush();
     }
 
+    /**
+     *
+     * @param adress
+     * @param isInvoiceAddress
+     */
     @Override
-    public void changeInvoiceAdress(Adress adress, boolean isInvoiceAddress) {
+    public void changeInvoiceAdress(Adress adress, boolean isInvoiceAddress)
+    {
         adress.setIsInvoiceAddress(isInvoiceAddress);
         entityManager.merge(adress);
         entityManager.flush();
@@ -115,10 +172,12 @@ public class AdressSessionBean implements AdressSessionBeanLocal {
 
     /**
      * Löscht ein Adressobjekt aus der Datenbank
+     *
      * @param adress
      */
     @Override
-    public void removeAdress(Adress adress) {
+    public void removeAdress(Adress adress)
+    {
         adress = entityManager.merge(adress);
         entityManager.remove(adress);
         entityManager.flush();

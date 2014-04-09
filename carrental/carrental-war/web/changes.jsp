@@ -12,7 +12,8 @@
         <%@include file="templates/head.jsp" %>
         <div class="main">
             <% String currentStep = (String) session.getAttribute("action");
-                if (currentStep.equals("pwdChanges")) {
+                if (currentStep.equals("pwdChanges"))
+                {
             %>
             <form method="post" action="/carrental-war/servlet?step=changepwd">
                 <p>altes Passwort: <input type="password" name="oldPassword" /></p>
@@ -20,7 +21,8 @@
                 <p>neues Passwort bestätigen: <input type="password" name="newPassword2" /></p>
                 <p><input type="submit" value="Passwort ändern" /></p>
             </form>
-            <%  } else if (currentStep.equals("persDataChanges")) {
+            <%  } else if (currentStep.equals("persDataChanges"))
+            {
             %>
             <form method="post" action="/carrental-war/servlet?step=changPersData">
                 <p>Anrede: 
@@ -35,7 +37,8 @@
                 <p>Wiederholung: <input type="email" name="email2" value="<%=user.getMail()%>"/></p>
                 <p><input type="submit" value="Persönliche Daten ändern" /></p>
             </form>
-            <%  } else if (currentStep.equals("adressChanges")) {
+            <%  } else if (currentStep.equals("adressChanges"))
+            {
                 List<Adress> adressList = (List<Adress>) session.getAttribute("adressList");
                 Adress adress = adressList.get(0);
             %>

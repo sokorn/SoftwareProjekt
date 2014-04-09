@@ -30,7 +30,8 @@
                 <%
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String dateString = formatter.format(new Date());
-                    if (car.isAvailable()) {
+                    if (car.isAvailable())
+                    {
                 %>
                 <form method="post" action="/carrental-war/servlet?step=rentOverview&id=<%=car.getCarId()%>">
                     <p>Startdatum: <input type="date" name="startdate" min="<%=dateString%>"/>${WrongStartDate}</p>
@@ -38,7 +39,8 @@
                     <p><input type="submit" value="Buchungsübersicht" /></p>
                 </form>
                 <%
-                } else {
+                } else
+                {
                 %>
                 <div>Auto ist zur Zeit leider nicht verfügbar!</div>
                 <%

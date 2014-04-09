@@ -67,7 +67,7 @@ public class UserSessionBeanTest {
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         UserSessionBeanLocal instance = (UserSessionBeanLocal) container.getContext().lookup("java:global/classes/UserSessionBean");
         User expResult = null;
-        User result = instance.login(login, passwort);
+        User result = instance.confirmUserLogin(login, passwort);
         assertEquals(expResult, result);
         container.close();
         // TODO review the generated test code and remove the default call to fail.
