@@ -8,14 +8,20 @@ import model.Car;
 public interface CarSessionBeanLocal
 {
 
-    public List<Car> getCarList(String name, String type);
+    public List<Car> getCarList();
 
-    public Car getCarById(Integer id);
+    public List<Car> getCarListByModel(String name);
 
-    public List<String> getNameList(String type);
+    public List<Car> getCarListByBrand(String name);
 
     public void unBlockCar(Car car);
 
     public void blockCar(Car car);
+
+    public Car getCarById(Integer id);
+
+    public List<String> getModelNameList();
+
+    public List<String> getBrandNameList();
 
 }

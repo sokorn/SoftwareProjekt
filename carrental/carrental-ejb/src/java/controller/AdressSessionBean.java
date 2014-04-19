@@ -21,16 +21,16 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     /**
      * erstellt ein Adressobjekt
      *
-     * @param street
-     * @param housenumber
-     * @param city
-     * @param country
-     * @param isShippingAdress
-     * @param userID
-     * @param postalCode
-     * @param isInvoiceAddress
-     * @param region
-     * @return
+     * @param street Straße
+     * @param housenumber Hausnummer
+     * @param city Stadt
+     * @param country Land
+     * @param isShippingAdress ist diese Adresse eine Lieferadresse
+     * @param userID Benutzerobjekt zu dem die Adresse gehört
+     * @param postalCode Postleitzahl
+     * @param isInvoiceAddress ist diese Adresse eine Rechnungsadresse
+     * @param region Region, kann NULL sein
+     * @return das erzeugte Adressobjekt
      */
     @Override
     public Adress createAdress(String street, String housenumber, String city,
@@ -46,30 +46,22 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
-     * Gibt alle Adressen eines Benutzers als Liste zurück
+     * Gibt alle Adressen eines Benutzers als Liste zurück.
      *
-     * @param user
-     * @return
+     * @param user Benutzerobjekt, nach dessen Adressen gesucht wird
+     * @return eine Liste mit Adressen
      */
     @Override
     public List<Adress> getAdresses(User user)
     {
-        Query query = entityManager.createNamedQuery("Adress.findByUserId");
-        query.setParameter("userId", user);
-        List queryResult = query.getResultList();
-        if (queryResult.size() > 0)
-        {
-            return queryResult;
-        } else
-        {
-            return null;
-        }
+        return user.getAdressList();
     }
 
     /**
+     * Ändert die Straße des Adressobjekts.
      *
-     * @param adress
-     * @param newStreet
+     * @param adress das zu ändernde Adressobjekt
+     * @param newStreet die neue Straße
      */
     @Override
     public void changeStreet(Adress adress, String newStreet)
@@ -80,9 +72,10 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
+     * Ändert die Hausnummer des Adressobjekts.
      *
-     * @param adress
-     * @param newHousenumber
+     * @param adress das zu ändernde Adressobjekt
+     * @param newHousenumber die neue Hausnummer
      */
     @Override
     public void changeHousenumber(Adress adress, String newHousenumber)
@@ -93,9 +86,10 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
+     * Ändert die Stadt des Adressobjekts.
      *
-     * @param adress
-     * @param newCity
+     * @param adress das zu ändernde Adressobjekt
+     * @param newCity die neue Stadt
      */
     @Override
     public void changeCity(Adress adress, String newCity)
@@ -106,9 +100,10 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
+     * Ändert das Land des Adressobjekts.
      *
-     * @param adress
-     * @param newCountry
+     * @param adress das zu ändernde Adressobjekt
+     * @param newCountry das neue Land
      */
     @Override
     public void changeCountry(Adress adress, String newCountry)
@@ -119,9 +114,10 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
+     * ändern die Postleitzahl des Adressobjekts
      *
-     * @param adress
-     * @param newPostalCode
+     * @param adress das zu ändernde Adressobjekt
+     * @param newPostalCode die neue Postleitzahl
      */
     @Override
     public void changePostalcode(Adress adress, String newPostalCode)
@@ -132,9 +128,10 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
+     * ändert die Region des Adressobjekts
      *
-     * @param adress
-     * @param newRegion
+     * @param adress das zu ändernde Adressobjekt
+     * @param newRegion die neue Region
      */
     @Override
     public void changeRegion(Adress adress, String newRegion)
@@ -145,9 +142,11 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
+     * Ändert den Wert, ob es sich bei der Adresse um eine Lieferadresse
+     * handelt.
      *
-     * @param adress
-     * @param isShippingAdress
+     * @param adress das zu ändernde Adressobjekt
+     * @param isShippingAdress Boolean Wert, ob es eine Lieferadresse ist
      */
     @Override
     public void changeShippingAdress(Adress adress, boolean isShippingAdress)
@@ -158,9 +157,11 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
+     * Ändert den Wert, ob es sich bei der Adresse um eine Rechnungsadresse
+     * handelt.
      *
-     * @param adress
-     * @param isInvoiceAddress
+     * @param adress das zu ändernde Adressobjekt
+     * @param isInvoiceAddress Boolean Wert, ob es eine Rechnungsadresse ist
      */
     @Override
     public void changeInvoiceAdress(Adress adress, boolean isInvoiceAddress)
@@ -171,9 +172,9 @@ public class AdressSessionBean implements AdressSessionBeanLocal
     }
 
     /**
-     * Löscht ein Adressobjekt aus der Datenbank
+     * Löscht ein Adressobjekt aus der Datenbank.
      *
-     * @param adress
+     * @param adress das zu löschende Adressobjekt
      */
     @Override
     public void removeAdress(Adress adress)

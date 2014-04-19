@@ -5,22 +5,30 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * wandelt ein Stringdatum des formats dd-MM-yyyy in ein Date Objekt um
+ * Klasse mit einer statischen Methode, um Daten von String in Dateobjekte um
+ * zuwandeln.
  *
  */
 public class DateParser
 {
 
+    /**
+     * Wandelt ein Datum in Stringformat in ein Dateobjekt um. Das
+     * Ausgangsformat ist "yyyy-MM-dd"
+     *
+     * @param stringDate Datum in Stringformat
+     * @return das Datum als Dateobjekt
+     */
     public static Date parseToDate(String stringDate)
     {
-        Date birthdate = null;
+        Date dateObject = null;
         try
         {
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
-            birthdate = dt.parse(stringDate);
+            dateObject = dt.parse(stringDate);
         } catch (ParseException ex)
         {
         }
-        return birthdate;
+        return dateObject;
     }
 }

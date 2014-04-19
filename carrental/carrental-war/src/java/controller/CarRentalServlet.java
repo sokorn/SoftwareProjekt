@@ -47,8 +47,8 @@ public class CarRentalServlet extends HttpServlet
         sessionUser = (User) session.getAttribute("user");
         sessionAdressList = (List<Adress>) session.getAttribute("adressList");
 
-        List<String> brandList = carBean.getNameList("brand");
-        List<String> modelList = carBean.getNameList("model");
+        List<String> brandList = carBean.getBrandNameList();
+        List<String> modelList = carBean.getModelNameList();
         session.setAttribute("brandList", brandList);
         session.setAttribute("modelList", modelList);
 
@@ -131,8 +131,6 @@ public class CarRentalServlet extends HttpServlet
                                 || request.getParameter("postalcode").isEmpty()
                                 || request.getParameter("city").isEmpty())
                         {
-                            request.setAttribute("password1", null);
-                            request.setAttribute("password2", null);
                             request.setAttribute("EmptyFieldError",
                                     "Bitte alle mit * markierten Felder ausfüllen");
                             request.getRequestDispatcher("/register.jsp")
@@ -145,10 +143,6 @@ public class CarRentalServlet extends HttpServlet
                          */ else if (userBean.mailAlreadyUsed(
                                 request.getParameter("mail1")))
                         {
-                            request.setAttribute("mail1", null);
-                            request.setAttribute("mail2", null);
-                            request.setAttribute("password1", null);
-                            request.setAttribute("password2", null);
                             request.setAttribute("MailInUseError",
                                     "Email bereits benutzt!");
                             request.getRequestDispatcher("/register.jsp")
@@ -161,10 +155,6 @@ public class CarRentalServlet extends HttpServlet
                          */ else if (!Validator.validateMail(
                                 request.getParameter("mail1")))
                         {
-                            request.setAttribute("mail1", null);
-                            request.setAttribute("mail2", null);
-                            request.setAttribute("password1", null);
-                            request.setAttribute("password2", null);
                             request.setAttribute("IllegalMailError",
                                     "Keine gültige Mailadresse");
                             request.getRequestDispatcher("/register.jsp")
@@ -177,10 +167,6 @@ public class CarRentalServlet extends HttpServlet
                          */ else if (!request.getParameter("mail1")
                                 .equals(request.getParameter("mail2")))
                         {
-                            request.setAttribute("mail1", null);
-                            request.setAttribute("mail2", null);
-                            request.setAttribute("password1", null);
-                            request.setAttribute("password2", null);
                             request.setAttribute("MailsNotEqualError",
                                     "Emails stimmen nicht überein!");
                             request.getRequestDispatcher("/register.jsp")
@@ -193,8 +179,6 @@ public class CarRentalServlet extends HttpServlet
                          */ else if (!request.getParameter("password1")
                                 .equals(request.getParameter("password2")))
                         {
-                            request.setAttribute("password1", null);
-                            request.setAttribute("password2", null);
                             request.setAttribute("PasswordsNotEqualError",
                                     "Passwörter stimmen nicht überein!");
                             request.getRequestDispatcher("/register.jsp")
@@ -204,7 +188,14 @@ public class CarRentalServlet extends HttpServlet
                          * User angelegt werden. Dazu werden die benötigten
                          * Parameter aus der register.jsp an die UserSessionBean
                          * weitergegeben.
-                         */ else
+                         */ else if (!Validator.validatePostalCode(
+                                request.getParameter("postalcode")))
+                        {
+                            request.setAttribute("WrongPostalCode",
+                                    "Bitte geben Sie eine richtige Postleitzahl ein");
+                            request.getRequestDispatcher("/register.jsp")
+                                    .forward(request, response);
+                        } else
                         {
                             user = userBean.createUser(request.getParameter("title"),
                                     request.getParameter("firstname"),
@@ -252,7 +243,7 @@ public class CarRentalServlet extends HttpServlet
                     if (request.getParameter("brand").equals("0")
                             && request.getParameter("model").equals("0"))
                     {
-                        carList = carBean.getCarList("", "all");
+                        carList = carBean.getCarList();
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
@@ -262,8 +253,8 @@ public class CarRentalServlet extends HttpServlet
                      */ else if (!request.getParameter("brand").equals("0")
                             && request.getParameter("model").equals("0"))
                     {
-                        carList = carBean.getCarList(
-                                request.getParameter("brand"), "brand");
+                        carList = carBean.getCarListByBrand(
+                                request.getParameter("brand"));
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
@@ -273,16 +264,16 @@ public class CarRentalServlet extends HttpServlet
                      */ else if (request.getParameter("brand").equals("0")
                             && !request.getParameter("model").equals("0"))
                     {
-                        carList = carBean.getCarList(
-                                request.getParameter("model"), "model");
+                        carList = carBean.getCarListByModel(
+                                request.getParameter("model"));
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
                     } else if (!request.getParameter("brand").equals("0")
                             && !request.getParameter("model").equals("0"))
                     {
-                        carList = carBean.getCarList(
-                                request.getParameter("model"), "model");
+                        carList = carBean.getCarListByModel(
+                                request.getParameter("model"));
                         session.setAttribute("carList", carList);
                         request.getRequestDispatcher("/result.jsp")
                                 .forward(request, response);
@@ -580,7 +571,7 @@ public class CarRentalServlet extends HttpServlet
                                     .forward(request, response);
                         } else
                         {
-                            if (sessionUser.getAdressCollection().size() == 1)
+                            if (sessionUser.getAdressList().size() == 1)
                             {
                                 List<Adress> adressList
                                         = (List<Adress>) session.getAttribute("adressList");

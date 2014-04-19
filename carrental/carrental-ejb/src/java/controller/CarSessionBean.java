@@ -19,51 +19,56 @@ public class CarSessionBean implements CarSessionBeanLocal
     private EntityManager entityManager;
 
     /**
-     * Sucht Autos an Hand des Namens und Typs aus der Datenbank.
+     * Liefert alle Autoobjekte zurück.
      *
-     *
-     * @param name Bezieht sich sowohl auf Model- als auch auf Markenname
-     * @param type Mögliche Ausprägungen "model","brand" oder "all"
-     * @return Liste mit Car-Objekten
+     * @return Liste mit Autoobjekten
      */
     @Override
-    public List<Car> getCarList(String name, String type)
+    public List<Car> getCarList()
     {
-        switch (type)
-        {
-            case "model":
-            {
-                Query modelQuery;
-                modelQuery = entityManager.createNamedQuery("Car.findByModelname");
-                modelQuery.setParameter("modelname", name);
-                List modelQueryResult = modelQuery.getResultList();
-                return modelQueryResult;
-            }
-            case "brand":
-            {
-                Query brandQuery;
-                brandQuery = entityManager.createNamedQuery("Car.findByBrandname");
-                brandQuery.setParameter("brandname", name);
-                List brandQueryResult = brandQuery.getResultList();
-                return brandQueryResult;
-            }
-            case "all":
-            {
-                Query query;
-                query = entityManager.createNamedQuery("Car.findAll");
-                List<Car> queryResult;
-                queryResult = query.getResultList();
-                return queryResult;
-            }
-            default:
-                return null;
-        }
+        Query query;
+        query = entityManager.createNamedQuery("Car.findAll");
+        List<Car> queryResult;
+        queryResult = query.getResultList();
+        return queryResult;
     }
 
     /**
-     * Setzt ein nicht verfügbares/gebuchtes Auto auf verfügbar/buchbar
+     * Liefert Autoobjekte eines bestimmten Modells zurück.
      *
-     * @param car das zu bearbeitende Car-Objekt
+     * @param name der Modellname
+     * @return eine Liste mit den Autoobjekten
+     */
+    @Override
+    public List<Car> getCarListByModel(String name)
+    {
+        Query modelQuery;
+        modelQuery = entityManager.createNamedQuery("Car.findByModelname");
+        modelQuery.setParameter("modelname", name);
+        List modelQueryResult = modelQuery.getResultList();
+        return modelQueryResult;
+    }
+
+    /**
+     * Liefert Autoobjekte einer bestimmten Marke zurück.
+     *
+     * @param name der Markenname
+     * @return eine Liste mit den Autoobjekten
+     */
+    @Override
+    public List<Car> getCarListByBrand(String name)
+    {
+        Query brandQuery;
+        brandQuery = entityManager.createNamedQuery("Car.findByBrandname");
+        brandQuery.setParameter("brandname", name);
+        List brandQueryResult = brandQuery.getResultList();
+        return brandQueryResult;
+    }
+
+    /**
+     * Setzt ein nicht verfügbares Auto auf verfügbar.
+     *
+     * @param car das zu bearbeitende Autoobjekt
      */
     @Override
     public void unBlockCar(Car car)
@@ -72,9 +77,9 @@ public class CarSessionBean implements CarSessionBeanLocal
     }
 
     /**
-     * setzt den Status des Autos auf nicht verfügbar/ausgeliehen
+     * setzt den Status des Autos auf nicht verfügbar.
      *
-     * @param car
+     * @param car das zu bearbeitende Autoobjekt
      */
     @Override
     public void blockCar(Car car)
@@ -90,7 +95,8 @@ public class CarSessionBean implements CarSessionBeanLocal
      * Sucht ein Auto anhand seiner ID in der Datenbank.
      *
      * @param id CarId des Autos
-     * @return Car-Objekt, auf das die ID passt
+     * @return Autoobjekt, auf das die ID passt, wenn die Datenbankabfrage nicht
+     * zurückgeliefert hat, wird NULL zurückgegeben
      */
     @Override
     public Car getCarById(Integer id)
@@ -110,43 +116,47 @@ public class CarSessionBean implements CarSessionBeanLocal
     }
 
     /**
-     * Gibt eine Liste aller Automarken aus der DB zurück Gibt eine Liste von
-     * Automodellen aus der DB zurück Beide Listen sind ohne Duplikate und
-     * Alphabetisch sortiert
+     * Gibt eine Liste der Automodellnamen zurück.
      *
-     * @param type
-     * @return
+     * @return eine Liste mit den Modellnamen, wenn die Datenbankabfrage nicht
+     * zurückgeliefert hat, wird NULL zurückgegeben
      */
     @Override
-    public List<String> getNameList(String type)
+    public List<String> getModelNameList()
     {
         List<String> nameList;
-        switch (type)
+        Query modelNameQuery;
+        modelNameQuery = entityManager.createNamedQuery("Car.getModelList");
+        nameList = modelNameQuery.getResultList();
+        if (nameList.size() > 0)
         {
-            case "brand":
-                Query brandNameQuery;
-                brandNameQuery = entityManager.createNamedQuery("Car.getBrandList");
-                nameList = brandNameQuery.getResultList();
-                if (nameList.size() > 0)
-                {
-                    return nameList;
-                } else
-                {
-                    return null;
-                }
-            case "model":
-                Query modelNameQuery;
-                modelNameQuery = entityManager.createNamedQuery("Car.getModelList");
-                nameList = modelNameQuery.getResultList();
-                if (nameList.size() > 0)
-                {
-                    return nameList;
-                } else
-                {
-                    return null;
-                }
+            return nameList;
+        } else
+        {
+            return null;
         }
-        return null;
+    }
+
+    /**
+     * Gibt eine Liste mit Automarkennamen zurück.
+     *
+     * @return eine Liste mit den Markennamen, wenn die Datenbankabfrage nicht
+     * zurückgeliefert hat, wird NULL zurückgegeben
+     */
+    @Override
+    public List<String> getBrandNameList()
+    {
+        List<String> nameList;
+        Query brandNameQuery;
+        brandNameQuery = entityManager.createNamedQuery("Car.getBrandList");
+        nameList = brandNameQuery.getResultList();
+        if (nameList.size() > 0)
+        {
+            return nameList;
+        } else
+        {
+            return null;
+        }
     }
 
 }

@@ -11,11 +11,11 @@ public class Password
 {
 
     /**
-     * öffentliche Methode, erhöht, die Sicherheit, da sie nicht direkt in
-     * anderen Klassen aufgerufen wird
+     * statische Methode, die die Methode hashing(String passwordToHash) aufruft
+     * und ein String hashed.
      *
-     * @param passwordToHash
-     * @return
+     * @param passwordToHash das Passwort in Klartext
+     * @return das gehashede Passwort
      */
     public static String hashPassword(String passwordToHash)
     {

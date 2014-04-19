@@ -1,8 +1,8 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,14 +40,28 @@ public class User implements Serializable
     private String lastname;
     private String passwordhash;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
-    private Collection<Adress> adressCollection;
+    private List<Adress> adressList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
-    private Collection<Rent> rentCollection;
+    private List<Rent> rentList;
 
+    /**
+     * Parameterloser Konstruktor. Muss vorhanden sein, sonst gibt es einen
+     * Fehler.
+     */
     public User()
     {
     }
 
+    /**
+     * Konstruktor für ein Benutzerobjekt.
+     *
+     * @param title Titel
+     * @param firstname Vorname
+     * @param lastname Nachname
+     * @param birthdate Geburtstag
+     * @param mail Mailadresse
+     * @param passwordHash Passworthash
+     */
     public User(String title, String firstname, String lastname,
             Date birthdate, String mail, String passwordHash)
     {
@@ -125,26 +139,26 @@ public class User implements Serializable
     }
 
     @XmlTransient
-    public Collection<Adress> getAdressCollection()
+    public List<Adress> getAdressList()
     {
-        return adressCollection;
+        return adressList;
     }
 
     // fügt dem Benutzer eine Adresse hinzu
     public void addAdress(Adress adress)
     {
-        adressCollection.add(adress);
+        adressList.add(adress);
     }
 
     @XmlTransient
-    public Collection<Rent> getRentCollection()
+    public List<Rent> getRentList()
     {
-        return rentCollection;
+        return rentList;
     }
 
     // fügt dem Benutzer eine Buchung hinzu
     public void addRent(Rent rent)
     {
-        rentCollection.add(rent);
+        rentList.add(rent);
     }
 }

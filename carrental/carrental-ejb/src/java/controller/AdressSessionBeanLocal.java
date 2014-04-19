@@ -13,6 +13,8 @@ public interface AdressSessionBeanLocal
             String country, String postalCode, boolean isShippingAdress,
             boolean isInvoiceAddress, String region, User userID);
 
+    public List<Adress> getAdresses(User user);
+
     public void changeStreet(Adress adress, String street);
 
     public void changeHousenumber(Adress adress, String housenumber);
@@ -23,13 +25,11 @@ public interface AdressSessionBeanLocal
 
     public void changePostalcode(Adress adress, String postalCode);
 
+    public void changeRegion(Adress adress, String newRegion);
+
     public void changeShippingAdress(Adress adress, boolean isShippingAdress);
 
     public void changeInvoiceAdress(Adress adress, boolean isInvoiceAddress);
-
-    public List<Adress> getAdresses(User user);
-
-    public void changeRegion(Adress adress, String newRegion);
 
     public void removeAdress(Adress adress);
 

@@ -12,13 +12,16 @@ import javax.persistence.NamedQuery;
 
 /**
  *
- * Entität für Adressen von Benutzern
+ * Entität für Adressen von Benutzern.
+ *
+ * @version %I%, %G%
  */
 @Entity
 @NamedQueries(
         {
             @NamedQuery(name = "Adress.findByUserId",
-                    query = "SELECT a FROM Adress a WHERE a.useruserId = :userId")
+                    query = "SELECT a FROM Adress a "
+                    + "WHERE a.useruserId = :userId")
         })
 
 public class Adress implements Serializable
@@ -39,10 +42,26 @@ public class Adress implements Serializable
     @ManyToOne(optional = false)
     private User useruserId;
 
+    /**
+     * Parameterloser Konstruktor. Muss vorhanden sein, sonst gibt es einen
+     * Fehler.
+     */
     public Adress()
     {
     }
 
+    /**
+     * Konstruktor für ein Adressobjekt.
+     *
+     * @param street Straße
+     * @param housenumber Hausnummer
+     * @param city Stadt
+     * @param country Land
+     * @param postalCode Postleitzahl
+     * @param isShippingAdress ist die Adresse eine Lieferadresse
+     * @param isInvoiceAddress ist die Adresse eine Rechnungsadresse
+     * @param region Region
+     */
     public Adress(String street, String housenumber, String city,
             String country, String postalCode, boolean isShippingAdress,
             boolean isInvoiceAddress, String region)

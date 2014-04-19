@@ -20,13 +20,17 @@ public class RentSessionBean implements RentSessionBeanLocal
     private EntityManager entityManager;
 
     /**
-     * erstellt ein Buchungsobjekt.
+     * erstellt ein Buchungsobjekt. Wird aber noch nicht in der Datenbank
+     * gespeichert. Die Datumsparameter, werden als String in die Methode
+     * reingegeben und von utils.DateParser.parseToDate(Date date) in ein
+     * Dateobjekt umgewandelt
      *
-     * @param startDate
-     * @param endDate
-     * @param userId
-     * @param carId
-     * @return
+     * @param startDate Startdatum der Buchung
+     * @param endDate Enddatum der Buchung
+     * @param userId Benutzer, der die Buchung ausführt
+     * @param carId Auto, dass zur Buchung gehört
+     * @return das erzeugte Buchungsobjekt
+     * @see utils.DateParser#parseToDate(java.lang.String)
      */
     @Override
     public Rent prepareRent(String startDate, String endDate,
@@ -44,9 +48,11 @@ public class RentSessionBean implements RentSessionBeanLocal
     }
 
     /**
-     * Speichert ein Buchungsobjekt in der DB
+     * Speichert ein Buchungsobjekt in der Datenbank.
      *
-     * @param rent
+     * @param rent Ein Buchungsobjekt, dass vorher mit prepareRent erzeugt wurde
+     * @see #prepareRent(java.lang.String, java.lang.String, model.User,
+     * model.Car)
      */
     @Override
     public void persistRent(Rent rent)
@@ -56,31 +62,24 @@ public class RentSessionBean implements RentSessionBeanLocal
     }
 
     /**
-     * Gibt alle Buchungen eines Benutzers als Liste zurück
+     * Gibt alle Buchungen eines Benutzers als Liste zurück.
      *
-     * @param user
-     * @return
+     * @param user Das Benutzerobjekt, nach dessen Buchungen gesucht werden soll
+     * @return eine Liste mit Buchungsobjekten
      */
     @Override
     public List<Rent> getRents(User user)
     {
-        Query query = entityManager.createNamedQuery("Rent.findByUser");
-        query.setParameter("useruserId", user);
-        List queryResult = query.getResultList();
-        if (queryResult.size() > 0)
-        {
-            return queryResult;
-        } else
-        {
-            return null;
-        }
+        return user.getRentList();
     }
 
     /**
-     * prüft ob ein Benutzer aktive Buchungen hat
+     * prüft ob ein Benutzer aktive Buchungen hat. Als aktive Buchungen wird
+     * eine Buchung bezeichnet, deren Enddatum größer und Startdatum kleiner,
+     * als das heutige Datum sind und die Buchung nocht nicht angefangen hat.
      *
-     * @param user
-     * @return
+     * @param user das zu überprüfende Benutzerobjekt
+     * @return true, wenn es aktive Buchungen gibt, false wenn nicht
      */
     @Override
     public boolean hasActiveRents(User user)
@@ -98,11 +97,11 @@ public class RentSessionBean implements RentSessionBeanLocal
 
     /**
      * berechnet den Buchungspreis anhand des Tagessatzes und der Dauer der
-     * Buchung
+     * Buchung.
      *
-     * @param car
-     * @param rent
-     * @return
+     * @param car Autoobjekt, von dem der Tagessatz gebraucht wird
+     * @param rent Buchungsobjekts, dessen Länge benötigt wird
+     * @return Multiplikation von Tagessatz des Autos und Länge der Buchung
      */
     @Override
     public Double getRentPrice(Car car, Rent rent)
@@ -111,7 +110,8 @@ public class RentSessionBean implements RentSessionBeanLocal
     }
 
     /**
-     * storniert/löscht ein Buchungsobjekt in der Datenbank
+     * löscht ein Buchungsobjekt in der Datenbank. Das Löschen einer aktiven
+     * Buchung wird durch eine Prüfung auf der JSP unterbunden.
      *
      * @param rent Die zu löschende Buchung
      */
@@ -124,9 +124,11 @@ public class RentSessionBean implements RentSessionBeanLocal
     }
 
     /**
+     * sucht eine Buchung an Hand ihrer ID aus der Datenbank.
      *
-     * @param id
-     * @return
+     * @param id ID des Buchungsobjekts
+     * @return Liefert das Buchungsobjekt zurück, wenn die Datenbankabfrage kein
+     * eindeutiges Ergebnis gelifert hat, wird NULL zurückgegeben.
      */
     @Override
     public Rent getRentById(Integer id)
@@ -148,8 +150,8 @@ public class RentSessionBean implements RentSessionBeanLocal
     /**
      * berechnet die Dauer der Buchung in Tagen.
      *
-     * @param startDate
-     * @param endDate
+     * @param startDate Startdatum der Buchung
+     * @param endDate Enddatum der Buchung
      * @return Gibt die Differenz in Tagen zurück, wenn Start- und Enddatum
      * gleich sind, wird 1 zurück geliefert
      */

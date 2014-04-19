@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -23,13 +22,17 @@ import javax.xml.bind.annotation.XmlTransient;
             @NamedQuery(name = "Car.findByCarId",
                     query = "SELECT c FROM Car c WHERE c.carId = :carId"),
             @NamedQuery(name = "Car.findByModelname",
-                    query = "SELECT c FROM Car c WHERE c.modelname = :modelname"),
+                    query = "SELECT c FROM Car c "
+                    + "WHERE c.modelname = :modelname"),
             @NamedQuery(name = "Car.findByBrandname",
-                    query = "SELECT c FROM Car c WHERE c.brandname = :brandname"),
+                    query = "SELECT c FROM Car c "
+                    + "WHERE c.brandname = :brandname"),
             @NamedQuery(name = "Car.getBrandList",
-                    query = "SELECT distinct c.brandname FROM Car c ORDER BY c.brandname"),
+                    query = "SELECT distinct c.brandname "
+                    + "FROM Car c ORDER BY c.brandname"),
             @NamedQuery(name = "Car.getModelList",
-                    query = "SELECT distinct c.modelname FROM Car c ORDER BY c.modelname")
+                    query = "SELECT distinct c.modelname "
+                    + "FROM Car c ORDER BY c.modelname")
         })
 
 public class Car implements Serializable
@@ -51,9 +54,13 @@ public class Car implements Serializable
     private String brandname;
     private String modelpicture;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "carmodelId")
-    private Collection<Rent> rentCollection;
+    private List<Rent> rentList;
     private boolean available;
 
+    /**
+     * Parameterloser Konstruktor. Muss vorhanden sein, sonst gibt es einen
+     * Fehler.
+     */
     public Car()
     {
     }
@@ -121,18 +128,6 @@ public class Car implements Serializable
     public String getModelpicture()
     {
         return modelpicture;
-    }
-
-    @XmlTransient
-    public Collection<Rent> getRentCollection()
-    {
-        return rentCollection;
-    }
-
-    // fügt dem Benutzer eine Buchung hinzu
-    public void addRent(Rent rent)
-    {
-        rentCollection.add(rent);
     }
 
     public boolean isAvailable()

@@ -11,14 +11,8 @@ import model.User;
 public interface RentSessionBeanLocal
 {
 
-    public Double getRentPrice(Car car, Rent rent);
-
     public Rent prepareRent(String startDate, String endDate,
             User userID, Car carID);
-
-    public void cancelRent(Rent rent);
-
-    public int getLengthOfRent(Date startDate, Date endDate);
 
     public void persistRent(Rent rent);
 
@@ -26,5 +20,12 @@ public interface RentSessionBeanLocal
 
     public boolean hasActiveRents(User user);
 
+    public Double getRentPrice(Car car, Rent rent);
+
+    public void cancelRent(Rent rent);
+
     public Rent getRentById(Integer id);
+
+    public int getLengthOfRent(Date startDate, Date endDate);
+
 }

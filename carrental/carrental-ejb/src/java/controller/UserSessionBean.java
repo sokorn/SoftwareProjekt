@@ -25,15 +25,15 @@ public class UserSessionBean implements UserSessionBeanLocal
     /**
      * erstellt ein Userobjekt und speichert es in die Datenbank.
      *
-     * @param title Titel des Users
-     * @param firstname Vorname des Users
-     * @param password Passwort des Users, dass gehashed in der DB gespeichert
-     * wird
-     * @param lastname Nachname des Users
-     * @param birthday Geburtsdatum des Users
-     * @param mail EMailadresse, sowie Login des Users
+     * @param title Titel
+     * @param firstname Vorname
+     * @param password Passwort, dass gehashed in der Datenbank gespeichert wird
+     * @param lastname Nachname
+     * @param birthday Geburtsdatum
+     * @param mail EMailadresse, die zum Login benutzt wird, dadurch ist sie
+     * einmalig in der Datenbank vorhanden
      *
-     * @return gibt das gespeicherte Userobjekt an das Servlet zurück
+     * @return gibt das gespeicherte Benutzerobjekt zurück
      */
     @Override
     public User createUser(String title, String firstname,
@@ -41,7 +41,8 @@ public class UserSessionBean implements UserSessionBeanLocal
     {
         String passwordHash = Password.hashPassword(password);
         Date birthdate = DateParser.parseToDate(birthday);
-        User user = new User(title, firstname, lastname, birthdate, mail, passwordHash);
+        User user = new User(title, firstname, lastname, birthdate, mail,
+                passwordHash);
         entityManager.persist(user);
         entityManager.flush();
         return user;
@@ -51,7 +52,7 @@ public class UserSessionBean implements UserSessionBeanLocal
      * prüft ob eine Emailadresse bereits in der Datenbank vorhanden ist.
      *
      * @param mail Zu prüfende Mailadresse
-     * @return true, wenn die Mail schon vorhanden ist
+     * @return true, wenn die Mail schon vorhanden ist, ansonsten false
      */
     @Override
     public boolean mailAlreadyUsed(String mail)
@@ -70,8 +71,8 @@ public class UserSessionBean implements UserSessionBeanLocal
      * @param login Die eigegebene Mailadresse
      * @param password Das eigegebene Passwort
      *
-     * @return Gibt das Userobjekt zurück, auf das die Mail und das Passwort
-     * passen, wenn ein Fehler auftreten sollte, wird null zurück geliefert
+     * @return Gibt das Benutzerobjekt zurück, auf das die Mail und das Passwort
+     * passen, wenn ein Fehler auftreten sollte, wird NULL zurück geliefert
      */
     @Override
     public User confirmUserLogin(String login, String password)
@@ -99,18 +100,19 @@ public class UserSessionBean implements UserSessionBeanLocal
     /**
      * Methode zum Ändern des Benutzerpassworts. Das alte Passwort wird gehashed
      * und mit dem in der Datenbank gespeicherten Passwort verglichen, wenn sie
-     * übereinstimmen, wird das neue Passwort gehashed und in der DB
+     * übereinstimmen, wird das neue Passwort gehashed und in der Datenbank
      * gespeichert.
      *
-     * @param user
-     * @param oldPassword
-     * @param newPassword
+     * @param user der Benutzer, desse Passwort geändert werden soll
+     * @param oldPassword das alte Passwort
+     * @param newPassword das neue Passwort
      *
      * @return true, wenn das Passwort erfolgreich in der Datenbank gespeichert
      * wurde
      */
     @Override
-    public boolean changePassword(User user, String oldPassword, String newPassword)
+    public boolean changePassword(User user, String oldPassword,
+            String newPassword)
     {
         Query query = entityManager.createNamedQuery("User.login");
         query.setParameter("login", user.getMail());
@@ -135,9 +137,10 @@ public class UserSessionBean implements UserSessionBeanLocal
     }
 
     /**
+     * Ändert den Vornamen eines Benutzers.
      *
-     * @param user
-     * @param newFirstname
+     * @param user das zu ändernde Benutzerobjekt
+     * @param newFirstname der neue Vorname
      */
     @Override
     public void changeFirstname(User user, String newFirstname)
@@ -148,9 +151,10 @@ public class UserSessionBean implements UserSessionBeanLocal
     }
 
     /**
+     * Ändert den Nachnamen eines Benutzers.
      *
-     * @param user
-     * @param newLastname
+     * @param user das zu ändernde Bentzerobjekt
+     * @param newLastname der neue Nachname
      */
     @Override
     public void changeLastname(User user, String newLastname)
@@ -161,9 +165,11 @@ public class UserSessionBean implements UserSessionBeanLocal
     }
 
     /**
+     * Ändert die Mailadresse eines Benutzers. Die Prüfung auf Einmaligkeit und
+     * Validierung erfolgen bereits im Servlet.
      *
-     * @param user
-     * @param newMail
+     * @param user das zu ändernde Benutzerobjekt
+     * @param newMail die neue Mailadresse
      */
     @Override
     public void changeMail(User user, String newMail)
@@ -174,9 +180,10 @@ public class UserSessionBean implements UserSessionBeanLocal
     }
 
     /**
+     * Ändert den Titel eines Benutzers.
      *
-     * @param user
-     * @param newTitle
+     * @param user das zu ändernde Benutzerobjekt
+     * @param newTitle der neue Titel
      */
     @Override
     public void changeTitle(User user, String newTitle)
@@ -189,8 +196,9 @@ public class UserSessionBean implements UserSessionBeanLocal
     /**
      * fügt einem Benutzer eine Adresse hinzu.
      *
-     * @param user
-     * @param adress
+     * @param user das Benutzerobjekt, zu dem die Adresse hinzugefügt werden
+     * soll
+     * @param adress eine neue Adresse
      */
     @Override
     public void addAdressToUser(User user, Adress adress)
@@ -199,9 +207,11 @@ public class UserSessionBean implements UserSessionBeanLocal
     }
 
     /**
-     * löscht einen Benutzer aus der Datenbank
+     * löscht einen Benutzer aus der Datenbank. Im Servlet wird vorher geprüft,
+     * ob der Benutzer noch aktive Buchungen hat, wenn ja kann er nicht gelöscht
+     * werden
      *
-     * @param user
+     * @param user das zu löschende Benutzerobjekt
      */
     @Override
     public void removeUser(User user)
