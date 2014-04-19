@@ -13,8 +13,6 @@ import javax.persistence.NamedQuery;
 /**
  *
  * Entität für Adressen von Benutzern.
- *
- * @version %Date%
  */
 @Entity
 @NamedQueries(
