@@ -1,7 +1,8 @@
 package controller;
 
 import javax.ejb.Local;
-import model.Adress;
+import model.Address;
+import model.Rent;
 import model.User;
 
 @Local
@@ -26,7 +27,11 @@ public interface UserSessionBeanLocal
 
     public void changeTitle(User user, String newLastname);
 
-    public void addAdressToUser(User user, Adress adress);
+    public void addAdressToUser(User user, Address adress);
+
+    public void addRentToUser(User user, Rent rent);
+
+    public void deleteRentFromUser(User user, Rent rent);
 
     public void removeUser(User user);
 

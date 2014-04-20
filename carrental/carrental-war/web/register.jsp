@@ -5,6 +5,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registrieren</title>
         <link rel="stylesheet" href="css/main.css"/>
+        <script type="text/javascript">
+            function showInvoiceAdress(box)
+            {
+                var checkbox = document.getElementsByName("isInvoiceAdress");
+                var visible = "none";
+                if (checkbox[0].checked)
+                {
+                    visible = "block";
+                }
+                document.getElementById(box).style.display = visible;
+            }
+        </script>
     </head>
     <body>
         <%@include file="templates/head.jsp" %>
@@ -53,7 +65,7 @@
                 <p>Stadt*: <input type="text" name="city" 
                                   value="<%=(request.getParameter("city") == null)
                                           ? "" : request.getParameter("city")%>"/></p>
-                <p>Land:   
+                <p>Land*:   
                     <select name="country">
                         <option value="Deutschland">Deutschland</option>
                         <option value="Schweiz">Schweiz</option>
@@ -63,6 +75,32 @@
                 <p>Region: <input type="text" name="region" 
                                   value="<%=(request.getParameter("region") == null)
                                           ? "" : request.getParameter("region")%>"/></p>
+                <p><input type="checkbox" name="isInvoiceAdress" value="false" 
+                          onclick="showInvoiceAdress('invoiceAdress')"> Abweichende Rechnungsadresse </p>
+                <div id="invoiceAdress" style="display: none">
+                    <p>Straße*: <input type="text" name="street2" 
+                                       value="<%=(request.getParameter("street2") == null)
+                                               ? "" : request.getParameter("street2")%>"/></p>
+                    <p>Hausnummer*: <input type="text" name="housenumber2" 
+                                           value="<%=(request.getParameter("housenumber2") == null)
+                                                   ? "" : request.getParameter("housenumber2")%>"/></p>
+                    <p>Postleitzahl*: <input type="number" name="postalcode2" 
+                                             value="<%=(request.getParameter("postalcode2") == null)
+                                                     ? "" : request.getParameter("postalcode2")%>"/></p>
+                    <p>Stadt*: <input type="text" name="city2" 
+                                      value="<%=(request.getParameter("city2") == null)
+                                              ? "" : request.getParameter("city2")%>"/></p>
+                    <p>Land*:   
+                        <select name="country2">
+                            <option value="Deutschland">Deutschland</option>
+                            <option value="Schweiz">Schweiz</option>
+                            <option value="Österreich">Österreich</option>
+                        </select>
+                    </p>
+                    <p>Region: <input type="text" name="region2" 
+                                      value="<%=(request.getParameter("region2") == null)
+                                              ? "" : request.getParameter("region2")%>"/></p>
+                </div>
                 <p><input type="submit" value="Registrieren" /></p>
                 <p><input type="reset" value="Abbrechen" /></p>
             </form>

@@ -21,12 +21,13 @@ import javax.persistence.TemporalType;
 @NamedQueries(
         {
             @NamedQuery(name = "Rent.findByRentId",
-                    query = "SELECT r FROM Rent r WHERE r.rentId = :rentId"),
-            @NamedQuery(name = "Rent.findByUser",
-                    query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId"),
+                    query = "SELECT r FROM Rent r "
+                    + "WHERE r.rentId = :rentId"),
             @NamedQuery(name = "Rent.findActiveRents",
-                    query = "SELECT r FROM Rent r WHERE r.useruserId = :useruserId AND "
-                    + "(:date BETWEEN r.startdate AND r.enddate OR :date < r.startdate)")
+                    query = "SELECT r FROM Rent r "
+                    + "WHERE r.useruserId = :useruserId "
+                    + "AND (:date BETWEEN r.startdate "
+                    + "AND r.enddate OR :date < r.startdate)")
         })
 
 public class Rent implements Serializable

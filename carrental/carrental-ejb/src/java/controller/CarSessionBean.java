@@ -74,6 +74,7 @@ public class CarSessionBean implements CarSessionBeanLocal
     public void unBlockCar(Car car)
     {
         car.setAvailable(true);
+        entityManager.merge(car);
     }
 
     /**

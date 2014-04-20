@@ -24,6 +24,7 @@
             <div>Ende: <%=enddate%></div>
             <div>Dauer: <%=rent.getLength()%> Tage</div>
             <div>Preis: <%=rent.getTotalPrice()%> Euro</div>
+            <%@include file="templates/addressOverview.jsp" %>
             <form method="post" action="/carrental-war/servlet?step=rent">
                 <p><input type="submit" value="Bestellen" /></p>
             </form>

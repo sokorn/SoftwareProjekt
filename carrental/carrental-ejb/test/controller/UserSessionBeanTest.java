@@ -3,7 +3,7 @@ package controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.embeddable.EJBContainer;
-import model.Adress;
+import model.Address;
 import model.User;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,7 +47,7 @@ public class UserSessionBeanTest {
      String firstname = "marco";
      String lastname = "rentschler";
      String passwordhash = "12345";
-     Adress adress = new Adress("Kaiser-Friedrich Straße", "82", "Pforzheim", "germany", "75172", true, true);
+     Address adress = new Address("Kaiser-Friedrich Straße", "82", "Pforzheim", "germany", "75172", true, true);
      EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
      UserSessionBeanLocal instance = (UserSessionBeanLocal)container.getContext().lookup("java:global/classes/UserSessionBean");
      User expResult = new User("marco.rentschler@arcor.de",birthdate,"qler","Mr.","marco","rentschler", passwordhash, adress);

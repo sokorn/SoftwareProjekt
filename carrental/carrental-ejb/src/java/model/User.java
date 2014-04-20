@@ -23,7 +23,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries(
         {
             @NamedQuery(name = "User.login",
-                    query = "SELECT u from User u WHERE u.mail = :login")
+                    query = "SELECT u from User u "
+                    + "WHERE u.mail = :login")
         })
 
 public class User implements Serializable
@@ -40,7 +41,7 @@ public class User implements Serializable
     private String lastname;
     private String passwordhash;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
-    private List<Adress> adressList;
+    private List<Address> adressList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useruserId")
     private List<Rent> rentList;
 
@@ -139,13 +140,13 @@ public class User implements Serializable
     }
 
     @XmlTransient
-    public List<Adress> getAdressList()
+    public List<Address> getAdressList()
     {
         return adressList;
     }
 
     // fügt dem Benutzer eine Adresse hinzu
-    public void addAdress(Adress adress)
+    public void addAdress(Address adress)
     {
         adressList.add(adress);
     }
@@ -160,5 +161,10 @@ public class User implements Serializable
     public void addRent(Rent rent)
     {
         rentList.add(rent);
+    }
+    
+    public void deleteRent(Rent rent)
+    {
+        rentList.remove(rent);
     }
 }

@@ -6,7 +6,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import model.Adress;
+import model.Address;
+import model.Rent;
 import model.User;
 import utils.DateParser;
 import utils.Password;
@@ -194,16 +195,42 @@ public class UserSessionBean implements UserSessionBeanLocal
     }
 
     /**
-     * fügt einem Benutzer eine Adresse hinzu.
+     * fügt einem Benutzer eine Addresse hinzu.
      *
-     * @param user das Benutzerobjekt, zu dem die Adresse hinzugefügt werden
+     * @param user das Benutzerobjekt, zu dem die Addresse hinzugefügt werden
      * soll
-     * @param adress eine neue Adresse
+     * @param adress eine neue Addresse
      */
     @Override
-    public void addAdressToUser(User user, Adress adress)
+    public void addAdressToUser(User user, Address adress)
     {
         user.addAdress(adress);
+        entityManager.merge(user);
+    }
+
+    /**
+     *
+     * @param user
+     * @param rent
+     */
+    @Override
+    public void addRentToUser(User user, Rent rent)
+    {
+        user.addRent(rent);
+        entityManager.merge(user);
+    }
+
+    /**
+     * Löscht eine Buchung des Benutzers.
+     *
+     * @param user das Benutzerobjekt, von dem die Buchung gelöscht wird
+     * @param rent das zu löschende Buchungsobjekt
+     */
+    @Override
+    public void deleteRentFromUser(User user, Rent rent)
+    {
+        user.deleteRent(rent);
+        entityManager.merge(user);
     }
 
     /**
@@ -218,6 +245,5 @@ public class UserSessionBean implements UserSessionBeanLocal
     {
         user = entityManager.merge(user);
         entityManager.remove(user);
-        entityManager.flush();
     }
 }

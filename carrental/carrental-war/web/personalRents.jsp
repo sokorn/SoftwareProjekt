@@ -13,13 +13,13 @@
     <body>
         <%@include file="templates/head.jsp" %>
         <div class="main">
-            <% if (session.getAttribute("rentList") == null)
+            <% if (user.getRentList().isEmpty())
                 {
             %>
             Sie haben bisher noch keine Buchungen vorgenommen.
             <%  } else
             {
-                List<Rent> rentList = (List<Rent>) session.getAttribute("rentList");
+                List<Rent> rentList = user.getRentList();
             %>
             <table>
                 <tr>

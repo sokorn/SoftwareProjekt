@@ -7,7 +7,7 @@ package controller;
 
 import java.util.Date;
 import javax.ejb.EJB;
-import model.Adress;
+import model.Address;
 import model.User;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -42,7 +42,7 @@ public class DatenbankTest {
     }
     /*
      Date d = new Date();
-     Adress adress = new Adress();
+     Address adress = new Address();
             
      UserSessionBeanLocal usbl = BeanFactory.getUserSessionBean();
      usbl.createUser("marco.rentschler@arcor.de ", d, "qler", "Mr.", "marco", "rentschler", "1234password", adress);*/

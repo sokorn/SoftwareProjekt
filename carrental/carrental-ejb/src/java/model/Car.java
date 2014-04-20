@@ -20,7 +20,8 @@ import javax.persistence.OneToMany;
         {
             @NamedQuery(name = "Car.findAll", query = "SELECT c FROM Car c"),
             @NamedQuery(name = "Car.findByCarId",
-                    query = "SELECT c FROM Car c WHERE c.carId = :carId"),
+                    query = "SELECT c FROM Car c "
+                    + "WHERE c.carId = :carId"),
             @NamedQuery(name = "Car.findByModelname",
                     query = "SELECT c FROM Car c "
                     + "WHERE c.modelname = :modelname"),

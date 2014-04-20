@@ -7,22 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 /**
  *
- * Entität für Adressen von Benutzern.
+ * Entität für Addressen von Benutzern.
  */
 @Entity
-@NamedQueries(
-        {
-            @NamedQuery(name = "Adress.findByUserId",
-                    query = "SELECT a FROM Adress a "
-                    + "WHERE a.useruserId = :userId")
-        })
-
-public class Adress implements Serializable
+public class Address implements Serializable
 {
 
     @Id
@@ -34,7 +25,6 @@ public class Adress implements Serializable
     private String country;
     private String region;
     private String postalCode;
-    private boolean isShippingAdress;
     private boolean isInvoiceAddress;
     @JoinColumn(name = "user_userId", referencedColumnName = "userId")
     @ManyToOne(optional = false)
@@ -44,7 +34,7 @@ public class Adress implements Serializable
      * Parameterloser Konstruktor. Muss vorhanden sein, sonst gibt es einen
      * Fehler.
      */
-    public Adress()
+    public Address()
     {
     }
 
@@ -56,12 +46,11 @@ public class Adress implements Serializable
      * @param city Stadt
      * @param country Land
      * @param postalCode Postleitzahl
-     * @param isShippingAdress ist die Adresse eine Lieferadresse
      * @param isInvoiceAddress ist die Adresse eine Rechnungsadresse
      * @param region Region
      */
-    public Adress(String street, String housenumber, String city,
-            String country, String postalCode, boolean isShippingAdress,
+    public Address(String street, String housenumber, String city,
+            String country, String postalCode,
             boolean isInvoiceAddress, String region)
     {
         this.street = street;
@@ -69,14 +58,8 @@ public class Adress implements Serializable
         this.city = city;
         this.country = country;
         this.postalCode = postalCode;
-        this.isShippingAdress = isShippingAdress;
         this.isInvoiceAddress = isInvoiceAddress;
         this.region = region;
-    }
-
-    public Integer getAdressId()
-    {
-        return adressId;
     }
 
     public String getStreet()
@@ -139,17 +122,7 @@ public class Adress implements Serializable
         this.postalCode = postalCode;
     }
 
-    public boolean getIsShippingAdress()
-    {
-        return isShippingAdress;
-    }
-
-    public void setIsShippingAdress(boolean isShippingAdress)
-    {
-        this.isShippingAdress = isShippingAdress;
-    }
-
-    public boolean getIsInvoiceAddress()
+    public boolean isInvoiceAddress()
     {
         return isInvoiceAddress;
     }

@@ -1,8 +1,6 @@
-<%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
-<%@page import="model.Adress"%>
-<%@page import="model.Adress"%>
+<%@page import="model.Address"%>
 <%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -28,24 +26,19 @@
                 <div>Mail: <%=user.getMail()%></div>
                 <div><a href="/carrental-war/servlet?step=persDataChanges">Persönliche Daten ändern</a></div>
                 <div><a href="/carrental-war/servlet?step=pwdChanges">Passwort ändern</a></div>
-                <%  if (user.getAdressCollection().size() == 1)
+                <%@include file="templates/addressOverview.jsp" %>
+                <%
+                    if (addressList.size() == 1)
                     {
-                        List<Adress> adressList = (List<Adress>) session.getAttribute("adressList");
-                        Adress adress = adressList.get(0);
-                %>
-                <div>Standardadresse:</div>
-                <div><%=adress.getStreet()%> <%=adress.getHousenumber()%></div>
-                <div><%=adress.getPostalCode()%> <%=adress.getCity()%></div>
-                <% if (adress.getRegion() != null)
-                    {
-                %>
-                <div><%=adress.getRegion()%></div>
-                <% }
-                %>
-                <div><%=adress.getCountry()%></div>
-                <% }
                 %>
                 <div><a href="/carrental-war/servlet?step=adressChanges">Adresse ändern</a></div>
+                <%  } else
+                {
+                %>
+                <div><a href="/carrental-war/servlet?step=adressChanges">Lieferadresse ändern</a></div>
+                <div><a href="/carrental-war/servlet?step=adressChanges">Rechnungsadresse ändern</a></div>
+                <%    }
+                %>
                 <h4><a href="/carrental-war/servlet?step=personalRents">Meine Buchungen</a></h4>
                 <form method="post" action="/carrental-war/servlet?step=deleteAcc">
                     <p><input type="submit" value="Konto löschen" /></p>

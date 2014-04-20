@@ -27,14 +27,13 @@ public class CarRentalServlet extends HttpServlet
     @EJB
     private UserSessionBeanLocal userBean;
     @EJB
-    private AdressSessionBeanLocal adressBean;
+    private AddressSessionBeanLocal adressBean;
     @EJB
     private CarSessionBeanLocal carBean;
     @EJB
     private RentSessionBeanLocal rentBean;
 
     private User sessionUser;
-    private List<Adress> sessionAdressList;
 
     protected void processRequest(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException
@@ -45,7 +44,6 @@ public class CarRentalServlet extends HttpServlet
         session.setAttribute("action", currentStep);
 
         sessionUser = (User) session.getAttribute("user");
-        sessionAdressList = (List<Adress>) session.getAttribute("adressList");
 
         List<String> brandList = carBean.getBrandNameList();
         List<String> modelList = carBean.getModelNameList();
@@ -203,21 +201,52 @@ public class CarRentalServlet extends HttpServlet
                                     request.getParameter("birthday"),
                                     request.getParameter("mail1"),
                                     request.getParameter("password1"));
-                            Adress adress = adressBean
-                                    .createAdress(request.getParameter("street"),
-                                            request.getParameter("housenumber"),
-                                            request.getParameter("city"),
-                                            request.getParameter("country"),
-                                            request.getParameter("postalcode"),
-                                            true, true,
-                                            request.getParameter("region"), user);
-                            userBean.addAdressToUser(user, adress);
+                            if (request.getParameter("isInvoiceAdress") == null)
+                            {
+                                Address adress = adressBean
+                                        .createAdress(request.getParameter("street"),
+                                                request.getParameter("housenumber"),
+                                                request.getParameter("city"),
+                                                request.getParameter("country"),
+                                                request.getParameter("postalcode"),
+                                                true,
+                                                request.getParameter("region"), user);
+                                userBean.addAdressToUser(user, adress);
+                            } else if (request.getParameter("isInvoiceAdress").equals("false"))
+                            {
+                                Address adress = adressBean
+                                        .createAdress(request.getParameter("street"),
+                                                request.getParameter("housenumber"),
+                                                request.getParameter("city"),
+                                                request.getParameter("country"),
+                                                request.getParameter("postalcode"),
+                                                false,
+                                                request.getParameter("region"), user);
+                                Address adress2 = adressBean
+                                        .createAdress(request.getParameter("street2"),
+                                                request.getParameter("housenumber2"),
+                                                request.getParameter("city2"),
+                                                request.getParameter("country2"),
+                                                request.getParameter("postalcode2"),
+                                                true,
+                                                request.getParameter("region2"), user);
+                                userBean.addAdressToUser(user, adress);
+                                userBean.addAdressToUser(user, adress2);
+                            } else
+                            {
+                                Address adress = adressBean
+                                        .createAdress(request.getParameter("street"),
+                                                request.getParameter("housenumber"),
+                                                request.getParameter("city"),
+                                                request.getParameter("country"),
+                                                request.getParameter("postalcode"),
+                                                true,
+                                                request.getParameter("region"), user);
+                                userBean.addAdressToUser(user, adress);
+                            }
                             session.setAttribute("user", user);
                             sessionUser = (User) session.getAttribute("user");
-                            List<Adress> adressList = adressBean.getAdresses(sessionUser);
-                            session.setAttribute("adressList", adressList);
-                            sessionAdressList
-                                    = (List<Adress>) session.getAttribute("adressList");
+                            List<Address> adressList = adressBean.getAdresses(sessionUser);
                         }
                         if (user == null)
                         {
@@ -357,18 +386,11 @@ public class CarRentalServlet extends HttpServlet
                                 .forward(request, response);
                     } else
                     {
-                        if (sessionAdressList == null)
-                        {
-                            List<Adress> adressList
-                                    = adressBean.getAdresses(sessionUser);
-                            session.setAttribute("adressList", adressList);
-                            sessionAdressList = (List<Adress>) session
-                                    .getAttribute("adressList");
-                        }
                         Rent rent = (Rent) session.getAttribute("rent");
                         if (rent.getCarmodelId().isAvailable())
                         {
                             carBean.blockCar(rent.getCarmodelId());
+                            userBean.addRentToUser(sessionUser, rent);
                             rentBean.persistRent(rent);
                             request.setAttribute("SuccessfulRent",
                                     "Buchung wurde erfolgreich ausgeführt");
@@ -396,8 +418,6 @@ public class CarRentalServlet extends HttpServlet
                                 .forward(request, response);
                     } else
                     {
-                        List<Adress> adressList = adressBean.getAdresses(sessionUser);
-                        session.setAttribute("adressList", adressList);
                         request.getRequestDispatcher("/personalArea.jsp?step=personal")
                                 .forward(request, response);
                     }
@@ -573,9 +593,8 @@ public class CarRentalServlet extends HttpServlet
                         {
                             if (sessionUser.getAdressList().size() == 1)
                             {
-                                List<Adress> adressList
-                                        = (List<Adress>) session.getAttribute("adressList");
-                                Adress adress = adressList.get(0);
+                                List<Address> adressList = sessionUser.getAdressList();
+                                Address adress = adressList.get(0);
                                 if (!adress.getStreet()
                                         .equals(request.getParameter("street")))
                                 {
@@ -679,13 +698,13 @@ public class CarRentalServlet extends HttpServlet
                                     request.getParameter("password")) == null))
                             {
                                 User user = sessionUser;
-                                List<Adress> adressList
+                                List<Address> adressList
                                         = adressBean.getAdresses(user);
                                 if (adressList == null)
                                 {
                                 } else
                                 {
-                                    for (Adress adress : adressList)
+                                    for (Address adress : adressList)
                                     {
                                         adressBean.removeAdress(adress);
                                     }
@@ -702,7 +721,6 @@ public class CarRentalServlet extends HttpServlet
                                 }
                                 userBean.removeUser(user);
                                 session.removeAttribute("user");
-                                session.removeAttribute("adressList");
                                 session.invalidate();
                                 request.setAttribute("AccDeleteDone",
                                         "Ihr Konto wurde erfolgreich gelöscht");
@@ -725,9 +743,6 @@ public class CarRentalServlet extends HttpServlet
                                 .forward(request, response);
                     } else
                     {
-                        User user = sessionUser;
-                        List<Rent> rentList = rentBean.getRents(user);
-                        session.setAttribute("rentList", rentList);
                         request.getRequestDispatcher("/personalRents.jsp")
                                 .forward(request, response);
                     }
@@ -763,6 +778,7 @@ public class CarRentalServlet extends HttpServlet
                     {
                         Rent rent = (Rent) session.getAttribute("rent");
                         carBean.unBlockCar(rent.getCarmodelId());
+                        userBean.deleteRentFromUser(sessionUser, rent);
                         rentBean.cancelRent(rent);
                         request.setAttribute("RentCancelled",
                                 "Buchung wurde storniert");
