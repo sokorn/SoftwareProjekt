@@ -246,7 +246,6 @@ public class CarRentalServlet extends HttpServlet
                             }
                             session.setAttribute("user", user);
                             sessionUser = (User) session.getAttribute("user");
-                            List<Address> adressList = adressBean.getAdresses(sessionUser);
                         }
                         if (user == null)
                         {

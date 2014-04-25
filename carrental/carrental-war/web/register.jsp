@@ -61,7 +61,7 @@
                                                ? "" : request.getParameter("housenumber")%>"/></p>
                 <p>Postleitzahl*: <input type="number" name="postalcode" 
                                          value="<%=(request.getParameter("postalcode") == null)
-                                                 ? "" : request.getParameter("postalcode")%>"/></p>
+                                                 ? "" : request.getParameter("postalcode")%>"/> ${WrongPostalCode}</p>
                 <p>Stadt*: <input type="text" name="city" 
                                   value="<%=(request.getParameter("city") == null)
                                           ? "" : request.getParameter("city")%>"/></p>
